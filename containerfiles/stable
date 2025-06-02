@@ -9,14 +9,14 @@ RUN dnf5 -y upgrade \
   gamescope-session-0.1.0+306-1.fc41 \
   gamescope-session-playtron-0.3.3-1.fc41 \
   legendary-0.20.37-1.playtron \
-  libpact-0.1.0-1 \
-  libplaytron-0.1.0-1 \
+  libpact-0.2.0-1 \
+  libplaytron-0.2.0-1 \
   mangohud-0.8.1-2.fc41 \
   powerstation-0.5.0-1 \
-  grid-0.60.1-1.fc40 \
-  playserve-0.63.0-1 \
+  grid-0.61.0-1.fc40 \
+  playserve-0.64.0-1 \
   playtron-os-files-0.23.1-1.fc41 \
-  playtron-plugin-local-1.0.1-1 \
+  playtron-plugin-local-1.1.0-1 \
   reaper-0.1.0-2.fc41 \
   tzupdate-3.1.0-1.fc41 \
   udev-media-automount-0.1.0+71-1.fc41 \
