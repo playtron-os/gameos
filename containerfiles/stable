@@ -14,8 +14,8 @@ RUN dnf5 -y upgrade \
   mangohud-0.8.1-2.fc41 \
   powerstation-0.5.0-1 \
   grid-0.61.0-1.fc40 \
-  playserve-0.64.1-1 \
-  playtron-os-files-0.23.1-1.fc41 \
+  playserve-0.64.2-1 \
+  playtron-os-files-0.23.2-1.fc41 \
   playtron-plugin-local-1.1.0-1 \
   reaper-0.1.0-2.fc41 \
   tzupdate-3.1.0-1.fc41 \
