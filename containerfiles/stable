@@ -11,7 +11,6 @@ RUN dnf5 -y upgrade \
   legendary-0.20.37-1.playtron \
   libpact-0.2.0-1 \
   libplaytron-0.2.0-1 \
-  mangohud-0.8.1-2.fc41 \
   powerstation-0.5.0-1 \
   grid-0.61.0-1.fc40 \
   playserve-0.64.2-1 \
@@ -20,7 +19,6 @@ RUN dnf5 -y upgrade \
   reaper-0.1.0-2.fc41 \
   tzupdate-3.1.0-1.fc41 \
   udev-media-automount-0.1.0+71-1.fc41 \
-  valve-firmware-20231113.1-5.fc41 \
   SteamBus-1.20.0-1.fc41
 
 # View final packages.
