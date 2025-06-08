@@ -13,9 +13,9 @@ RUN dnf5 -y upgrade \
   legendary-0.20.37-1.playtron \
   libpact-0.2.0-1 \
   libplaytron-0.2.0-1 \
-  powerstation-0.5.1-1 \
-  playserve-0.65.5-1 \
-  playtron-os-files-0.24.1-1.fc41 \
+  powerstation-0.5.2-1 \
+  playserve-0.65.6-1 \
+  playtron-os-files-0.24.2-1.fc41 \
   playtron-plugin-local-1.1.0-1 \
   reaper-0.1.0-2.fc41 \
   tzupdate-3.1.0-1.fc41 \
