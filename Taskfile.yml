@@ -151,6 +151,17 @@ tasks:
       - createrepo /tmp/repo
       - aws s3 sync /tmp/repo/ s3://playtron-dev2-global-os-public/repos/playtron-app/x86_64/
 
+  repo:update:arm:
+    desc: "Update the ARM package repository"
+    cmds:
+      - rm -rf /tmp/repo
+      - mkdir -p /tmp/repo
+      - aws s3 cp s3://playtron-dev2-global-os-public/repos/playtron-app/aarch64/ /tmp/repo/ --recursive
+      - read -p "Copy new packages into /tmp/repo and press ENTER to continue"
+      - createrepo /tmp/repo
+      - aws s3 sync /tmp/repo/ s3://playtron-dev2-global-os-public/repos/playtron-app/aarch64/
+
+
   public:auth:
     desc: Authenticate with the GitHub container registry.
     preconditions:
