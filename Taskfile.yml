@@ -127,7 +127,19 @@ tasks:
       - rm -rf output
       - mkdir output
       - podman pull ${REGISTRY}/${PROJECT}/${IMAGE}:${TAG}
-      - podman run --rm -it --privileged --pull=newer --security-opt label=type:unconfined_t -v ./config.toml:/config.toml:ro -v ./output:/output -v /var/lib/containers/storage:/var/lib/containers/storage quay.io/centos-bootc/bootc-image-builder:latest --type raw --rootfs btrfs --local ${REGISTRY}/${PROJECT}/${IMAGE}:${TAG}
+      - podman run --rm -it --privileged --pull=newer --security-opt label=type:unconfined_t -v ./config.toml:/config.toml:ro -v ./output:/output -v /var/lib/containers/storage:/var/lib/containers/storage ghcr.io/playtron-os/bootc-image-builder:latest --type raw --rootfs btrfs ${REGISTRY}/${PROJECT}/${IMAGE}:${TAG}
+
+  disk-image:bootc:local:
+    desc: Build the OS image from a local container using bootc image builder.
+    preconditions:
+      - sh: test "$EUID" == 0
+        msg: "This task must be run as root"
+      - sh: test -n "$IMAGE"
+        msg: "A value for IMAGE must be provided"
+    cmds:
+      - rm -rf output
+      - mkdir output
+      - podman run --rm -it --privileged --pull=newer --security-opt label=type:unconfined_t -v ./config.toml:/config.toml:ro -v ./output:/output -v /var/lib/containers/storage:/var/lib/containers/storage ghcr.io/playtron-os/bootc-image-builder:latest --type raw --rootfs btrfs localhost/${IMAGE}:${TAG}
 
   repo:update:
     desc: "Update the package repository"
