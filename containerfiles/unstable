@@ -97,6 +97,7 @@ RUN ${CMD_INSTALL} \
   wget \
   wireplumber \
   xdg-desktop-portal-openuri \
+  xdg-user-dirs \
   xdg-utils \
   xorg-x11-server-Xvfb \
   xwininfo \
