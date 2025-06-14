@@ -110,7 +110,6 @@ RUN ${CMD_INSTALL} \
 
 RUN ${CMD_INSTALL} \
   akmod-nvidia \
-  nvenc \
   nvidia-driver \
   nvidia-driver-NvFBCOpenGL \
   nvidia-driver-libs.i686
