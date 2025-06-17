@@ -16,7 +16,7 @@ RUN dnf5 -y upgrade \
   powerstation-0.6.0-1 \
   playserve-0.65.8-1 \
   playtron-os-files-0.25.0-1.fc41 \
-  playtron-plugin-local-1.2.1-1 \
+  playtron-plugin-local-1.2.2-1 \
   reaper-0.1.0-2.fc41 \
   tzupdate-3.1.0-1.fc41 \
   udev-media-automount-0.1.0+71-1.fc41 \
