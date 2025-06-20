@@ -8,13 +8,13 @@ RUN dnf5 -y upgrade \
   gamescope-dbus-1.10.3-1 \
   gamescope-session-0.1.0+306-1.fc41 \
   gamescope-session-playtron-0.3.3-1.fc41 \
-  grid-0.62.5-1.fc40 \
+  grid-0.62.6-1.fc40 \
   inputplumber-0.58.6-0.fc41 \
   legendary-0.20.37-1.playtron \
   libpact-0.2.0-1 \
   libplaytron-0.3.0-1 \
   powerstation-0.6.0-1 \
-  playserve-0.65.8-1 \
+  playserve-0.65.9-1 \
   playtron-os-files-0.25.0-1.fc41 \
   playtron-plugin-local-1.2.2-1 \
   reaper-0.1.0-2.fc41 \
