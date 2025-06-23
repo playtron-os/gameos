@@ -8,4 +8,4 @@ gpgkey=https://download.copr.fedorainfracloud.org/results/gloriouseggroll/nobara
 repo_gpgcheck=0
 enabled=1
 enabled_metadata=1
-includepkgs=gamescope*,kernel*
+includepkgs=*apparmor*,*AppArmor*,gamescope*,kernel*
