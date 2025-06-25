@@ -30,14 +30,22 @@ RUN ${CMD_INSTALL} \
   btop \
   cabextract \
   cirrus-audio-firmware \
+  clatd \
+  cloud-utils-growpart \
   crudini \
   dbus-daemon \
   distrobox \
   dracut-config-generic \
   evtest \
+  ffmpeg-free \
+  fio \
+  fio-engine-libaio \
   flatpak \
+  foot \
+  fwupd \
   gamescope-session-playtron \
   glibc-langpack-en \
+  google-noto-sans-mono-cjk-vf-fonts \
   gstreamer1-plugins-good \
   htop \
   inputplumber \
@@ -46,6 +54,7 @@ RUN ${CMD_INSTALL} \
   iwlegacy-firmware \
   iwlwifi-dvm-firmware \
   iwlwifi-mvm-firmware \
+  ladspa-noise-suppression-for-voice \
   langpacks-en \
   legendary \
   libpact \
@@ -61,6 +70,7 @@ RUN ${CMD_INSTALL} \
   nxpwireless-firmware \
   ostree-grub2 \
   p7zip-plugins \
+  parted \
   pipewire \
   pipewire-alsa \
   pipewire-gstreamer \
@@ -73,10 +83,15 @@ RUN ${CMD_INSTALL} \
   plymouth-theme-spinner \
   powerstation \
   powertop \
+  python3-pygame \
+  python3-dbus \
+  python3-gobject \
   realtek-firmware \
+  rsync \
   sddm \
   steam.i686 \
   SteamBus \
+  stress-ng \
   switcheroo-control \
   thermald \
   time \
@@ -87,10 +102,12 @@ RUN ${CMD_INSTALL} \
   udisks2 \
   unrar \
   unzip \
+  upower \
   usbutils \
   usb_modeswitch \
   valve-firmware \
   vim \
+  vkmark \
   webkit2gtk4.1 \
   weston-session \
   wget \
@@ -100,7 +117,8 @@ RUN ${CMD_INSTALL} \
   xdg-utils \
   xorg-x11-server-Xvfb \
   xwininfo \
-  zenity
+  zenity \
+  zram-generator
 
 # Install Nvidia driver
 RUN ${CMD_INSTALL} \
