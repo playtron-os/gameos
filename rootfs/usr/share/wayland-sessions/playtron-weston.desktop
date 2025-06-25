@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Weston (Playtron)
+Comment=The reference Wayland server
+Exec=playtron-weston
+Type=Application

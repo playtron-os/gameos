@@ -1,0 +1,5 @@
+# Add the product name as an environment variable to any ttyS2 device
+KERNEL=="ttyS2", SUBSYSTEM=="tty", IMPORT{program}="/usr/bin/sh -c 'echo -n ID_PRODUCT_NAME= && cat /sys/class/dmi/id/product_name'"
+
+# Apply permissions to the serial interface if this is a valid Ayaneo 2S device
+KERNEL=="ttyS2", SUBSYSTEM=="tty", ENV{ID_PRODUCT_NAME}=="AYANEO 2S", TAG+="uaccess"

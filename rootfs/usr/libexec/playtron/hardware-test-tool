@@ -1,0 +1,905 @@
+#!/usr/bin/python3
+
+import os
+import dbus
+import math
+import time
+import json
+import threading
+import datetime
+import pygame
+import pygame.freetype
+from pathlib import Path
+import subprocess
+from dataclasses import dataclass
+
+pygame.init()
+screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+
+BACKGROUND_COLOR = ( 50, 50, 50)
+BUTTON_COLOR     = (100,100,100)
+TEXT_COLOR       = (255,255,255)
+FAIL_COLOR       = (180,  0,  0)
+PASS_COLOR       = (  0,180,  0)
+
+FONT_SIZE = screen.get_height() // 29
+FONT = pygame.freetype.Font('/usr/share/fonts/google-noto-sans-mono-cjk-vf-fonts/NotoSansMonoCJK-VF.ttc', FONT_SIZE)
+
+
+class PlaceholderTest:
+    def __init__(self):
+        self.name = ''
+        self.reset()
+
+    def reset(self):
+        self.done = False
+        self.result = None
+
+    def start(self, screen, font):
+        self.reset()
+
+    def stop(self):
+        pass
+
+    def draw(self, screen, font):
+        pass
+
+    def event(self, event):
+        if event.type == pygame.MOUSEBUTTONUP:
+            self.done = True
+
+
+# Test video taken from: https://test-videos.co.uk/bigbuckbunny/webm-vp9
+TEST_VIDEO_PATH='/usr/share/playtron/test_video.webm'
+
+class ExternalDisplayTest(PlaceholderTest):
+    def __init__(self):
+        self.name = 'External Display|外接显示器'
+        self.reset()
+
+    def start(self, screen, font):
+        self.reset()
+
+        # `-left 1921` places the video off the edge of the main screen
+        # so the video becomes fullscreen on the secondary display
+        os.popen(f'ffplay -left 1921 -fs -loop 3 -autoexit -volume 0 {TEST_VIDEO_PATH}')
+        self.done = True
+
+    def stop(self):
+        os.popen('killall ffplay')
+
+
+class InputTest(PlaceholderTest):
+    def __init__(self):
+        self.name = 'Input|输入'
+        self.reset()
+
+    def start(self, screen, font):
+        self.reset()
+        os.popen('foot --maximized --hold -e inputplumber device 0 test')
+        self.done = True
+
+
+class BatteryTest(PlaceholderTest):
+    def __init__(self):
+        self.name = 'Battery|电池'
+        self.reset()
+        self.start_time = None
+        self.battery_path = '/sys/class/power_supply'
+        self.battery_name = None
+        self.battery_percentage = None
+        self.battery_state_text = None
+        self.battery_charging_speed = None
+
+    def start(self, screen, font):
+        self.reset()
+        self.start_time = time.perf_counter()
+
+        for file_name in os.listdir(self.battery_path):
+            if 'BAT' in file_name:
+                self.battery_name = file_name
+        if not self.battery_name:
+            self.result = 'fail'
+            self.done = True
+            return
+
+        with open(self.battery_path + '/' + self.battery_name + '/' + 'capacity', 'r') as file_name:
+            self.battery_percentage = file_name.read().strip() + '%'
+
+        # State is either "Charging", "Discharging", or "Not charging".
+        with open(self.battery_path + '/' + self.battery_name + '/' + 'status', 'r') as file_name:
+            battery_state = file_name.read().strip()
+        if battery_state == "Charging":
+            self.battery_state_text = 'Charging|充电'
+        elif battery_state == "Discharging":
+            self.battery_state_text = 'Discharging|放电'
+        else:
+            self.battery_state_text = '?'
+
+        battery_charging_speed_cmd = os.popen(
+            'upower -i /org/freedesktop/UPower/devices/DisplayDevice ' + ' | grep energy-rate: | awk \'{print $2}\' | cut -d. -f1')
+        self.battery_charging_speed = battery_charging_speed_cmd.read().strip() + 'W'
+        battery_charging_speed_cmd.close()
+
+    def draw(self, screen, font):
+        if time.perf_counter() - self.start_time > 1:
+            self.start(screen, font)
+        FONT.render_to(screen, (FONT_SIZE*1, FONT_SIZE*1), 'Battery percentage|电池百分比', TEXT_COLOR)
+        FONT.render_to(screen, (FONT_SIZE*18, FONT_SIZE*1), 'Charging?|充电?', TEXT_COLOR)
+        FONT.render_to(screen, (FONT_SIZE*31, FONT_SIZE*1), 'Speed|速度', TEXT_COLOR)
+        FONT.render_to(screen, (FONT_SIZE*1, FONT_SIZE*3), self.battery_percentage, TEXT_COLOR)
+        FONT.render_to(screen, (FONT_SIZE*18, FONT_SIZE*3), self.battery_state_text, TEXT_COLOR)
+        FONT.render_to(screen, (FONT_SIZE*31, FONT_SIZE*3), self.battery_charging_speed, TEXT_COLOR)
+
+
+class VolumeSetting(PlaceholderTest):
+    def __init__(self, default_output_volume, default_input_volume):
+        self.name = 'Volume|音量'
+        self.reset()
+        self.ovol = default_output_volume / 100
+        self.ivol = default_input_volume / 100
+
+    def start(self, screen, font):
+        self.reset()
+
+        self.out_minus_rect = pygame.Rect(FONT_SIZE*11, FONT_SIZE*7, FONT_SIZE*3, FONT_SIZE*3)
+        self.out_plus_rect  = pygame.Rect(FONT_SIZE*36, FONT_SIZE*7, FONT_SIZE*3, FONT_SIZE*3)
+        self.in_minus_rect  = pygame.Rect(FONT_SIZE*11, FONT_SIZE*17, FONT_SIZE*3, FONT_SIZE*3)
+        self.in_plus_rect   = pygame.Rect(FONT_SIZE*36, FONT_SIZE*17, FONT_SIZE*3, FONT_SIZE*3)
+
+        self.close_rect     = pygame.Rect(screen.get_width()-FONT_SIZE*4, FONT_SIZE, FONT_SIZE*3, FONT_SIZE*3)
+
+    def draw(self, screen, font):
+        FONT.render_to(screen,                     (FONT_SIZE*15, FONT_SIZE*5), 'Output Volume|输出音量', TEXT_COLOR)
+        # volume bar
+        pygame.draw.rect(screen, BACKGROUND_COLOR, (FONT_SIZE*15, FONT_SIZE*7, FONT_SIZE*20,           FONT_SIZE*3))
+        pygame.draw.rect(screen, PASS_COLOR,       (FONT_SIZE*15, FONT_SIZE*7, FONT_SIZE*20*self.ovol, FONT_SIZE*3))
+        pygame.draw.rect(screen, TEXT_COLOR,       (FONT_SIZE*15, FONT_SIZE*7, FONT_SIZE*20,           FONT_SIZE*3), FONT_SIZE // 6)
+        # volume value
+        FONT.render_to(screen,                     (FONT_SIZE*24, FONT_SIZE*8), str(math.ceil(self.ovol*100)), TEXT_COLOR)
+        # - volume button
+        pygame.draw.rect(screen, BUTTON_COLOR, self.out_minus_rect)
+        FONT.render_to(screen,                     (FONT_SIZE*12.35, FONT_SIZE*8.4), '-', TEXT_COLOR)
+        # + volume button
+        pygame.draw.rect(screen, BUTTON_COLOR, self.out_plus_rect)
+        FONT.render_to(screen,                     (FONT_SIZE*37.30, FONT_SIZE*8.2), '+', TEXT_COLOR)
+
+        FONT.render_to(screen,                     (FONT_SIZE*15, FONT_SIZE*15), 'Input Volume|输入音量', TEXT_COLOR)
+        # volume bar
+        pygame.draw.rect(screen, BACKGROUND_COLOR, (FONT_SIZE*15, FONT_SIZE*17, FONT_SIZE*20,           FONT_SIZE*3))
+        pygame.draw.rect(screen, PASS_COLOR,       (FONT_SIZE*15, FONT_SIZE*17, FONT_SIZE*20*self.ivol, FONT_SIZE*3))
+        pygame.draw.rect(screen, TEXT_COLOR,       (FONT_SIZE*15, FONT_SIZE*17, FONT_SIZE*20,           FONT_SIZE*3), FONT_SIZE // 6)
+        # volume value
+        FONT.render_to(screen,                     (FONT_SIZE*24, FONT_SIZE*18), str(math.ceil(self.ivol*100)), TEXT_COLOR)
+        # - volume button
+        pygame.draw.rect(screen, BUTTON_COLOR, self.in_minus_rect)
+        FONT.render_to(screen,                     (FONT_SIZE*12.35, FONT_SIZE*18.4), '-', TEXT_COLOR)
+        # + volume button
+        pygame.draw.rect(screen, BUTTON_COLOR, self.in_plus_rect)
+        FONT.render_to(screen,                     (FONT_SIZE*37.30, FONT_SIZE*18.2), '+', TEXT_COLOR)
+
+        # close button
+        pygame.draw.rect(screen, BUTTON_COLOR, self.close_rect)
+        FONT.render_to(screen, (screen.get_width()-FONT_SIZE*2.7, FONT_SIZE*2.2), 'x', TEXT_COLOR)
+
+    def event(self, event):
+        if event.type == pygame.MOUSEBUTTONUP:
+            if pygame.Rect(self.close_rect).collidepoint(event.pos):
+                self.done = True
+                self.result = "none"
+            elif pygame.Rect(self.out_minus_rect).collidepoint(event.pos):
+                self.ovol -= 0.05
+            elif pygame.Rect(self.out_plus_rect).collidepoint(event.pos):
+                self.ovol += 0.05
+            elif pygame.Rect(self.in_minus_rect).collidepoint(event.pos):
+                self.ivol -= 0.05
+            elif pygame.Rect(self.in_plus_rect).collidepoint(event.pos):
+                self.ivol += 0.05
+
+            if self.ovol < 0: self.ovol = 0.0
+            if self.ovol > 1: self.ovol = 1.0
+            os.system(f'hwctl audio set-volume {int(self.ovol*100)}')
+
+            if self.ivol < 0: self.ivol = 0.0
+            if self.ivol > 1: self.ivol = 1.0
+            os.system(f'hwctl audio-input set-volume {int(self.ivol*100)}')
+
+
+class ExitAction(PlaceholderTest):
+    def __init__(self):
+        self.name = 'Exit|退出'
+        self.reset()
+
+    def start(self, screen, font):
+        self.reset()
+        exit()
+
+class PowerOffAction(PlaceholderTest):
+    def __init__(self):
+        self.name = 'Power off|关机'
+        self.reset()
+
+    def start(self, screen, font):
+        self.reset()
+        os.popen('poweroff')
+
+
+class SystemTest(PlaceholderTest):
+    def __init__(self):
+        self.name = 'System|系统'
+        self.reset()
+
+    def start(self, screen, font):
+        self.reset()
+
+        raw_data = os.popen('hwctl system-info').read()
+        data = json.loads(raw_data)
+
+        bios_vendor = os.popen('cat /sys/devices/virtual/dmi/id/bios_vendor').read().strip()
+        bios_release = os.popen('cat /sys/devices/virtual/dmi/id/bios_release').read().strip()
+        bios_version = os.popen('cat /sys/devices/virtual/dmi/id/bios_version').read().strip()
+        self.bios_text = f"BIOS: {bios_vendor} {bios_release} {bios_version}"
+        self.disk_text = f"Disk|存储: {math.ceil(data['storageDevices'][0]['totalMB'] / 1000)} GB"
+        self.ram_text = f"RAM|内存: {math.ceil((data['ramTotalMB'] + data['vramMB']) / 1000)} GB"
+        self.cpu_text = f"CPU|处理器: {data['cpuName']}"
+
+    def draw(self, screen, font):
+        FONT.render_to(screen, (FONT_SIZE, FONT_SIZE*1), self.bios_text, TEXT_COLOR)
+        FONT.render_to(screen, (FONT_SIZE, FONT_SIZE*3), self.disk_text, TEXT_COLOR)
+        FONT.render_to(screen, (FONT_SIZE, FONT_SIZE*5), self.ram_text, TEXT_COLOR)
+        FONT.render_to(screen, (FONT_SIZE, FONT_SIZE*7), self.cpu_text, TEXT_COLOR)
+
+
+
+@dataclass
+class Network:
+    signal: str
+    frequency: str
+    ssid: str
+
+class WifiTest(PlaceholderTest):
+    def __init__(self):
+        self.name = 'Wifi|无线Wi-Fi'
+        self.reset()
+
+    def start(self, screen, font):
+        self.reset()
+
+        self.networks = []
+        data = os.popen('nmcli --terse --fields SSID,SIGNAL,FREQ dev wifi list | grep -v "^:" | tail -n +2').read()
+        for line in data.split('\n'):
+            entry=line.split(':')
+            if len(entry) >= 3:
+                self.networks.append(Network(ssid=entry[0], signal=entry[1], frequency=entry[2]))
+
+    def draw(self, screen, font):
+        FONT.render_to(screen, (FONT_SIZE*1, FONT_SIZE*1), 'Signal|信号强度', TEXT_COLOR)
+        FONT.render_to(screen, (FONT_SIZE*12, FONT_SIZE*1), 'Frequency|频率', TEXT_COLOR)
+        FONT.render_to(screen, (FONT_SIZE*24, FONT_SIZE*1), 'SSID', TEXT_COLOR)
+
+        for i in range(len(self.networks)-1):
+            network = self.networks[i]
+            FONT.render_to(screen, (FONT_SIZE*1, FONT_SIZE*(i+2)*1.5), network.signal, TEXT_COLOR)
+            FONT.render_to(screen, (FONT_SIZE*12, FONT_SIZE*(i+2)*1.5), network.frequency, TEXT_COLOR)
+            FONT.render_to(screen, (FONT_SIZE*24, FONT_SIZE*(i+2)*1.5), network.ssid, TEXT_COLOR)
+
+
+class BluetoothTest(PlaceholderTest):
+    def __init__(self):
+        self.name = 'Bluetooth|蓝牙'
+        self.reset()
+
+    def start(self, screen, font):
+        self.reset()
+
+        self.devices = []
+        os.popen('bluetoothctl power off')
+        time.sleep(1)
+        os.popen('bluetoothctl power on')
+        time.sleep(1)
+        data = os.popen('bluetoothctl --timeout 10 scan on').read()
+        os.popen('bluetoothctl power off')
+        for line in data.split('\n'):
+            if 'NEW' not in line:
+                continue
+            entry=line.split(' ')
+            if len(entry) >= 4:
+                self.devices.append(' '.join(entry[3:]))
+
+    def draw(self, screen, font):
+        FONT.render_to(screen, (FONT_SIZE*1, FONT_SIZE*1), 'Bluetooth Devices|蓝牙设备', TEXT_COLOR)
+
+        for i in range(len(self.devices)):
+            device = self.devices[i]
+            FONT.render_to(screen, (FONT_SIZE*1, FONT_SIZE*(i+2)*1.5), device, TEXT_COLOR)
+
+
+class MicroSDTest(PlaceholderTest):
+    def __init__(self):
+        self.name = 'microSD'
+        self.reset()
+        self.start_time = None
+
+    def start(self, screen, font):
+        self.reset()
+        self.start_time = time.perf_counter()
+
+        self.devices = []
+        data = os.popen('lsblk --bytes --raw --output NAME,SIZE | grep "mmcblk0 "').read()
+        for line in data.split('\n'):
+            if not line:
+                continue
+            entry=line.split(' ')
+            size = math.ceil(int(entry[1]) / 1000 / 1000 / 1000)
+            self.devices.append(f' • {size}GB microSD card detected|检测到 {size}GB microSD 卡')
+
+        if len(self.devices) == 0:
+            self.devices.append('<No microSD card detected|未检测到 microSD 卡>')
+
+    def draw(self, screen, font):
+        if time.perf_counter() - self.start_time > 1:
+            self.start(screen, font)
+
+        FONT.render_to(screen, (FONT_SIZE*1, FONT_SIZE*1), 'microSD Cards|microSD 卡', TEXT_COLOR)
+
+        for i in range(len(self.devices)):
+            device = self.devices[i]
+            FONT.render_to(screen, (FONT_SIZE*1, FONT_SIZE*(i+2)*1.5), device, TEXT_COLOR)
+
+class USBTest(PlaceholderTest):
+    def __init__(self):
+        self.name = 'USB'
+        self.reset()
+        self.start_time = None
+
+    def start(self, screen, font):
+        self.reset()
+        self.start_time = time.perf_counter()
+
+        EXCLUDE_DEVICES = [
+            "", # for join formatting
+
+            # common built in devices
+            "1d6b:0002", # root hub
+            "1d6b:0003", # root hub
+
+            # Aya Neo 2/2S built in devices
+            "045e:028e",
+            "8087:0029",
+            "8087:0032",
+            "2541:0236",
+
+            # Aya Neo dock devices
+            "2109:2817",
+            "1a40:0801",
+            "2109:0817",
+            "0bda:8153",
+        ]
+
+        self.devices = []
+        data = os.popen('lsusb' + ' | grep -v '.join(EXCLUDE_DEVICES)).read()
+        for line in data.split('\n'):
+            if not line:
+                continue
+            entry=line.split(' ')
+            self.devices.append(' '.join(entry[5:]))
+
+        if len(self.devices) == 0:
+            self.devices.append('<No USB devices connected|没有连接 USB 设备>')
+
+    def draw(self, screen, font):
+        if time.perf_counter() - self.start_time > 1:
+            self.start(screen, font)
+
+        FONT.render_to(screen, (FONT_SIZE*1, FONT_SIZE*1), 'USB Devices|USB设备', TEXT_COLOR)
+
+        for i in range(len(self.devices)):
+            device = self.devices[i]
+            FONT.render_to(screen, (FONT_SIZE*1, FONT_SIZE*(i+2)*1.5), device, TEXT_COLOR)
+
+
+class ScreenBrightnessTest(PlaceholderTest):
+    def __init__(self):
+        self.name = 'Screen Brightness|屏幕亮度'
+        self.reset()
+        self.start_time = None
+        self.brightness = 100
+        self.duration_secs = 10
+
+    def set_brightness(self, value):
+        self.brightness = value
+        os.popen('pkexec hwctl display set-brightness ' + str(value))
+
+    def start(self, screen, font):
+        self.reset()
+        self.start_time = time.perf_counter()
+
+    def draw(self, screen, font):
+        if not self.start_time:
+            return
+        time_elapsed = time.perf_counter() - self.start_time
+        time_remaining = int(self.duration_secs - time_elapsed)
+        if time_remaining < 0:
+            time_remaining = 0
+            self.done = True
+            self.start_time = None
+
+        percent_done = int((time_elapsed / self.duration_secs) * 100.0)
+        if percent_done < 0:
+            percent_done = 0
+        elif percent_done > 100:
+            percent_done = 100
+        if self.brightness != percent_done:
+            self.set_brightness(percent_done)
+
+        font.render_to(screen, (screen.get_width()/2, screen.get_height()/6), str(time_remaining), TEXT_COLOR)
+
+
+class DisplayTest(PlaceholderTest):
+    def __init__(self):
+        self.name = 'Display|显示器'
+        self.reset()
+
+        GREEN=(0,255,0)
+        WHITE=(255,255,255)
+        GRAY=(128,128,128)
+        BLACK=(0,0,0)
+        RED=(255,0,0)
+        BLUE=(0,0,255)
+        YELLOW=(255,255,0)
+        CYAN=(0,255,255)
+        MAGENTA=(255,0,255)
+        self.states = [GREEN, WHITE, GRAY, BLACK, RED, GREEN, BLUE, YELLOW, CYAN, MAGENTA]
+
+    def start(self, screen, font):
+        self.reset()
+        self.state = 0
+
+    def draw(self, screen, font):
+        screen.fill(self.states[self.state])
+
+    def event(self, event):
+        if event.type == pygame.MOUSEBUTTONUP:
+            self.state += 1
+
+        if self.state > len(self.states) - 1:
+            self.done = True
+
+
+class SpeakersTest(PlaceholderTest):
+    def __init__(self):
+        self.name = 'Speakers|扬声器'
+        self.wav_file_name = '/tmp/test_record.wav'
+        self.msg_headphones_hint = 'Unplug headphones|拔下耳机'
+        self.reset()
+
+    def reset(self):
+        self.subprocess = None
+        self.done = False
+        self.result = None
+        self.start_time = None
+        self.audio_output_started = False
+        self.audio_input_started = False
+
+    def start(self, screen, font):
+        self.reset()
+        self.start_time = time.perf_counter()
+
+    def stop(self):
+        try:
+            os.remove(self.wav_file_name)
+        except:
+            print('File does not exist: ' + self.wav_file_name)
+
+        if self.subprocess:
+            try:
+                self.subprocess.kill()
+            except:
+                print('Failed to kill subprocess')
+
+    def audio_output(self):
+        self.subprocess = subprocess.Popen('speaker-test --channels 2 --nloops 2 --test wav', shell=True)
+
+    def audio_input_record(self):
+        # Record from the microphone for 6 seconds.
+        self.subprocess = subprocess.Popen('arecord -f cd -d 6 ' + self.wav_file_name, shell=True)
+
+    def audio_input_playback(self):
+        self.subprocess = subprocess.Popen('aplay ' + self.wav_file_name, shell=True)
+
+    def draw(self, screen, font):
+        elapsed_time = time.perf_counter() - self.start_time
+
+        # Start with the audio output test for the first 5.9 seconds (so the 5.7 seconds test completes).
+        if elapsed_time < 6:
+            FONT.render_to(screen, (FONT_SIZE*1, FONT_SIZE*1), 'Audio output|音频输出', TEXT_COLOR)
+            FONT.render_to(screen, (FONT_SIZE*1, FONT_SIZE*3), self.msg_headphones_hint, TEXT_COLOR)
+            FONT.render_to(screen, (FONT_SIZE*1, FONT_SIZE*5), 'Listen for audio now|现在收听音频', TEXT_COLOR)
+            if not self.audio_output_started:
+                self.audio_output_started = True
+                self.audio_output()
+        elif elapsed_time >= 6 and elapsed_time < 13:
+            FONT.render_to(screen, (FONT_SIZE*1, FONT_SIZE*1), 'Audio input|音频输入', TEXT_COLOR)
+            FONT.render_to(screen, (FONT_SIZE*1, FONT_SIZE*3), self.msg_headphones_hint, TEXT_COLOR)
+            FONT.render_to(screen, (FONT_SIZE*1, FONT_SIZE*5), 'Recording audio now|现在录音', TEXT_COLOR)
+            if not self.audio_input_started:
+                self.audio_input_started = True
+                self.audio_input_record()
+        elif elapsed_time >= 13 and elapsed_time <= 20:
+            FONT.render_to(screen, (FONT_SIZE*1, FONT_SIZE*1), 'Audio input|音频输入', TEXT_COLOR)
+            FONT.render_to(screen, (FONT_SIZE*1, FONT_SIZE*3), self.msg_headphones_hint, TEXT_COLOR)
+            FONT.render_to(screen, (FONT_SIZE*1, FONT_SIZE*5), 'Playback recording now|播放录音', TEXT_COLOR)
+            if self.audio_input_started:
+                self.audio_input_started = False
+                self.audio_input_playback()
+        else:
+            self.done = True
+
+
+class HeadphonesTest(SpeakersTest):
+    def __init__(self):
+        self.name = 'Headphones|耳机'
+        self.wav_file_name = '/tmp/test_record.wav'
+        self.msg_headphones_hint = 'Plug in headphones|插入耳机'
+        self.reset()
+
+
+class TouchscreenTest(PlaceholderTest):
+    def __init__(self):
+        self.name = 'Touchscreen|触摸'
+        self.reset()
+        self.start_time = None
+
+    def start(self, screen, font):
+        self.reset()
+        W = screen.get_width() / 13
+        H = screen.get_height() / 13
+        self.rects=[]
+        self.start_time = time.perf_counter()
+
+        for row in [0,3,6,9,12]:
+            for col in range(13):
+                self.rects.append(pygame.Rect(W*col,H*row,W,H))
+
+        for col in [0,3,9,12]:
+            for row in range(13):
+                self.rects.append(pygame.Rect(W*col,H*row,W,H))
+
+    def draw(self, screen, font):
+        if self.start_time:
+            time_remaining = int(31 - (time.perf_counter() - self.start_time))
+            if time_remaining < 0:
+                time_remaining = 0
+                self.result = 'fail'
+                self.done = True
+                self.start_time = None
+
+            font.render_to(screen, (screen.get_width()/2, screen.get_height()/6), str(time_remaining), TEXT_COLOR)
+
+        for rect in self.rects:
+            pygame.draw.rect(screen, PASS_COLOR, rect)
+            pygame.draw.rect(screen, BACKGROUND_COLOR, rect, 4)
+
+    def event(self, event):
+        pos = None
+        if event.type == pygame.MOUSEMOTION and pygame.mouse.get_pressed()[0] == True:
+            pos = event.pos
+        elif event.type == pygame.MOUSEBUTTONUP or event.type == pygame.MOUSEBUTTONDOWN:
+            pos = event.pos
+
+        if pos:
+            for i in range(len(self.rects)-1, -1, -1):
+                if self.rects[i].collidepoint(pos):
+                    del self.rects[i]
+
+        if len(self.rects) == 0:
+            self.done = True
+
+
+
+
+TEST_SECONDS=8*60*60 # 8 hours
+BUFFER_TIME=10
+CPU_LOG='/tmp/cpu+ram.log'
+class StressTest(PlaceholderTest):
+    def __init__(self):
+        self.name = 'Stress Test|压力测试'
+        self.reset()
+        self.start_time = None
+        self.cancel_rect = pygame.Rect(FONT_SIZE*14, FONT_SIZE*22, FONT_SIZE*16, FONT_SIZE*3)
+
+    def start(self, screen, font):
+        self.reset()
+        self.start_time = time.perf_counter()
+        self.last_check = time.perf_counter()
+        self.stress_time = None
+
+        os.popen('busctl set-property org.shadowblip.PowerStation /org/shadowblip/Performance/GPU/card0 org.shadowblip.GPU.Card.TDP Boost "d" 0')
+        os.popen('busctl set-property org.shadowblip.PowerStation /org/shadowblip/Performance/GPU/card0 org.shadowblip.GPU.Card.TDP TDP "d" 28')
+
+        try:
+            os.remove(CPU_LOG)
+        except:
+            pass
+
+        os.popen(f'/usr/libexec/playtron/stress-test-cpu+ram {CPU_LOG} {TEST_SECONDS}')
+        os.popen('/usr/libexec/playtron/stress-test-gpu')
+        os.popen('/usr/libexec/playtron/stress-test-disk')
+        os.popen('/usr/libexec/playtron/stress-test-speaker')
+
+    def stop(self):
+        os.popen('killall stress-test-cpu+ram')
+        os.popen('killall stress-test-gpu')
+        os.popen('killall stress-test-disk')
+        os.popen('killall stress-test-speaker')
+
+    def check_running(self):
+        # bail immediately if cpu log file failed to be created
+        cpu_log = Path(CPU_LOG)
+        if not cpu_log.is_file():
+            self.stress_time = -1
+
+        result = os.system('ps -ax | grep stress-test-cpu+ram | grep -v grep &> /dev/null')
+        if result != 0:
+            self.stress_time = time.perf_counter() - self.start_time
+
+    def is_run_successful(self):
+        result = os.system(f'grep "failed: 0" {CPU_LOG} &> /dev/null')
+        if result != 0:
+            return False
+
+        result = os.system(f'grep "successful run completed" {CPU_LOG} &> /dev/null')
+        if result != 0:
+            return False
+
+        if not self.stress_time or self.stress_time < TEST_SECONDS - BUFFER_TIME:
+            return False
+
+        return True
+
+    def draw(self, screen, font):
+        if self.start_time == None:
+            return
+
+        # check status of processes every BUFFER_TIME seconds
+        if time.perf_counter() - self.last_check > BUFFER_TIME:
+            self.check_running()
+            self.last_check = time.perf_counter()
+
+        time_remaining = int(TEST_SECONDS - (time.perf_counter() - self.start_time))
+
+        # add a buffer to ensure the stress test has completed and logs were written
+        if time_remaining < -BUFFER_TIME or self.stress_time != None:
+            self.stop()
+            time.sleep(5)
+            self.check_running()
+
+            if self.is_run_successful():
+                self.result = 'pass'
+            else:
+                self.result = 'fail'
+
+            self.start_time = None
+            self.done = True
+
+        if time_remaining < 0:
+            time_remaining = 0
+
+        font.render_to(screen, (FONT_SIZE * 2, FONT_SIZE * 2), 'Stress test in progress|压力测试正在进行中...', TEXT_COLOR)
+        font.render_to(screen, (FONT_SIZE * 2, FONT_SIZE * 4), 'CPU|处理器', TEXT_COLOR)
+        font.render_to(screen, (FONT_SIZE * 2, FONT_SIZE * 6), 'RAM|内存', TEXT_COLOR)
+        font.render_to(screen, (FONT_SIZE * 2, FONT_SIZE * 8), 'GPU|图形处理器', TEXT_COLOR)
+        font.render_to(screen, (FONT_SIZE * 2, FONT_SIZE * 10), 'Disk|存储', TEXT_COLOR)
+        font.render_to(screen, (FONT_SIZE * 2, FONT_SIZE * 12), 'Speakers|演讲嘉宾', TEXT_COLOR)
+        font.render_to(screen, (FONT_SIZE * 2, FONT_SIZE * 16), 'Time remaining|剩余时间： ' + str(datetime.timedelta(seconds=time_remaining)), TEXT_COLOR)
+
+        pygame.draw.rect(screen, BUTTON_COLOR, self.cancel_rect)
+        font.render_to(screen, (self.cancel_rect.x+FONT_SIZE, self.cancel_rect.y+FONT_SIZE), 'Cancel|取消', TEXT_COLOR)
+
+    def event(self, event):
+        if event.type == pygame.MOUSEBUTTONUP:
+            if pygame.Rect(self.cancel_rect).collidepoint(event.pos):
+                self.stress_time = -1
+
+
+BAUD_RATE = 115200
+DEVICE = "/dev/ttyS2"
+DATA = b'\xE7\x00\x00\x22\x02\x00\x00\x00\x0F\x33\xED'
+EXPECTED_RESPONSE = b'\xE7\x55\xAA\x01\xED'
+class SerialTest(PlaceholderTest):
+    def __init__(self):
+        self.name = 'Serial Test|串行端口'
+        self.reset()
+        self.start_time = None
+
+    def start(self, screen, font):
+        self.reset()
+        self.start_time = time.perf_counter()
+
+        # Configure the serial port
+        cmd = "stty -F {device} {baud_rate}".format(device=DEVICE, baud_rate=BAUD_RATE)
+        if os.system(cmd) != 0:
+            self.result = "fail"
+            return
+        cmd = "stty -F {device} raw".format(device=DEVICE)
+        if os.system(cmd) != 0:
+            self.result = "fail"
+            return
+
+        # Open the serial interface
+        reader = open(DEVICE, "rb")
+
+        # Write a payload. Writing the payload multiple times is required for
+        # older AYANEO 2S devices, which will only reply after a certain
+        # number of requests.
+        for _ in range(10):
+            writer = open(DEVICE, "wb")
+            writer.write(DATA)
+            writer.close()
+            time.sleep(0.1)
+
+        # Read the response. Look for the header byte in the response to see
+        # if the request was successful.
+        for _ in range(10):
+            header = reader.read(1)
+            if header != b'\xE7':
+                continue
+            response = header + reader.read(4)
+            if len(response) != 5:
+                self.result = "fail"
+                break
+
+            # Byte 3 is the version, which can vary depending on model
+            if response[0] == EXPECTED_RESPONSE[0] and \
+               response[1] == EXPECTED_RESPONSE[1] and \
+               response[2] == EXPECTED_RESPONSE[2] and \
+               response[4] == EXPECTED_RESPONSE[4]:
+                self.result = "pass"
+            else:
+                self.result = "fail"
+            break
+
+        reader.close()
+
+    def draw(self, screen, font):
+        if self.start_time is None:
+            return
+        text = "Failed|失败的"
+        if self.result == "pass":
+            text = "Success|成功"
+        font.render_to(screen, (FONT_SIZE * 2, FONT_SIZE * 2), text, TEXT_COLOR)
+
+
+
+
+DEFAULT_OUTPUT_VOLUME = 100
+DEFAULT_INPUT_VOLUME = 60
+
+@dataclass
+class Test:
+    test: object
+    rect: pygame.Rect
+
+TILE_W = screen.get_width() / 3
+TILE_H = screen.get_height() / 7
+tests = [
+    Test(test=SystemTest(),    rect=pygame.Rect(TILE_W*0, TILE_H*0, TILE_W, TILE_H)),
+    Test(test=WifiTest(),      rect=pygame.Rect(TILE_W*1, TILE_H*0, TILE_W, TILE_H)),
+    Test(test=BluetoothTest(), rect=pygame.Rect(TILE_W*2, TILE_H*0, TILE_W, TILE_H)),
+
+    Test(test=InputTest(),   rect=pygame.Rect(TILE_W*0, TILE_H*1, TILE_W, TILE_H)),
+    Test(test=SerialTest(),  rect=pygame.Rect(TILE_W*1, TILE_H*1, TILE_W, TILE_H)),
+    Test(test=BatteryTest(), rect=pygame.Rect(TILE_W*2, TILE_H*1, TILE_W, TILE_H)),
+
+    Test(test=ScreenBrightnessTest(), rect=pygame.Rect(TILE_W*0, TILE_H*2, TILE_W, TILE_H)),
+    Test(test=DisplayTest(),          rect=pygame.Rect(TILE_W*1, TILE_H*2, TILE_W, TILE_H)),
+    Test(test=MicroSDTest(),          rect=pygame.Rect(TILE_W*2, TILE_H*2, TILE_W, TILE_H)),
+
+    Test(test=USBTest(),        rect=pygame.Rect(TILE_W*0, TILE_H*3, TILE_W, TILE_H)),
+    Test(test=SpeakersTest(),   rect=pygame.Rect(TILE_W*1, TILE_H*3, TILE_W, TILE_H)),
+    Test(test=HeadphonesTest(), rect=pygame.Rect(TILE_W*2, TILE_H*3, TILE_W, TILE_H)),
+
+    Test(test=TouchscreenTest(),     rect=pygame.Rect(TILE_W*0, TILE_H*4, TILE_W, TILE_H)),
+    Test(test=ExternalDisplayTest(), rect=pygame.Rect(TILE_W*1, TILE_H*4, TILE_W, TILE_H)),
+    Test(test=StressTest(),          rect=pygame.Rect(TILE_W*2, TILE_H*4, TILE_W, TILE_H)),
+
+
+    Test(test=VolumeSetting(DEFAULT_OUTPUT_VOLUME, DEFAULT_INPUT_VOLUME),
+                                rect=pygame.Rect(TILE_W*0, TILE_H*6, TILE_W, TILE_H)),
+    Test(test=ExitAction(),     rect=pygame.Rect(TILE_W*1, TILE_H*6, TILE_W, TILE_H)),
+    Test(test=PowerOffAction(), rect=pygame.Rect(TILE_W*2, TILE_H*6, TILE_W, TILE_H)),
+]
+
+# set default input device to noise filtered virtual device
+os.system('systemctl --user start pipewire-rnnoise-switch')
+
+# set default volume levels
+os.system(f'hwctl audio set-volume {DEFAULT_OUTPUT_VOLUME}')
+os.system(f'hwctl audio-input set-volume {DEFAULT_INPUT_VOLUME}')
+
+active_test = None
+
+def draw_main_screen():
+    for test in tests:
+        color = BUTTON_COLOR
+        if test.test.result == 'pass':
+            color = PASS_COLOR
+        if test.test.result == 'fail':
+            color = FAIL_COLOR
+        pygame.draw.rect(screen, color, test.rect)
+        pygame.draw.rect(screen, BACKGROUND_COLOR, test.rect, FONT_SIZE // 2)
+        FONT.render_to(screen, (test.rect.x+FONT_SIZE, test.rect.y+TILE_H/2-FONT_SIZE/2), test.test.name, TEXT_COLOR)
+
+
+def handle_main_events(event):
+    global active_test
+    if event.type == pygame.MOUSEBUTTONUP:
+        for test in tests:
+            if test.rect.collidepoint(event.pos):
+                # give immediate feedback for click
+                screen.fill(BACKGROUND_COLOR)
+                pygame.display.flip()
+
+                # start the test
+                active_test = test.test
+                active_test.start(screen, FONT)
+
+
+
+pass_rect = pygame.Rect(FONT_SIZE*10, FONT_SIZE*12, FONT_SIZE*16, FONT_SIZE*3)
+fail_rect = pygame.Rect(FONT_SIZE*27, FONT_SIZE*12, FONT_SIZE*16, FONT_SIZE*3)
+def draw_result_screen():
+    pygame.draw.rect(screen, PASS_COLOR, pass_rect)
+    FONT.render_to(screen, (pass_rect.x+FONT_SIZE, pass_rect.y+FONT_SIZE), 'Passed|通过', TEXT_COLOR)
+
+    pygame.draw.rect(screen, FAIL_COLOR, fail_rect)
+    FONT.render_to(screen, (fail_rect.x+FONT_SIZE, fail_rect.y+FONT_SIZE), 'Failed|失败', TEXT_COLOR)
+
+def handle_result_events(event):
+    global active_test
+    if event.type == pygame.MOUSEBUTTONUP:
+        if pygame.Rect(pass_rect).collidepoint(event.pos):
+            active_test.result = 'pass'
+            active_test.stop()
+            active_test = None
+        if pygame.Rect(fail_rect).collidepoint(event.pos):
+            active_test.result = 'fail'
+            active_test.stop()
+            active_test = None
+
+
+
+running = True
+while running:
+    screen.fill(BACKGROUND_COLOR)
+
+    needs_result = active_test and active_test.done and not active_test.result
+
+    if active_test and active_test.done and active_test.result:
+        active_test = None
+
+    if needs_result:
+        draw_result_screen()
+    elif active_test:
+        active_test.draw(screen, FONT)
+    else:
+        draw_main_screen()
+
+    try:
+        events = pygame.event.get()
+    except:
+        events = []
+
+    for event in events:
+        if event.type == pygame.QUIT:
+            running = False
+        elif needs_result:
+            handle_result_events(event)
+        elif active_test:
+            active_test.event(event)
+        else:
+            handle_main_events(event)
+
+    pygame.display.flip()
+
+pygame.quit()

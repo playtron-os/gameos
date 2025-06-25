@@ -1,0 +1,102 @@
+#! /bin/bash
+
+if [ $EUID -ne 0 ]; then
+        echo "$(basename $0) must be run as root"
+        exit 1
+fi
+
+if [[ "$@" == *"--preserve-user-files"* ]]; then
+	PRESERVE_USER_FILES=1
+	PRESERVE_USER_FILES_OPT="--preserve-user-files"
+fi
+
+if [[ "$@" == *"--install-sentinel"* ]]; then
+	# Do not perform the factory reset, but setup to do it when the session ends,
+	# then grid will shut itself down to end the session and trigger the actual factory reset.
+	#
+	# We want to make sure nothing else is running in order to prevent applications
+	# from writing files to the filesystem again.
+
+	echo $PRESERVE_USER_FILES_OPT > /tmp/playtron-factory-reset-sentinel
+	exit 0
+fi
+
+
+echo "Shutting down services..."
+
+# make sure playserve is not running so that it does not write any files while we are performing the factory reset
+systemctl --user --machine=playtron@ stop playserve
+
+if [ -n "$PRESERVE_USER_FILES" ]; then
+	echo "Performing partial factory reset..."
+else
+	echo "Performing full factory reset..."
+fi
+
+shopt -s extglob
+
+function reset_etc {
+	dir=$1
+	if [ -z "$dir" ]; then
+		return 1
+	fi
+
+	rm -rf /etc/$dir/{,.}*
+
+	if [ -n "$(ls -A /usr/etc/$dir)" ]; then
+		# there are files to copy
+		rsync -aHX /usr/etc/$dir/* /etc/$dir
+	fi
+}
+
+# change cwd to a directory that won't be deleted
+cd /
+
+# clear all package changes
+rpm-ostree reset &> /dev/null
+# ensure that a local container is not being used
+if ! bootc status --format json | jq .status.booted.image.image.image | grep -P "^\"ghcr.io/playtron-os/playtron-os"; then
+	if bootc status --format json | jq .status.rollback.image.image.image | grep -P "^\"ghcr.io/playtron-os/playtron-os"; then
+		bootc rollback
+	fi
+fi
+
+# backup network settings for potential restoration later (they are considered user files)
+rsync -aHX /etc/NetworkManager /tmp/
+
+# TODO: reset all of /etc
+# reset some key files in /etc
+reset_etc NetworkManager
+reset_etc systemd
+reset_etc sddm
+reset_etc sddm.conf.d
+reset_etc ssh
+reset_etc xdg
+rsync -aHX /usr/etc/gai.conf /etc/gai.conf
+rsync -aHX /usr/etc/sddm.conf /etc/sddm.conf
+
+# reset playtron password
+echo 'playtron:playtron' | chpasswd
+
+# clean /var, keep "home"
+rm -rf /var/!("home")
+rm -rf /var/.*
+
+# delete swap file and any added users or files in /home, keep "playtron"
+swapoff -a
+rm -rf /home/!("playtron")
+rm -rf /home/.*
+
+if [ -n "$PRESERVE_USER_FILES" ]; then
+	# preserving user files, restore network settings
+	rsync -aHX /tmp/NetworkManager /etc/
+else
+	# not preserving user files, delete home directory contents
+	rm -rf /home/playtron/{,.}*
+fi
+
+echo "Syncing filesystem..."
+sync
+
+echo "Factory reset complete, rebooting..."
+systemctl reboot

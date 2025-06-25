@@ -1,0 +1,5 @@
+# Add the product name as an environment variable to any ttyS2 device
+KERNEL=="ttyS2", SUBSYSTEM=="tty", IMPORT{program}="/usr/bin/sh -c 'echo -n ID_PRODUCT_NAME= && cat /sys/class/dmi/id/product_name'"
+
+# Apply permissions to the serial interface if this is a valid SuiPlay0X1 device
+KERNEL=="ttyS2", SUBSYSTEM=="tty", ENV{ID_PRODUCT_NAME}=="SuiPlay0X1", TAG+="uaccess"

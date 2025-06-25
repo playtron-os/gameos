@@ -1,0 +1,5 @@
+polkit.addRule(function(action, subject) {
+    if (action.id == "org.freedesktop.policykit.exec" && subject.isInGroup("wheel") && action.lookup("program") == "/usr/bin/hwctl") {
+        return polkit.Result.YES;
+    }
+});

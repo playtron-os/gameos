@@ -250,3 +250,9 @@ tasks:
         msg: "A value for TAG must be provided"
     cmds:
       - podman run -it ${IMAGE}:${TAG} rpm -qa | sort -u > playtron-os-${TAG}.pkg-list.versioned.txt
+
+  test:
+    desc: Run all tests
+    dir: tests
+    cmds:
+      - ./run.sh

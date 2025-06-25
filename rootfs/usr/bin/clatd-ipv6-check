@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Only start the 'clatd' service if there is a default route for IPv6 and not IPv4.
+if ! ip route | grep -P "^default"
+    then if ip -6 route | grep -P "^default"
+        then systemctl start clatd
+    else
+        echo "No IPv4 or IPv6 default route found."
+        exit 1
+    fi
+fi

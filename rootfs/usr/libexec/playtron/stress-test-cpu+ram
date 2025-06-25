@@ -1,0 +1,5 @@
+#!/usr/bin/bash
+
+trap "killall stress-ng" EXIT
+
+stress-ng --vm 1 --vm-bytes 80% --vm-method all --cpu 0 --verify --timeout ${2}s &> ${1}

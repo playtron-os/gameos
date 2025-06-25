@@ -1,0 +1,4 @@
+# MSI Devices
+evdev:name:AT Translated Set 2 keyboard:dmi:*:pnClaw*:*
+  KEYBOARD_KEY_b9=f15 # Guide
+  KEYBOARD_KEY_ba=f16 # Quick Access
