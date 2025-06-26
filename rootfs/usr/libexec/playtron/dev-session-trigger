@@ -1,0 +1,53 @@
+#!/usr/bin/env python3
+
+import os
+import dbus
+from gi.repository import GLib
+from dbus.mainloop.glib import DBusGMainLoop
+
+state = {
+        'ui_action': 0.0,
+        'ui_r1': 0.0,
+        'ui_l1': 0.0,
+        'ui_l3': 0.0,
+}
+
+loop = GLib.MainLoop()
+result = 1
+
+
+def check_exit():
+    if os.path.exists(os.path.join(os.environ.get('HOME'), '.local/share/playtron/tools')):
+        loop.quit()
+    else:
+        GLib.timeout_add_seconds(30, check_exit)
+
+
+def signal_handler(*args, **kwargs):
+    global loop, result
+
+    if len(args) < 2:
+        return
+
+    button = args[0]
+    new_state = args[1]
+    if button in state.keys():
+        state[button] = new_state
+
+    if state['ui_action'] and state['ui_r1'] and state['ui_l1'] and state['ui_l3']:
+        print('Combo detected, switching to dev session')
+        os.system('pkexec playtronos-session-select dev --no-switch')
+        os.system('reboot')
+        result = 0
+        loop.quit()
+
+
+
+DBusGMainLoop(set_as_default=True)
+bus = dbus.SystemBus()
+bus.add_signal_receiver(signal_handler, bus_name='org.shadowblip.InputPlumber')
+
+check_exit()
+
+loop.run()
+exit(result)

@@ -1,0 +1,12 @@
+#! /bin/bash
+
+# the dev session switch is a one time thing, immediately
+# revert to the default/user session for next boot
+pkexec playtronos-session-select user --no-switch
+
+SYS_ID="$(cat /sys/devices/virtual/dmi/id/product_name)"
+if [[ ":AYANEO 2S:SuiPlay0X1:" =~ ":$SYS_ID:"  ]]; then
+	weston --config=/etc/xdg/weston/weston-rotated.ini
+else
+	weston
+fi

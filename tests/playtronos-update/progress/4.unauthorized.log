@@ -1,0 +1,2 @@
+Pulling manifest: ostree-unverified-registry:registry.playtron.one/internal/playtronos:0.19.0.20
+error: Creating importer: Failed to invoke skopeo proxy method OpenImage: remote error: reading manifest 0.19.0.20 in registry.playtron.one/internal/playtronos: unauthorized: unauthorized to access repository: internal/playtronos, action: pull: unauthorized to access repository: internal/playtronos, action: pull

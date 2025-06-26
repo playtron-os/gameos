@@ -1,0 +1,11 @@
+#!/usr/bin/bash
+
+TMP_FILE=/var/home/playtron/stress-test-disk.dat
+
+trap "killall dd; rm -f $TMP_FILE" EXIT
+
+while true; do
+	rm -f $TMP_FILE
+	dd if=/dev/urandom of=$TMP_FILE count=40000 bs=10M oflag=direct
+	rm -f $TMP_FILE
+done

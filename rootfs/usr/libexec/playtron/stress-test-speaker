@@ -1,0 +1,9 @@
+#!/usr/bin/bash
+
+
+trap "killall ffplay" EXIT
+
+while true; do
+	# Public Domain audio clip obtained from https://freepd.com/comedy.php (Comic Game Loop - Mischief)
+        ffplay -nodisp -loop 0 -volume 90 /usr/share/playtron/test_audio.mp3
+done

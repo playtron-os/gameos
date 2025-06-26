@@ -30,14 +30,22 @@ RUN ${CMD_INSTALL} \
   btop \
   cabextract \
   cirrus-audio-firmware \
+  clatd \
+  cloud-utils-growpart \
   crudini \
   dbus-daemon \
   distrobox \
   dracut-config-generic \
   evtest \
+  ffmpeg-free \
+  fio \
+  fio-engine-libaio \
   flatpak \
+  foot \
+  fwupd \
   gamescope-session-playtron \
   glibc-langpack-en \
+  google-noto-sans-mono-cjk-vf-fonts \
   gstreamer1-plugins-good \
   htop \
   inputplumber \
@@ -46,6 +54,7 @@ RUN ${CMD_INSTALL} \
   iwlegacy-firmware \
   iwlwifi-dvm-firmware \
   iwlwifi-mvm-firmware \
+  ladspa-noise-suppression-for-voice \
   langpacks-en \
   legendary \
   libpact \
@@ -61,23 +70,28 @@ RUN ${CMD_INSTALL} \
   nxpwireless-firmware \
   ostree-grub2 \
   p7zip-plugins \
+  parted \
   pipewire \
   pipewire-alsa \
   pipewire-gstreamer \
   pipewire-pulseaudio \
   pipewire-utils \
   playserve \
-  playtron-os-files \
   playtron-plugin-local \
   playview \
   plymouth \
   plymouth-theme-spinner \
   powerstation \
   powertop \
+  python3-pygame \
+  python3-dbus \
+  python3-gobject \
   realtek-firmware \
+  rsync \
   sddm \
   steam.i686 \
   SteamBus \
+  stress-ng \
   switcheroo-control \
   thermald \
   time \
@@ -88,10 +102,12 @@ RUN ${CMD_INSTALL} \
   udisks2 \
   unrar \
   unzip \
+  upower \
   usbutils \
   usb_modeswitch \
   valve-firmware \
   vim \
+  vkmark \
   webkit2gtk4.1 \
   weston-session \
   wget \
@@ -101,7 +117,8 @@ RUN ${CMD_INSTALL} \
   xdg-utils \
   xorg-x11-server-Xvfb \
   xwininfo \
-  zenity
+  zenity \
+  zram-generator
 
 # Install Nvidia driver
 RUN ${CMD_INSTALL} \
@@ -124,17 +141,186 @@ RUN cp -r /etc/pam.d /etc/pam.d.bak; sed -i -r 's/^(session\s+required\s+pam_lim
   rm -rf /run/akmods; \
   rm -rf /etc/pam.d; mv /etc/pam.d.bak /etc/pam.d;
 
-# Copy/override files
-COPY rootfs/etc/hostname /etc/
-COPY rootfs/usr/lib/bootupd/grub2-static/grub-static-post.cfg /usr/lib/bootupd/grub2-static/
-## Fix OS updates failing to extract due to bad locale setting
-COPY rootfs/etc/locale.conf /etc/
-COPY rootfs/etc/bluetooth/main.conf /etc/bluetooth/
-COPY rootfs/usr/lib/os-release-playtron /usr/lib/
-COPY rootfs/usr/share/plymouth/themes/spinner/watermark.png /usr/share/plymouth/themes/spinner/
-COPY rootfs/usr/lib/bootc/kargs.d/50-playtron.toml /usr/lib/bootc/kargs.d/
-## Fix audio crackling on the Steam Deck OLED by using a slower polling rate
-COPY rootfs/usr/share/pipewire/pipewire-pulse.conf /usr/share/pipewire/
+
+#################### Begin Copy OS Files
+
+# Fix Xbox controller pairing
+COPY rootfs/etc/bluetooth/main.conf							/etc/bluetooth/
+
+# Deprioritize IPv6 to address Steam client issues where it is hard-coded to use IPv4
+# See: https://github.com/ValveSoftware/steam-for-linux/issues/3372
+COPY rootfs/etc/gai.conf								/etc/
+
+# Set default hostname
+COPY rootfs/etc/hostname								/etc/
+
+# Fix OS updates failing to extract due to bad locale setting
+COPY rootfs/etc/locale.conf								/etc/
+
+# Increase the open file limit for user processes to 524288
+COPY rootfs/etc/security/limits.d/50-playtron.conf					/etc/security/limits.d/
+
+# Default dev session configuration
+COPY rootfs/etc/xdg/weston/weston.ini							/etc/xdg/weston/
+
+# Default dev session configuration (with screen rotation)
+COPY rootfs/etc/xdg/weston/weston-rotated.ini						/etc/xdg/weston/
+
+# Package repositories
+COPY rootfs/etc/yum.repos.d/audinux.repo						/etc/yum.repos.d/
+COPY rootfs/etc/yum.repos.d/fedora.repo							/etc/yum.repos.d/
+COPY rootfs/etc/yum.repos.d/fedora-updates-archive.repo					/etc/yum.repos.d/
+COPY rootfs/etc/yum.repos.d/fedora-updates.repo						/etc/yum.repos.d/
+COPY rootfs/etc/yum.repos.d/inputplumber-x86_64.repo					/etc/yum.repos.d/
+COPY rootfs/etc/yum.repos.d/negativo17-fedora-nvidia.repo				/etc/yum.repos.d/
+COPY rootfs/etc/yum.repos.d/nobara-41-i386.repo						/etc/yum.repos.d/
+COPY rootfs/etc/yum.repos.d/nobara-41-x86_64.repo					/etc/yum.repos.d/
+COPY rootfs/etc/yum.repos.d/playtron-app-x86_64.repo					/etc/yum.repos.d/
+COPY rootfs/etc/yum.repos.d/playtron-gaming-i386.repo					/etc/yum.repos.d/
+COPY rootfs/etc/yum.repos.d/playtron-gaming-x86_64.repo					/etc/yum.repos.d/
+COPY rootfs/etc/yum.repos.d/rpmfusion-nonfree-steam.repo				/etc/yum.repos.d/
+
+# Check if only IPv6 is used (no IPv4) and then start clatd for 464XLAT support
+COPY rootfs/usr/bin/clatd-ipv6-check							/usr/bin/
+
+# A Bash script to manage audio, battery, display, storage, and system information
+COPY rootfs/usr/bin/hwctl								/usr/bin/
+
+# A script to factory reset the system
+COPY rootfs/usr/bin/playtron-factory-reset						/usr/bin/
+
+# Session switching script
+COPY rootfs/usr/bin/playtronos-session-select						/usr/bin/
+
+# Generates a system report archive useful for reporting bugs and troubleshooting
+COPY rootfs/usr/bin/playtronos-systemreport						/usr/bin/
+
+# OS update script called by playserve
+COPY rootfs/usr/bin/playtronos-update							/usr/bin/
+
+# Custom weston session script which:
+#  - dynamically changes configuration to correct orientation on specific devices
+#  - ensures the dev session switch is non-permanent by immediately resetting the configuration to the user session
+COPY rootfs/usr/bin/playtron-weston							/usr/bin/
+
+# A script to resize the root file system to use all available space
+# Assumes the file system is Btrfs
+COPY rootfs/usr/bin/resize-root-file-system.sh						/usr/bin/
+
+# Default kernel arguments
+COPY rootfs/usr/lib/bootc/kargs.d/50-playtron.toml					/usr/lib/bootc/kargs.d/
+
+# Configuration additions to hide grub at boot
+COPY rootfs/usr/lib/bootupd/grub2-static/grub-static-post.cfg				/usr/lib/bootupd/grub2-static/
+
+# A script run during FTUE that listens for a key combo to switch to the dev session
+COPY rootfs/usr/libexec/playtron/dev-session-trigger					/usr/libexec/playtron/
+
+# Hardware testing tool and related scripts
+COPY rootfs/usr/libexec/playtron/hardware-test-tool					/usr/libexec/playtron/
+COPY rootfs/usr/libexec/playtron/stress-test-cpu+ram					/usr/libexec/playtron/
+COPY rootfs/usr/libexec/playtron/stress-test-disk					/usr/libexec/playtron/
+COPY rootfs/usr/libexec/playtron/stress-test-gpu					/usr/libexec/playtron/
+COPY rootfs/usr/libexec/playtron/stress-test-speaker					/usr/libexec/playtron/
+
+# Default kernel module options
+COPY rootfs/usr/lib/modprobe.d/50-playtron.conf						/usr/lib/modprobe.d/
+
+# Load controller drivers
+COPY rootfs/usr/lib/modules-load.d/controllers.conf					/usr/lib/modules-load.d/
+
+# Disable random MAC address generation to fix Wi-Fi connections with some routers
+COPY rootfs/usr/lib/NetworkManager/conf.d/50-playtron.conf				/usr/lib/NetworkManager/conf.d/
+
+# A file containing OS version information
+# Automatically generated at build time
+COPY rootfs/usr/lib/os-release-playtron							/usr/lib/
+
+# Autologin to playtron session
+COPY rootfs/usr/lib/sddm/sddm.conf.d/55-playtron.conf					/usr/lib/sddm/sddm.conf.d/
+
+# Increase the open file limit for the kernel to 524288
+# Increase the mapped memory limit to 16777216
+# Configure optimal swap settings for zram
+COPY rootfs/usr/lib/sysctl.d/50-playtron.conf						/usr/lib/sysctl.d/
+
+# Configure the power button
+COPY rootfs/usr/lib/systemd/logind.conf.d/00-playtron-power.conf			/usr/lib/systemd/logind.conf.d/
+
+# A systemd service file to run the `clatd-ipv6-check` script
+COPY rootfs/usr/lib/systemd/system/clatd-ipv6-check.service				/usr/lib/systemd/system/
+
+# Enable default system services
+COPY rootfs/usr/lib/systemd/system-preset/50-playtron.preset				/usr/lib/systemd/system-preset/
+
+# A systemd service file to run the `resize-root-file-system.sh` script once and then disable itself so the service does not run again
+COPY rootfs/usr/lib/systemd/system/resize-root-file-system.service			/usr/lib/systemd/system/
+
+# Disable Bluetooth and Wi-Fi on sleep and re-active when powered back on
+COPY rootfs/usr/lib/systemd/system/sleep-rfkill.service					/usr/lib/systemd/system/
+
+# Switch the audio input to use the RNNoise filter
+COPY rootfs/usr/lib/systemd/user/pipewire-rnnoise-switch.service			/usr/lib/systemd/user/
+
+# Enable default user services
+COPY rootfs/usr/lib/systemd/user-preset/50-playtron.preset				/usr/lib/systemd/user-preset/
+
+# Zram configuration
+COPY rootfs/usr/lib/systemd/zram-generator.conf						/usr/lib/systemd/
+
+# Device specific scan code mappings for keyboard events
+COPY rootfs/usr/lib/udev/hwdb.d/59-msi.hwdb						/usr/lib/udev/hwdb.d/
+COPY rootfs/usr/lib/udev/hwdb.d/59-sui.hwdb						/usr/lib/udev/hwdb.d/
+
+# Allow communication with serial devices
+COPY rootfs/usr/lib/udev/rules.d/50-ayaneo2s.rules					/usr/lib/udev/rules.d/
+COPY rootfs/usr/lib/udev/rules.d/50-suiplay0x1.rules					/usr/lib/udev/rules.d/
+
+# Use the Kyber I/O scheduler for NVMe drives
+COPY rootfs/usr/lib/udev/rules.d/50-block-scheduler.rules				/usr/lib/udev/rules.d/
+
+# InputPlumber configuration
+COPY rootfs/usr/share/inputplumber/capability_maps/playtron_ayaneo_type7.yaml		/usr/share/inputplumber/capability_maps/
+COPY rootfs/usr/share/inputplumber/devices/24-playtron-ayaneo_2s_v2.yaml		/usr/share/inputplumber/devices/
+COPY rootfs/usr/share/inputplumber/devices/24-playtron-suiplay0x1_v2.yaml		/usr/share/inputplumber/devices/
+COPY rootfs/usr/share/inputplumber/devices/25-playtron-ayaneo_2s.yaml			/usr/share/inputplumber/devices/
+COPY rootfs/usr/share/inputplumber/devices/25-playtron-ayaneo_2.yaml			/usr/share/inputplumber/devices/
+COPY rootfs/usr/share/inputplumber/devices/25-playtron-legion_go.yaml			/usr/share/inputplumber/devices/
+COPY rootfs/usr/share/inputplumber/devices/25-playtron-msi_claw7_a2vm.yaml		/usr/share/inputplumber/devices/
+COPY rootfs/usr/share/inputplumber/devices/25-playtron-msi_claw8_a2vm.yaml		/usr/share/inputplumber/devices/
+COPY rootfs/usr/share/inputplumber/devices/25-playtron-msi_claw_a1m.yaml		/usr/share/inputplumber/devices/
+COPY rootfs/usr/share/inputplumber/devices/25-playtron-rog_ally_x.yaml			/usr/share/inputplumber/devices/
+COPY rootfs/usr/share/inputplumber/devices/25-playtron-rog_ally.yaml			/usr/share/inputplumber/devices/
+COPY rootfs/usr/share/inputplumber/devices/25-playtron-steam_deck.yaml			/usr/share/inputplumber/devices/
+COPY rootfs/usr/share/inputplumber/devices/25-playtron-suiplay0x1.yaml			/usr/share/inputplumber/devices/
+
+# PipeWire configuration for RNNoise
+COPY rootfs/usr/share/pipewire/pipewire.conf.d/pipewire-rnnoise.conf			/usr/share/pipewire/pipewire.conf.d/
+
+# Fix audio crackling on the Steam Deck OLED by using a slower polling rate
+COPY rootfs/usr/share/pipewire/pipewire-pulse.conf					/usr/share/pipewire/
+
+# Asset files used by the hardware test tool
+COPY rootfs/usr/share/playtron/test_audio.mp3						/usr/share/playtron/
+COPY rootfs/usr/share/playtron/test_video.webm						/usr/share/playtron/
+
+# Custom boot logo
+COPY rootfs/usr/share/plymouth/themes/spinner/watermark.png				/usr/share/plymouth/themes/spinner/
+
+# Allow running the respective scripts as root without a password
+COPY rootfs/usr/share/polkit-1/rules.d/50-one.playtron.factory-reset.rules		/usr/share/polkit-1/rules.d/
+COPY rootfs/usr/share/polkit-1/rules.d/50-one.playtron.hwctl.rules			/usr/share/polkit-1/rules.d/
+COPY rootfs/usr/share/polkit-1/rules.d/50-one.playtron.playtronos-session-select.rules	/usr/share/polkit-1/rules.d/
+COPY rootfs/usr/share/polkit-1/rules.d/50-one.playtron.playtronos-update.rules		/usr/share/polkit-1/rules.d/
+
+# Allow running OS upgrades without a password
+COPY rootfs/usr/share/polkit-1/rules.d/50-one.playtron.rpmostree1.rules			/usr/share/polkit-1/rules.d/
+
+# Custom playtron weston session file
+COPY rootfs/usr/share/wayland-sessions/playtron-weston.desktop				/usr/share/wayland-sessions/
+
+#################### End Copy OS Files
+
 
 # Patch grub to fix update failures
 COPY rootfs/grub-bootc.patch /

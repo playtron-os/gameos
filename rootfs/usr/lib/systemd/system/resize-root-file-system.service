@@ -1,0 +1,13 @@
+[Unit]
+Description=Resize the root Btrfs file system to use all available space on first boot.
+After=local-fs.target
+Wants=local-fs.target
+
+[Service]
+Type=oneshot
+TimeoutSec=infinity
+ExecStart=/bin/resize-root-file-system.sh
+ExecStart=/bin/systemctl --no-reload disable %n
+
+[Install]
+WantedBy=multi-user.target

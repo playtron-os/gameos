@@ -1,0 +1,11 @@
+[Unit]
+Description=Switch the audio input to use the RNNoise filter
+After=pipewire-rnnoise.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c "wpctl set-default $(wpctl status | grep output.rnnoise_source | grep -oP '([0-9]+)' | head -1)"
+ExecStart=/bin/systemctl --no-reload --user disable %n
+
+[Install]
+WantedBy=default.target
