@@ -175,10 +175,27 @@ update() {
 	esac
 }
 
+print_available_version() {
+	VERSION_MATCH="[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+"
+	if cat /etc/playtron-os.conf | grep "TAG=" > /dev/null; then
+		# internal build case: grab the explicitly selected version
+		version=$(cat /etc/playtron-os.conf | grep "TAG=" | cut -d"=" -f2)
+
+		if echo "${version}" | grep -E "${VERSION_MATCH}" > /dev/null; then
+			# exclude non-version number tags
+			echo "Available version: ${version}"
+		fi
+	else
+		# public build case: find the highest number version tag in the container registry
+		echo "Available version: "$(skopeo list-tags docker://ghcr.io/playtron-os/playtron-os | grep -E "${VERSION_MATCH}" | sort -n -r | head -1 | tr -d '[:blank:]",')
+	fi
+}
+
 check() {
 	case $(__rebase_status) in
 		"needed")
 			echo "New update available (rebase)"
+			print_available_version
 			exit 0
 		;;
 		"completed")
@@ -187,6 +204,11 @@ check() {
 		;;
 		"none")
 			rpm-ostree upgrade --check
+			result=$?
+			if [ "$result" == "0" ]; then
+				print_available_version
+			fi
+			exit $result
 		;;
 		*)
 			echo "ERROR: Unknown rebase status"
