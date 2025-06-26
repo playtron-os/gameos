@@ -187,7 +187,8 @@ print_available_version() {
 		fi
 	else
 		# public build case: find the highest number version tag in the container registry
-		echo "Available version: "$(skopeo list-tags docker://ghcr.io/playtron-os/playtron-os | grep -E "${VERSION_MATCH}" | sort -n -r | head -1 | tr -d '[:blank:]",')
+		version=$(skopeo list-tags docker://ghcr.io/playtron-os/playtron-os | grep -E "${VERSION_MATCH}" | sort -n -r | head -1 | tr -d '[:blank:]",')
+		echo "Available version: ${version}"
 	fi
 }
 
