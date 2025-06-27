@@ -177,11 +177,11 @@ update() {
 
 print_available_version() {
 	VERSION_MATCH="[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+"
-	if cat /etc/playtron-os.conf | grep "TAG=" > /dev/null; then
+	if cat "${CONFIG_FILE}" 2> /dev/null | grep -q "TAG="; then
 		# internal build case: grab the explicitly selected version
-		version=$(cat /etc/playtron-os.conf | grep "TAG=" | cut -d"=" -f2)
+		version=$(cat "${CONFIG_FILE}" | grep "TAG=" | cut -d"=" -f2)
 
-		if echo "${version}" | grep -E "${VERSION_MATCH}" > /dev/null; then
+		if echo "${version}" | grep -q -E "${VERSION_MATCH}"; then
 			# exclude non-version number tags
 			echo "Available version: ${version}"
 		fi
