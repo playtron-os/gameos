@@ -110,12 +110,6 @@ $ sudo -E go-task disk-image:kickstart
 
 Playtron GameOS container images are published to the GitHub Container Registry (GHCR). These can be found [here](https://github.com/orgs/playtron-os/packages/container/package/playtron-os) at the GitHub organization level (not the GitHub repository level).
 
-On an existing Fedora Atomic Desktop, it is possible to switch to Playtron GameOS.
-
-```
-$ sudo bootc switch ghcr.io/playtron-os/playtron-os:latest
-```
-
 The default user account is `playtron` with the password `playtron`. It can be accessed by enabling SSH in the Developer page. The IP address will also be listed there. Alternatively, open up a TTY console by pressing `CTRL`, `ALT`, and `F3` at the same time.
 
 ```
@@ -172,12 +166,17 @@ $ distrobox enter fedora41
 Install a full desktop environment and other additional packages.
 
 ```
-$ sudo bootc image copy-to-storage
 $ nano Containerfile
-FROM localhost/bootc
+FROM ghcr.io/playtron-os/playtron-os:latest
 RUN dnf5 group install -y kde-desktop && echo -e '[Autologin]\nSession=plasma' > /etc/sddm.conf.d/60-playtron-session-override.conf
 RUN dnf5 install -y firefox
 RUN dnf5 clean all && bootc container lint
 $ sudo podman build --tag desktop:latest .
 $ sudo bootc switch --transport containers-storage localhost/desktop:latest
+```
+
+The Software Update feature in Settings will no longer work with a custom container from the last example. All future updates must be done with locally built containers. Otherwise, switch back to an unmodified installation of GameOS.
+
+```
+$ sudo bootc switch ghcr.io/playtron-os/playtron-os:latest
 ```
