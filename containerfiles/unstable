@@ -11,6 +11,12 @@ ENV CMD_INSTALL="dnf install -y --setopt=install_weak_deps=false --setopt=max_pa
 
 RUN ${CMD_INSTALL} distribution-gpg-keys
 
+# Required for kernel-modules* and NVIDIA packages.
+RUN ${CMD_INSTALL} \
+  --setopt=disable_excludes=* \
+  kernel-rpm-macros \
+  kernel-srpm-macros
+
 # Install Nobara kernel
 RUN  dnf remove  -y kernel kernel-core kernel-devel kernel-devel-matched kernel-headers kernel-modules kernel-modules-core \
   && dnf install -y kernel kernel-core kernel-devel kernel-devel-matched kernel-headers kernel-modules
@@ -119,11 +125,6 @@ RUN ${CMD_INSTALL} \
   xwininfo \
   zenity \
   zram-generator
-
-# Install Nvidia driver
-RUN ${CMD_INSTALL} \
-  --setopt=disable_excludes=* \
-  kernel-srpm-macros
 
 RUN ${CMD_INSTALL} \
   akmod-nvidia \
