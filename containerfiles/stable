@@ -14,7 +14,7 @@ RUN dnf5 -y upgrade \
   libpact-0.2.0-1 \
   libplaytron-0.4.0-1 \
   powerstation-0.6.0-1 \
-  playserve-0.65.11-1 \
+  playserve-0.65.12-1 \
   playtron-os-files-0.25.0-1.fc41 \
   playtron-plugin-local-1.2.2-1 \
   reaper-0.1.0-2.fc41 \
