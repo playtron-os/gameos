@@ -68,6 +68,7 @@ upower -d >"${REPORT_DIR}/battery.out" 2>&1
 
 # System logs
 echo -e "  Collecting ${RED}services${ENDCOLOR} report..."
+cp /var/log/audit/audit.log "${REPORT_DIR}/"
 journalctl -b 0 >"${REPORT_DIR}/journal.log"
 journalctl -b 0 -u inputplumber >"${REPORT_DIR}/inputplumber.log"
 journalctl -b 0 -u powerstation >"${REPORT_DIR}/powerstation.log"

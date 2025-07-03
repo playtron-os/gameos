@@ -1,3 +1,4 @@
+enable auditd.service
 enable clatd-ipv6-check.service
 enable inputplumber.service
 enable NetworkManager-wait-online.service
