@@ -62,9 +62,8 @@ EOL
 rebase() {
 	local project=$1
 	local tag=$2
-	local token=$3
 
-	# Ensure $project and $tag are specified, $token is optional
+	# Ensure $project and $tag are specified
 	if [ -z "$project" ]; then
 		echo "Project not specified"
 		exit 1
@@ -79,12 +78,6 @@ rebase() {
 	echo "PROJECT=${project}" >> $CONFIG_FILE
 	echo "TAG=${tag}" >> $CONFIG_FILE
 	__write_remote $project
-
-	if [ -n "$token" ]; then
-		__write_auth $token
-	else
-		rm -f $AUTH_FILE
-	fi
 }
 
 __rebase_status() {
@@ -220,6 +213,11 @@ check() {
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	# do not execute if loaded from test suite
+
+	# save the registry token if provided
+	if [ -n "$REGISTRY_AUTH_TOKEN" ]; then
+		__write_auth $REGISTRY_AUTH_TOKEN
+	fi
 
 	CMD=$1
 	shift
