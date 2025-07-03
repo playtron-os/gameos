@@ -29,6 +29,7 @@ RUN ${CMD_INSTALL} \
   alsa-ucm \
   alsa-utils \
   atheros-firmware \
+  audit \
   bc \
   binutils \
   bluez \
