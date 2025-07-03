@@ -88,6 +88,16 @@ echo -e "  Collecting ${RED}gamescope${ENDCOLOR} report..."
   sudo -u "${TARGET_USER}" xwininfo -display :1 -root -children -int
 } >"${REPORT_DIR}/gamescope.out" 2>&1
 
+# Take a screenshot
+{
+  echo "Taking screenshot..."
+  timeout 5 sudo -u "${TARGET_USER}" XDG_RUNTIME_DIR="/run/user/${TARGET_UID}" DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${TARGET_UID}/bus" \
+    busctl --user call org.shadowblip.Gamescope \
+    /org/shadowblip/Gamescope/Wayland0 \
+    org.shadowblip.Gamescope.Wayland \
+    TakeScreenshot "sy" "${REPORT_DIR}/screenshot.png" 0
+} >>"${REPORT_DIR}/gamescope.out" 2>&1
+
 # Audio
 echo -e "  Collecting ${RED}audio${ENDCOLOR} report..."
 sudo -u "${TARGET_USER}" XDG_RUNTIME_DIR="/run/user/${TARGET_UID}" wpctl status >"${REPORT_DIR}/audio.out" 2>&1
