@@ -130,6 +130,10 @@ echo -e "  Collecting ${RED}network${ENDCOLOR} report..."
   dig +short playtron.one
 } >"${REPORT_DIR}/network.out" 2>&1
 
+# TPM
+echo -e "  Collecting ${RED}tpm${ENDCOLOR} report..."
+tpm2_eventlog /sys/kernel/security/tpm0/binary_bios_measurements >"${REPORT_DIR}/tpm.log" 2>&1
+
 # Build the archive
 echo ""
 echo -e "${CYAN}Building report archive${ENDCOLOR}"
