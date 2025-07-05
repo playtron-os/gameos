@@ -215,8 +215,11 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 	# do not execute if loaded from test suite
 
 	# save the registry token if provided
-	if [ -n "$REGISTRY_AUTH_TOKEN" ]; then
-		__write_auth $REGISTRY_AUTH_TOKEN
+	# must be the first and second arguments
+	if [ "$1" == "--registry-token" ]; then
+		__write_auth $2
+		shift
+		shift
 	fi
 
 	CMD=$1
