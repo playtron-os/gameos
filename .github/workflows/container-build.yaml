@@ -67,8 +67,12 @@ jobs:
           prerelease: true
       - name: Find the initramfs checksum
         run: podman run --rm ${IMAGE}:${TAG} sh -c "sha256sum /usr/lib/modules/\"\$(ls -lah /usr/lib/modules/ | tail -n 1 | awk '{print \$9}')\"/initramfs.img" >> /tmp/playtron-gameos-sha256sum.txt
+      - name: Find the initramfs checksum
+        run: podman run --rm ${IMAGE}:${TAG} sh -c "sha384sum /usr/lib/modules/\"\$(ls -lah /usr/lib/modules/ | tail -n 1 | awk '{print \$9}')\"/initramfs.img" >> /tmp/playtron-gameos-sha384sum.txt
       - name: Find the vmlinuz (kernel) checksum
         run: podman run --rm ${IMAGE}:${TAG} sh -c "sha256sum /usr/lib/modules/\"\$(ls -lah /usr/lib/modules/ | tail -n 1 | awk '{print \$9}')\"/vmlinuz" >> /tmp/playtron-gameos-sha256sum.txt
+      - name: Find the vmlinuz (kernel) checksum
+        run: podman run --rm ${IMAGE}:${TAG} sh -c "sha384sum /usr/lib/modules/\"\$(ls -lah /usr/lib/modules/ | tail -n 1 | awk '{print \$9}')\"/vmlinuz" >> /tmp/playtron-gameos-sha384sum.txt
       - name: Upload kernel checksums to pre-release
         uses: actions/upload-release-asset@v1
         env:
@@ -78,6 +82,15 @@ jobs:
           asset_path: /tmp/playtron-gameos-sha256sum.txt
           asset_name: playtron-gameos-sha256sum.txt
           asset_content_type: text/plain
+      - name: Upload kernel checksums to pre-release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-pre-release.outputs.upload_url }}
+          asset_path: /tmp/playtron-gameos-sha384sum.txt
+          asset_name: playtron-gameos-sha384sum.txt
+          asset_content_type: text/plain
       - name: Notify the backend about the new release
         run: |
           if curl -X POST "${{ secrets.URL_ENDPOINT_HASHES }}" \
@@ -85,4 +98,12 @@ jobs:
                --data '{
                    "release": "${{ env.TAG }}",
                    "assetName": "playtron-gameos-sha256sum.txt"
+               }' | grep -i error; then exit 1; fi
+      - name: Notify the backend about the new release
+        run: |
+          if curl -X POST "${{ secrets.URL_ENDPOINT_HASHES }}" \
+               -H "Content-Type: application/json" \
+               --data '{
+                   "release": "${{ env.TAG }}",
+                   "assetName": "playtron-gameos-sha384sum.txt"
                }' | grep -i error; then exit 1; fi
