@@ -99,11 +99,3 @@ jobs:
                    "release": "${{ env.TAG }}",
                    "assetName": "playtron-gameos-sha256sum.txt"
                }' | grep -i error; then exit 1; fi
-      - name: Notify the backend about the new release
-        run: |
-          if curl -X POST "${{ secrets.URL_ENDPOINT_HASHES }}" \
-               -H "Content-Type: application/json" \
-               --data '{
-                   "release": "${{ env.TAG }}",
-                   "assetName": "playtron-gameos-sha384sum.txt"
-               }' | grep -i error; then exit 1; fi
