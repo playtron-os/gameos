@@ -119,7 +119,7 @@ function system-info {
 
 function firmware-info {
 	fwupdmgr get-devices --json > /tmp/hwctl-devices.json
-	fwupdmgr get-updates --json > /tmp/hwctl-updates.json
+	fwupdmgr get-updates --assume-yes --json > /tmp/hwctl-updates.json
 
 	jq -n '
 	  # Load both input files
