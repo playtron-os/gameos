@@ -52,6 +52,7 @@ RUN ${CMD_INSTALL} \
   fwupd \
   gamescope-session-playtron \
   glibc-langpack-en \
+  glibc-locale-source \
   google-noto-sans-mono-cjk-vf-fonts \
   gstreamer1-plugins-good \
   htop \
