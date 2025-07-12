@@ -5,7 +5,6 @@ enable NetworkManager-wait-online.service
 enable powerstation.service
 enable resize-root-file-system.service
 enable sddm.service
-enable sleep-rfkill.service
 enable systemd-zram-setup@zram0.service
 enable wake-up-listener.service
 disable firewalld.service

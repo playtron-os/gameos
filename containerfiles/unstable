@@ -260,9 +260,6 @@ COPY rootfs/usr/lib/systemd/system-preset/50-playtron.preset				/usr/lib/systemd
 # A systemd service file to run the `resize-root-file-system.sh` script once and then disable itself so the service does not run again
 COPY rootfs/usr/lib/systemd/system/resize-root-file-system.service			/usr/lib/systemd/system/
 
-# Disable Bluetooth and Wi-Fi on sleep and re-active when powered back on
-COPY rootfs/usr/lib/systemd/system/sleep-rfkill.service					/usr/lib/systemd/system/
-
 # Switch the audio input to use the RNNoise filter
 COPY rootfs/usr/lib/systemd/user/pipewire-rnnoise-switch.service			/usr/lib/systemd/user/
 
