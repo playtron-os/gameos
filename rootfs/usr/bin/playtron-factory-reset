@@ -74,7 +74,7 @@ reset_etc ssh
 reset_etc xdg
 rsync -aHX /usr/etc/gai.conf /etc/gai.conf
 rsync -aHX /usr/etc/sddm.conf /etc/sddm.conf
-rm /etc/playtron-os.conf
+rm -f /etc/playtron-os.conf
 
 # reset playtron password
 echo 'playtron:playtron' | chpasswd
