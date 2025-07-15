@@ -31,6 +31,9 @@ RUN dnf5 clean all && \
 # Work around for inputplumber service not being enabled
 RUN cd /etc/systemd/system/multi-user.target.wants && ln -s /usr/lib/systemd/system/inputplumber.service .
 
+# Use the new configuration file to disable the SSH daemon by default.
+COPY rootfs/usr/lib/systemd/system-preset/50-playtron.preset /usr/lib/systemd/system-preset/50-playtron.preset
+
 # View final packages.
 RUN rpm -qa | sort
 

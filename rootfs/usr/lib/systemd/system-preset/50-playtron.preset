@@ -8,4 +8,5 @@ enable sddm.service
 enable systemd-zram-setup@zram0.service
 enable wake-up-listener.service
 disable firewalld.service
+disable sshd.service
 disable systemd-oomd.service
