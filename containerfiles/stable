@@ -40,7 +40,7 @@ COPY rootfs/usr/share/selinux/playtron-modules/dontaudit-powerprofiles_t-passwd_
 RUN cd /usr/share/selinux/playtron-modules/ && checkmodule -M -m -o dontaudit-powerprofiles_t-passwd_file_t.mod dontaudit-powerprofiles_t-passwd_file_t.te && semodule_package -o dontaudit-powerprofiles_t-passwd_file_t.pp -m dontaudit-powerprofiles_t-passwd_file_t.mod && semodule -i ./*.pp && rm -f ./*.mod ./*.pp
 COPY rootfs/usr/share/selinux/playtron-modules/systemd_timedated_t-etc_t-lnk_file.te	/usr/share/selinux/playtron-modules/
 RUN cd /usr/share/selinux/playtron-modules/ && checkmodule -M -m -o systemd_timedated_t-etc_t-lnk_file.mod systemd_timedated_t-etc_t-lnk_file.te && semodule_package -o systemd_timedated_t-etc_t-lnk_file.pp -m systemd_timedated_t-etc_t-lnk_file.mod && semodule -i ./*.pp && rm -f ./*.mod ./*.pp
-RUN sed -E -i 's/SELINUX=.+/SELINUX=enforcing/g' /etc/sysconfig/selinux
+RUN sed -E -i 's/SELINUX=.+/SELINUX=enforcing/g' /etc/sysconfig/selinux && systemctl enable restorecon-bootc.service
 
 # View final packages.
 RUN rpm -qa | sort

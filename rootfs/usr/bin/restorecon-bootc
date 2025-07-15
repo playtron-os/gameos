@@ -1,0 +1,5 @@
+#!/bin/bash
+# Hints from:
+# https://docs.fedoraproject.org/en-US/fedora-silverblue/troubleshooting/#_running_restorecon
+
+restorecon -R -v /boot /etc /var
