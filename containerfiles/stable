@@ -37,10 +37,9 @@ COPY rootfs/usr/lib/systemd/system-preset/50-playtron.preset /usr/lib/systemd/sy
 # Configure SELinux.
 RUN mkdir -p /usr/share/selinux/playtron-modules
 COPY rootfs/usr/share/selinux/playtron-modules/dontaudit-powerprofiles_t-passwd_file_t.te	/usr/share/selinux/playtron-modules/
-RUN cd /usr/share/selinux/playtron-modules/ && checkmodule -M -m -o dontaudit-powerprofiles_t-passwd_file_t.mod dontaudit-powerprofiles_t-passwd_file_t.te && semodule_package -o dontaudit-powerprofiles_t-passwd_file_t.pp -m dontaudit-powerprofiles_t-passwd_file_t.mod
+RUN cd /usr/share/selinux/playtron-modules/ && checkmodule -M -m -o dontaudit-powerprofiles_t-passwd_file_t.mod dontaudit-powerprofiles_t-passwd_file_t.te && semodule_package -o dontaudit-powerprofiles_t-passwd_file_t.pp -m dontaudit-powerprofiles_t-passwd_file_t.mod && semodule -i ./*.pp && rm -f ./*.mod ./*.pp
 COPY rootfs/usr/share/selinux/playtron-modules/systemd_timedated_t-etc_t-lnk_file.te	/usr/share/selinux/playtron-modules/
-RUN cd /usr/share/selinux/playtron-modules/ && checkmodule -M -m -o systemd_timedated_t-etc_t-lnk_file.mod systemd_timedated_t-etc_t-lnk_file.te && semodule_package -o systemd_timedated_t-etc_t-lnk_file.pp -m systemd_timedated_t-etc_t-lnk_file.mod
-RUN semodule -i /usr/share/selinux/playtron-modules/*.pp
+RUN cd /usr/share/selinux/playtron-modules/ && checkmodule -M -m -o systemd_timedated_t-etc_t-lnk_file.mod systemd_timedated_t-etc_t-lnk_file.te && semodule_package -o systemd_timedated_t-etc_t-lnk_file.pp -m systemd_timedated_t-etc_t-lnk_file.mod && semodule -i ./*.pp && rm -f ./*.mod ./*.pp
 RUN sed -E -i 's/SELINUX=.+/SELINUX=enforcing/g' /etc/sysconfig/selinux
 
 # View final packages.
