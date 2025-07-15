@@ -35,4 +35,4 @@ RUN cd /etc/systemd/system/multi-user.target.wants && ln -s /usr/lib/systemd/sys
 RUN rpm -qa | sort
 
 # View how well we adhere to bootc best practices.
-RUN bootc container lint
+RUN bootc container lint --no-truncate
