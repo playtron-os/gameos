@@ -1,0 +1,11 @@
+
+module systemd_timedated_t-etc_t-lnk_file 1.0;
+
+require {
+	type systemd_timedated_t;
+	type etc_t;
+	class lnk_file unlink;
+}
+
+#============= systemd_timedated_t ==============
+allow systemd_timedated_t etc_t:lnk_file unlink;

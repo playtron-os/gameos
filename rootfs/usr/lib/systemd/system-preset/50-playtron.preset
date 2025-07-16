@@ -4,8 +4,10 @@ enable inputplumber.service
 enable NetworkManager-wait-online.service
 enable powerstation.service
 enable resize-root-file-system.service
+enable restorecon-bootc.service
 enable sddm.service
 enable systemd-zram-setup@zram0.service
 enable wake-up-listener.service
 disable firewalld.service
+disable sshd.service
 disable systemd-oomd.service

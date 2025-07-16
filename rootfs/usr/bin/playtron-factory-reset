@@ -96,6 +96,9 @@ else
 	rm -rf /home/playtron/{,.}*
 fi
 
+# fix SELinux permissions on the next boot
+systemctl enable restorecon-bootc.service
+
 echo "Syncing filesystem..."
 sync
 
