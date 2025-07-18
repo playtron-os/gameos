@@ -30,8 +30,11 @@ RUN dnf5 clean all && \
 # Work around for inputplumber service not being enabled
 RUN cd /etc/systemd/system/multi-user.target.wants && ln -s /usr/lib/systemd/system/inputplumber.service .
 
-# Use the new configuration file to disable the SSH daemon by default.
-COPY rootfs/usr/lib/systemd/system-preset/50-playtron.preset /usr/lib/systemd/system-preset/50-playtron.preset
+# Temporary copy of files that have changed since the last unstable release
+COPY rootfs/usr/bin/playtron-factory-reset                              /usr/bin/
+COPY rootfs/usr/bin/playtronos-systemreport				/usr/bin/
+COPY rootfs/usr/lib/systemd/system-preset/50-playtron.preset		/usr/lib/systemd/system-preset/
+COPY rootfs/usr/share/inputplumber/devices/25-playtron-rog_ally_x.yaml	/usr/share/inputplumber/devices/
 
 # Configure SELinux.
 RUN mkdir -p /usr/share/selinux/playtron-modules
@@ -40,6 +43,7 @@ RUN cd /usr/share/selinux/playtron-modules/ && checkmodule -M -m -o dontaudit-po
 COPY rootfs/usr/share/selinux/playtron-modules/systemd_timedated_t-etc_t-lnk_file.te	/usr/share/selinux/playtron-modules/
 RUN cd /usr/share/selinux/playtron-modules/ && checkmodule -M -m -o systemd_timedated_t-etc_t-lnk_file.mod systemd_timedated_t-etc_t-lnk_file.te && semodule_package -o systemd_timedated_t-etc_t-lnk_file.pp -m systemd_timedated_t-etc_t-lnk_file.mod && semodule -i ./*.pp && rm -f ./*.mod ./*.pp
 COPY rootfs/usr/lib/systemd/system/restorecon-bootc.service	/usr/lib/systemd/system/
+COPY rootfs/usr/bin/restorecon-bootc	/usr/bin/
 RUN sed -E -i 's/SELINUX=.+/SELINUX=enforcing/g' /etc/sysconfig/selinux && systemctl enable restorecon-bootc.service
 
 # View final packages.
