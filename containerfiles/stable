@@ -212,6 +212,7 @@ RUN cd /usr/share/selinux/playtron-modules/ && checkmodule -M -m -o dontaudit-po
 COPY rootfs/usr/share/selinux/playtron-modules/systemd_timedated_t-etc_t-lnk_file.te	/usr/share/selinux/playtron-modules/
 RUN cd /usr/share/selinux/playtron-modules/ && checkmodule -M -m -o systemd_timedated_t-etc_t-lnk_file.mod systemd_timedated_t-etc_t-lnk_file.te && semodule_package -o systemd_timedated_t-etc_t-lnk_file.pp -m systemd_timedated_t-etc_t-lnk_file.mod && semodule -i ./*.pp && rm -f ./*.mod ./*.pp
 COPY rootfs/usr/lib/systemd/system/restorecon-bootc.service	/usr/lib/systemd/system/
+COPY rootfs/usr/bin/restorecon-bootc   /usr/bin/
 RUN sed -E -i 's/SELINUX=.+/SELINUX=enforcing/g' /etc/sysconfig/selinux && systemctl enable restorecon-bootc.service
 
 #################### End Copy OS Files
