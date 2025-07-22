@@ -14,6 +14,8 @@ Turn your PC into a game console. Playtron GameOS has native integration with Ep
 
 Read more about Playtron on [our official website](https://www.playtron.one/).
 
+[Download Playtron GameOS here](https://www.playtron.one/game-os#download-playtron-os).
+
 ## Minimum Hardware Requirements
 
 - CPU
