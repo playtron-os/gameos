@@ -1,4 +1,4 @@
-FROM quay.io/fedora/fedora-bootc:42-aarch64
+FROM quay.io/fedora/fedora-bootc:42
 
 # Force dnf5
 RUN rm -f /usr/bin/dnf && ln -s /usr/bin/dnf5 /usr/bin/dnf
