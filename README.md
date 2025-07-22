@@ -33,7 +33,7 @@ Most games are expected to work. For problematic games, you can help our communi
 
 ## Sideloading Games
 
-Local games can be copied over to Playtron GameOS and integrated using the [local](https://github.com/playtron-os/plugin-local) plugin. It is installed by default as of Beta 1.
+Local games can be copied over to Playtron GameOS and integrated using the [local](https://github.com/playtron-os/plugin-local) plugin.
 
 ## Build
 
