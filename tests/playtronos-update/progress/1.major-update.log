@@ -1,0 +1,1582 @@
+Pulling manifest: ostree-unverified-registry:registry.playtron.one/internal/playtronos:latest
+Importing: ostree-unverified-registry:registry.playtron.one/internal/playtronos:latest (digest: sha256:9d94fea41d6663398c7a983fdff0c0c9be0f6e52c3e29664d613e6a6330e7d04)
+ostree chunk layers needed: 65 (1.8 GB)
+custom layers needed: 21 (1.0 GB)
+Fetching ostree chunk sha256:90194728ca11 (77.8 MB)...done
+Fetching ostree chunk sha256:a3b72194474c (42.5 MB)...done
+Fetching ostree chunk sha256:afe25cbe3583 (47.5 MB)...done
+Fetching ostree chunk sha256:8d022af52b16 (52.4 MB)...done
+Fetching ostree chunk sha256:52d61c79c04d (26.2 MB)...done
+Fetching ostree chunk sha256:7b5df1769b8d (34.7 MB)...done
+Fetching ostree chunk sha256:ac676a25b52e (21.4 MB)...done
+Fetching ostree chunk sha256:7e808652751b (67.2 MB)...done
+Fetching ostree chunk sha256:497ce24fc841 (61.8 MB)...done
+Fetching ostree chunk sha256:1944017b696c (20.4 MB)...done
+Fetching ostree chunk sha256:9b30ef83e91d (31.3 MB)...done
+Fetching ostree chunk sha256:dfb694c349ca (20.9 MB)...done
+Fetching ostree chunk sha256:e3f8f5fbb815 (18.0 MB)...done
+Fetching ostree chunk sha256:adae9c38228f (40.7 MB)...done
+Fetching ostree chunk sha256:3df0bff0ee4e (17.7 MB)...done
+Fetching ostree chunk sha256:ed67c567bd2a (39.8 MB)...done
+Fetching ostree chunk sha256:12db22652f31 (39.9 MB)...done
+Fetching ostree chunk sha256:2f8be62c758a (18.8 MB)...done
+Fetching ostree chunk sha256:387dd676ae32 (13.5 MB)...done
+Fetching ostree chunk sha256:d7d3753ef488 (12.1 MB)...done
+Fetching ostree chunk sha256:30a5a15eedd8 (16.2 MB)...done
+Fetching ostree chunk sha256:b63537a53570 (15.9 MB)...done
+Fetching ostree chunk sha256:a4d325701a62 (14.0 MB)...done
+Fetching ostree chunk sha256:42bbf5acf492 (33.0 MB)...done
+Fetching ostree chunk sha256:61c967badc99 (20.3 MB)...done
+Fetching ostree chunk sha256:aa6e1e7cdf97 (20.5 MB)...done
+Fetching ostree chunk sha256:b0b33ca62642 (11.2 MB)...done
+Fetching ostree chunk sha256:204e2ff059ff (11.5 MB)...done
+Fetching ostree chunk sha256:f263d56c2e6a (18.2 MB)...done
+Fetching ostree chunk sha256:b400b7c99ee0 (7.4 MB)...done
+Fetching ostree chunk sha256:aa4b52af9bbb (9.8 MB)...done
+Fetching ostree chunk sha256:c110df10ec12 (4.5 MB)...done
+Fetching ostree chunk sha256:c3379aa39435 (10.3 MB)...done
+Fetching ostree chunk sha256:d93b9ce5efdb (9.2 MB)...done
+Fetching ostree chunk sha256:890c33157909 (23.6 MB)...done
+Fetching ostree chunk sha256:d6e90a4adb15 (9.2 MB)...done
+Fetching ostree chunk sha256:83e20986a3e2 (6.9 MB)...done
+Fetching ostree chunk sha256:f75761de4b8e (28.1 MB)...done
+Fetching ostree chunk sha256:a117588dc8a3 (4.0 MB)...done
+Fetching ostree chunk sha256:4ba7e91ee50b (6.9 MB)...done
+Fetching ostree chunk sha256:287d7e40d534 (157.4 MB)...done
+Fetching ostree chunk sha256:d00fe6a9eea9 (7.6 MB)...done
+Fetching ostree chunk sha256:996c77c09d0d (9.8 MB)...done
+Fetching ostree chunk sha256:aca826f22462 (7.0 MB)...done
+Fetching ostree chunk sha256:ab3c7fa78566 (5.5 MB)...done
+Fetching ostree chunk sha256:02269fe26df7 (11.5 MB)...done
+Fetching ostree chunk sha256:9fe5232544f8 (9.9 MB)...done
+Fetching ostree chunk sha256:cf487ab9af9c (7.6 MB)...done
+Fetching ostree chunk sha256:0d61d2b2af3e (3.1 MB)...done
+Fetching ostree chunk sha256:d3633ba715d3 (63.0 MB)...done
+Fetching ostree chunk sha256:ad193f893a1d (57.9 MB)...done
+Fetching ostree chunk sha256:beba45e793b5 (10.5 MB)...done
+Fetching ostree chunk sha256:9f77acbd2bbe (61.8 MB)...done
+Fetching ostree chunk sha256:b3adffb9dcf2 (13.0 MB)...done
+Fetching ostree chunk sha256:42018c3c1228 (10.5 MB)...done
+Fetching ostree chunk sha256:f3baeca8e0bb (4.7 MB)...done
+Fetching ostree chunk sha256:69ed99cff8fc (38.7 MB)...done
+Fetching ostree chunk sha256:47f34caf5e7c (13.9 MB)...done
+Fetching ostree chunk sha256:ac9fcc5ce0ef (9.0 MB)...done
+Fetching ostree chunk sha256:241703c9f88f (18.2 MB)...done
+Fetching ostree chunk sha256:f7e8efa72bb1 (15.0 MB)...done
+Fetching ostree chunk sha256:3f03c47d2d89 (62.0 MB)...done
+Fetching ostree chunk sha256:77944e22ed5f (162.8 MB)...done
+Fetching ostree chunk sha256:f809f8e8ef92 (2.7 kB)...done
+Fetching ostree chunk sha256:de9821d77366 (5.0 MB)...done
+Fetching layer sha256:e680b49f0e43 (493 bytes)...done
+Fetching layer sha256:6f16f0b72eeb (947 bytes)...done
+Fetching layer sha256:3e16b24d809a (371 bytes)...done
+Fetching layer sha256:cb45b2797668 (404 bytes)...done
+Fetching layer sha256:00ff6f7dcc95 (1.1 kB)...done
+Fetching layer sha256:e56f399a54ee (909 bytes)...done
+Fetching layer sha256:df18cd8d0045 (99 bytes)...done
+Fetching layer sha256:59c9d1ec16b1 (726.0 kB)...done
+Fetching layer sha256:66615f3b1eff (19.4 MB)...done
+Fetching layer sha256:b88d733680b6 (21.0 MB)...done
+Fetching layer sha256:56d261e391b0 (154 bytes)...done
+Fetching layer sha256:fae5d32ac81e (83.2 MB)...done
+Fetching layer sha256:3842a25faa02 (766.8 MB)...done
+Fetching layer sha256:6536d01b85e0 (28.4 MB)...done
+Fetching layer sha256:6d2a8b926847 (160 bytes)...done
+Fetching layer sha256:39742a1c17ea (307 bytes)...done
+Fetching layer sha256:fbf4d442513f (244 bytes)...done
+Fetching layer sha256:8a71f7bce629 (5.0 kB)...done
+Fetching layer sha256:acaa943a83e9 (730 bytes)...done
+Fetching layer sha256:6759839c4b1a (101.4 MB)...done
+Fetching layer sha256:539db1064ad6 (360 bytes)...done
+Staging deployment...done
+Upgraded:
+  ModemManager 1.22.0-3.fc40 -> 1.22.0-4.fc41
+  ModemManager-glib 1.22.0-3.fc40 -> 1.22.0-4.fc41
+  NetworkManager 1:1.46.2-1.fc40 -> 1:1.50.0-1.fc41
+  NetworkManager-bluetooth 1:1.46.2-1.fc40 -> 1:1.50.0-1.fc41
+  NetworkManager-config-connectivity-fedora 1:1.46.2-1.fc40 -> 1:1.50.0-1.fc41
+  NetworkManager-libnm 1:1.46.2-1.fc40 -> 1:1.50.0-1.fc41
+  NetworkManager-libnm 1:1.46.2-1.fc40 -> 1:1.50.0-1.fc41
+  NetworkManager-tui 1:1.46.2-1.fc40 -> 1:1.50.0-1.fc41
+  NetworkManager-wifi 1:1.46.2-1.fc40 -> 1:1.50.0-1.fc41
+  NetworkManager-wwan 1:1.46.2-1.fc40 -> 1:1.50.0-1.fc41
+  SDL2 2.30.3-1.fc40 -> 2.30.3-2.fc41
+  SDL2 2.30.3-1.fc40 -> 2.30.3-2.fc41
+  aardvark-dns 2:1.12.1-1.fc40 -> 2:1.12.2-2.fc41
+  abattis-cantarell-fonts 0.301-12.fc40 -> 0.301-13.fc41
+  abattis-cantarell-vf-fonts 0.301-12.fc40 -> 0.301-13.fc41
+  accountsservice 23.13.9-4.fc40 -> 23.13.9-5.fc41
+  acl 2.3.2-1.fc40 -> 2.3.2-2.fc41
+  adobe-mappings-cmap 20230622-3.fc40 -> 20231115-1.fc41
+  adobe-mappings-cmap-deprecated 20230622-3.fc40 -> 20231115-1.fc41
+  adobe-mappings-pdf 20190401-7.fc40 -> 20190401-8.fc41
+  adwaita-cursor-theme 46.2-2.fc40 -> 47.0-1.fc41
+  adwaita-icon-theme 46.2-2.fc40 -> 47.0-1.fc41
+  adwaita-icon-theme-legacy 46.2-1.fc40 -> 46.2-2.fc41
+  alsa-lib 1.2.12-1.fc40 -> 1.2.12-2.fc41
+  alsa-lib 1.2.12-1.fc40 -> 1.2.12-2.fc41
+  alsa-sof-firmware 2024.03-2.fc40 -> 2024.09-1.fc41
+  alsa-ucm 1.2.12-1.fc40 -> 1.2.12-2.fc41
+  alsa-utils 1.2.12-1.fc40 -> 1.2.12-2.fc41
+  alternatives 1.27-1.fc40 -> 1.30-1.fc41
+  amd-gpu-firmware 20240811-2.fc40 -> 20241017-2.fc41
+  amd-ucode-firmware 20240811-2.fc40 -> 20241017-2.fc41
+  aml 0.3.0-4.fc40 -> 0.3.0-5.fc41
+  appstream 1.0.2-2.fc40 -> 1.0.2-4.fc41
+  appstream-data 40-8.fc40 -> 41-8.fc41
+  at-spi2-atk 2.52.0-1.fc40 -> 2.54.0-1.fc41
+  at-spi2-atk 2.52.0-1.fc40 -> 2.54.0-1.fc41
+  at-spi2-core 2.52.0-1.fc40 -> 2.54.0-1.fc41
+  at-spi2-core 2.52.0-1.fc40 -> 2.54.0-1.fc41
+  atheros-firmware 20240811-2.fc40 -> 20241017-2.fc41
+  atk 2.52.0-1.fc40 -> 2.54.0-1.fc41
+  atk 2.52.0-1.fc40 -> 2.54.0-1.fc41
+  atkmm 2.28.4-1.fc40 -> 2.28.4-2.fc41
+  attr 2.5.2-3.fc40 -> 2.5.2-4.fc41
+  audit 4.0.2-1.fc40 -> 4.0.2-1.fc41
+  audit-libs 4.0.2-1.fc40 -> 4.0.2-1.fc41
+  audit-libs 4.0.2-1.fc40 -> 4.0.2-1.fc41
+  audit-rules 4.0.2-1.fc40 -> 4.0.2-1.fc41
+  authselect 1.5.0-5.fc40 -> 1.5.0-8.fc41
+  authselect-libs 1.5.0-5.fc40 -> 1.5.0-8.fc41
+  avahi 0.8-26.fc40 -> 0.8-29.fc41
+  avahi-glib 0.8-26.fc40 -> 0.8-29.fc41
+  avahi-glib 0.8-26.fc40 -> 0.8-29.fc41
+  avahi-libs 0.8-26.fc40 -> 0.8-29.fc41
+  avahi-libs 0.8-26.fc40 -> 0.8-29.fc41
+  b43-fwcutter 019-36.fc40 -> 019-37.fc41
+  b43-openfwwf 5.2-33.fc40 -> 5.2-44.fc41
+  basesystem 11-20.fc40 -> 11-21.fc41
+  bash 5.2.26-3.fc40 -> 5.2.32-1.fc41
+  bash-color-prompt 0.4.2-1.fc40 -> 0.5-2.fc41
+  bash-completion 1:2.11-14.fc40 -> 1:2.13-2.fc41
+  bc 1.07.1-21.fc40 -> 1.07.1-22.fc41
+  bind-libs 32:9.18.28-2.fc40 -> 32:9.18.30-1.fc41
+  bind-utils 32:9.18.28-2.fc40 -> 32:9.18.30-1.fc41
+  binutils 2.41-37.fc40 -> 2.43.1-2.fc41
+  bluez 5.77-1.fc40 -> 5.79-1.fc41
+  bluez-cups 5.77-1.fc40 -> 5.79-1.fc41
+  bluez-libs 5.77-1.fc40 -> 5.79-1.fc41
+  bluez-libs 5.77-1.fc40 -> 5.79-1.fc41
+  brcmfmac-firmware 20240811-2.fc40 -> 20241017-2.fc41
+  brightnessctl 0.5.1-11.fc40 -> 0.5.1-12.fc41
+  btrfs-progs 6.10.1-1.fc40 -> 6.11-1.fc41
+  bubblewrap 0.8.0-3.fc40 -> 0.10.0-1.fc41
+  buildah 1.37.0-1.fc40 -> 2:1.37.5-1.fc41
+  bzip2 1.0.8-18.fc40 -> 1.0.8-19.fc41
+  bzip2-libs 1.0.8-18.fc40 -> 1.0.8-19.fc41
+  bzip2-libs 1.0.8-18.fc40 -> 1.0.8-19.fc41
+  c-ares 1.28.1-1.fc40 -> 1.33.0-1.fc41
+  ca-certificates 2023.2.62_v7.0.401-6.fc40 -> 2024.2.69_v8.0.401-1.0.fc41
+  cabextract 1.11-4.fc40 -> 1.11-5.fc41
+  cairo 1.18.0-3.fc40 -> 1.18.0-4.fc41
+  cairo 1.18.0-3.fc40 -> 1.18.0-4.fc41
+  cairo-gobject 1.18.0-3.fc40 -> 1.18.0-4.fc41
+  cairo-gobject 1.18.0-3.fc40 -> 1.18.0-4.fc41
+  cairomm 1.14.5-3.fc40 -> 1.14.5-5.fc41
+  catatonit 0.1.7-22.fc40 -> 0.1.7-23.fc41
+  cdparanoia-libs 10.2-44.fc40 -> 10.2-45.fc41
+  checkpolicy 3.6-3.fc40 -> 3.7-2.fc41
+  chrony 4.5-3.fc40 -> 4.6.1-1.fc41
+  cifs-utils 7.0-5.fc40 -> 7.1-2.fc41
+  cirrus-audio-firmware 20240811-2.fc40 -> 20241017-2.fc41
+  cjson 1.7.17-1.fc40 -> 1.7.18-1.fc41
+  clatd 1.6-4.fc40 -> 1.6-5.fc41
+  cloud-utils-growpart 0.33-7.fc40 -> 0.33-9.fc41
+  codec2 1.2.0-4.fc40 -> 1.2.0-5.fc41
+  color-filesystem 1-33.fc40 -> 1-34.fc41
+  colord 1.4.7-3.fc40 -> 1.4.7-5.fc41
+  colord-libs 1.4.7-3.fc40 -> 1.4.7-5.fc41
+  colord-libs 1.4.7-3.fc40 -> 1.4.7-5.fc41
+  composefs 1.0.3-1.fc40 -> 1.0.6-1.fc41
+  composefs-libs 1.0.3-1.fc40 -> 1.0.6-1.fc41
+  compsize 1.5-8.fc40 -> 1.5-9.fc41
+  conmon 2:2.1.10-1.fc40 -> 2:2.1.12-3.fc41
+  container-selinux 2:2.232.1-1.fc40 -> 2:2.233.0-1.fc41
+  containers-common 5:0.60.0-1.fc40 -> 5:0.60.4-4.fc41
+  containers-common-extra 5:0.60.0-1.fc40 -> 5:0.60.4-4.fc41
+  coreutils 9.4-7.fc40 -> 9.5-10.fc41
+  coreutils-common 9.4-7.fc40 -> 9.5-10.fc41
+  cpio 2.15-1.fc40 -> 2.15-2.fc41
+  cracklib 2.9.11-5.fc40 -> 2.9.11-6.fc41
+  crudini 0.9.5-3.fc40 -> 0.9.5-4.fc41
+  crun 1.15-1.fc40 -> 1.18.1-1.fc41
+  crypto-policies 20240725-1.git28d3e2d.fc40 -> 20241029-1.git8baf557.fc41
+  cryptsetup 2.7.4-1.fc40 -> 2.7.5-1.fc41
+  cryptsetup-libs 2.7.4-1.fc40 -> 2.7.5-1.fc41
+  cups 1:2.4.10-3.fc40 -> 1:2.4.11-2.fc41
+  cups-client 1:2.4.10-3.fc40 -> 1:2.4.11-2.fc41
+  cups-filesystem 1:2.4.10-3.fc40 -> 1:2.4.11-2.fc41
+  cups-filters 1:2.0.0-6.fc40 -> 1:2.0.1-1.fc41
+  cups-libs 1:2.4.10-3.fc40 -> 1:2.4.11-2.fc41
+  cups-libs 1:2.4.10-3.fc40 -> 1:2.4.11-2.fc41
+  curl 8.6.0-10.fc40 -> 8.9.1-2.fc41
+  cyrus-sasl-lib 2.1.28-19.fc40 -> 2.1.28-27.fc41
+  cyrus-sasl-plain 2.1.28-19.fc40 -> 2.1.28-27.fc41
+  dbus 1:1.14.10-3.fc40 -> 1:1.14.10-4.fc41
+  dbus-broker 36-2.fc40 -> 36-4.fc41
+  dbus-common 1:1.14.10-3.fc40 -> 1:1.14.10-4.fc41
+  dbus-daemon 1:1.14.10-3.fc40 -> 1:1.14.10-4.fc41
+  dbus-glib 0.112-8.fc40 -> 0.112-9.fc41
+  dbus-libs 1:1.14.10-3.fc40 -> 1:1.14.10-4.fc41
+  dbus-libs 1:1.14.10-3.fc40 -> 1:1.14.10-4.fc41
+  dbus-tools 1:1.14.10-3.fc40 -> 1:1.14.10-4.fc41
+  dconf 0.40.0-12.fc40 -> 0.40.0-14.fc41
+  default-editor 7.2-7.fc40 -> 8.1-1.fc41
+  default-fonts-am 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-ar 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-as 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-ast 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-be 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-bg 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-bn 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-bo 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-br 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-chr 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-cjk-mono 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-cjk-sans 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-cjk-serif 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-core-emoji 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-core-math 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-core-mono 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-core-sans 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-core-serif 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-dv 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-dz 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-el 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-eo 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-eu 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-fa 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-gu 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-he 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-hi 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-hy 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-ia 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-iu 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-ka 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-km 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-kn 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-ku 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-lo 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-mai 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-ml 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-mni 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-mr 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-my 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-nb 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-ne 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-nn 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-nr 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-nso 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-or 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-other-mono 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-other-sans 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-other-serif 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-pa 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-ru 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-sat 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-si 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-ss 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-ta 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-te 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-th 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-tn 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-ts 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-uk 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-ur 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-ve 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-vi 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-xh 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-yi 4.0-13.fc40 -> 4.1-2.fc41
+  default-fonts-zu 4.0-13.fc40 -> 4.1-2.fc41
+  desktop-file-utils 0.26-12.fc40 -> 0.27-2.fc41
+  device-mapper 1.02.197-1.fc40 -> 1.02.199-4.fc41
+  device-mapper-event 1.02.197-1.fc40 -> 1.02.199-4.fc41
+  device-mapper-event-libs 1.02.197-1.fc40 -> 1.02.199-4.fc41
+  device-mapper-libs 1.02.197-1.fc40 -> 1.02.199-4.fc41
+  device-mapper-persistent-data 1.0.12-1.fc40 -> 1.0.12-3.fc41
+  dhcp-client 12:4.4.3-13.P1.fc40 -> 12:4.4.3-14.P1.fc41
+  dhcp-common 12:4.4.3-13.P1.fc40 -> 12:4.4.3-14.P1.fc41
+  diffutils 3.10-5.fc40 -> 3.10-8.fc41
+  distribution-gpg-keys 1.105-1.fc40 -> 1.105-1.fc41
+  distrobox 1.7.2.1-1.fc40 -> 1.8.0-1.fc41
+  dnsmasq 2.90-1.fc40 -> 2.90-3.fc41
+  double-conversion 3.3.0-3.fc40 -> 3.3.0-4.fc41
+  dracut 102-2.fc40 -> 102-3.fc41
+  dracut-config-generic 102-2.fc40 -> 102-3.fc41
+  duktape 2.7.0-7.fc40 -> 2.7.0-8.fc41
+  e2fsprogs 1.47.0-5.fc40 -> 1.47.1-6.fc41
+  e2fsprogs-libs 1.47.0-5.fc40 -> 1.47.1-6.fc41
+  efi-filesystem 5-11.fc40 -> 5-12.fc41
+  efibootmgr 18-6.fc40 -> 18-7.fc41
+  efivar-libs 39-2.fc40 -> 39-6.fc41
+  elfutils-debuginfod-client 0.191-4.fc40 -> 0.192-5.fc41
+  elfutils-default-yama-scope 0.191-4.fc40 -> 0.192-5.fc41
+  elfutils-libelf 0.191-4.fc40 -> 0.192-5.fc41
+  elfutils-libelf 0.191-4.fc40 -> 0.192-5.fc41
+  elfutils-libs 0.191-4.fc40 -> 0.192-5.fc41
+  emacs-filesystem 1:29.4-9.fc40 -> 1:30.0-3.fc41
+  enchant2 2.6.9-1.fc40 -> 2.8.1-2.fc41
+  ethtool 2:6.10-1.fc40 -> 2:6.11-1.fc41
+  evtest 1.35-7.fc40 -> 1.35-8.fc41
+  exfatprogs 1.2.5-1.fc40 -> 1.2.5-1.fc41
+  expat 2.6.2-1.fc40 -> 2.6.3-1.fc41
+  expat 2.6.2-1.fc40 -> 2.6.3-1.fc41
+  fedora-flathub-remote 1-8.fc40 -> 1-9.fc41
+  fedora-gpg-keys 40-2 -> 41-1
+  fedora-logos 38.1.0-5.fc40 -> 38.1.0-6.fc41
+  fedora-release-common 40-39 -> 41-26
+  fedora-release-identity-silverblue 40-39 -> 41-26
+  fedora-release-ostree-desktop 40-39 -> 41-26
+  fedora-release-silverblue 40-39 -> 41-26
+  fedora-repos 40-2 -> 41-1
+  fedora-repos-archive 40-2 -> 41-1
+  fedora-repos-ostree 40-2 -> 41-1
+  fedora-third-party 0.10-8.fc40 -> 0.10-10.fc41
+  fedora-workstation-repositories 38-5.fc40 -> 38-6.fc41
+  fftw-libs-double 3.3.10-12.fc40 -> 3.3.10-13.fc41
+  file 5.45-4.fc40 -> 5.45-7.fc41
+  file-libs 5.45-4.fc40 -> 5.45-7.fc41
+  filesystem 3.18-8.fc40 -> 3.18-23.fc41
+  findutils 1:4.9.0-9.fc40 -> 1:4.10.0-4.fc41
+  fio 3.36-3.fc40 -> 3.37-3.fc41
+  fio-engine-libaio 3.36-3.fc40 -> 3.37-3.fc41
+  firewalld 2.1.3-1.fc40 -> 2.2.3-2.fc41
+  firewalld-filesystem 2.1.3-1.fc40 -> 2.2.3-2.fc41
+  flac-libs 1.4.3-4.fc40 -> 1.4.3-5.fc41
+  flac-libs 1.4.3-4.fc40 -> 1.4.3-5.fc41
+  flatpak 1.15.8-1.fc40 -> 1.15.10-1.fc41
+  flatpak-selinux 1.15.8-1.fc40 -> 1.15.10-1.fc41
+  flatpak-session-helper 1.15.8-1.fc40 -> 1.15.10-1.fc41
+  flite 2.2-8.fc40 -> 2.2-9.fc41
+  fmt 10.2.1-4.fc40 -> 11.0.2-2.fc41
+  fontconfig 2.15.0-6.fc40 -> 2.15.0-8.fc41
+  fontconfig 2.15.0-6.fc40 -> 2.15.0-8.fc41
+  fonts-filesystem 1:2.0.5-14.fc40 -> 1:2.0.5-17.fc41
+  fpaste 0.5.0.0-1.fc40 -> 0.5.0.0-1.fc41
+  freetype 2.13.2-5.fc40 -> 2.13.3-1.fc41
+  freetype 2.13.2-5.fc40 -> 2.13.3-1.fc41
+  fribidi 1.0.14-2.fc40 -> 1.0.15-2.fc41
+  fribidi 1.0.14-2.fc40 -> 1.0.15-2.fc41
+  fstrm 0.6.1-10.fc40 -> 0.6.1-11.fc41
+  fuse-common 3.16.2-3.fc40 -> 3.16.2-4.fc41
+  fuse3 3.16.2-3.fc40 -> 3.16.2-4.fc41
+  fuse3-libs 3.16.2-3.fc40 -> 3.16.2-4.fc41
+  fwupd 1.9.23-1.fc40 -> 1.9.26-1.fc41
+  game-music-emu 0.6.3-14.fc40 -> 0.6.3-15.fc41
+  gamescope 3.14.2-1.fc40 -> 3.14.2-3.fc41
+  gamescope-session 0.1.0+291-1.fc40 -> 0.1.0+291-2.fc41
+  gamescope-session-playtron 0.2.2-1.fc40 -> 0.2.4-1.fc41
+  gawk 5.3.0-3.fc40 -> 5.3.0-4.fc41
+  gdbm 1:1.23-6.fc40 -> 1:1.23-7.fc41
+  gdbm-libs 1:1.23-6.fc40 -> 1:1.23-7.fc41
+  gdisk 1.0.10-1.fc40 -> 1.0.10-2.fc41
+  gdk-pixbuf2 2.42.10-8.fc40 -> 2.42.12-6.fc41
+  gdk-pixbuf2 2.42.10-8.fc40 -> 2.42.12-6.fc41
+  gdk-pixbuf2-modules 2.42.10-8.fc40 -> 2.42.12-6.fc41
+  gdk-pixbuf2-modules 2.42.10-8.fc40 -> 2.42.12-6.fc41
+  geoclue2 2.7.0-5.fc40 -> 2.7.0-6.fc41
+  gettext-envsubst 0.22.5-4.fc40 -> 0.22.5-6.fc41
+  gettext-libs 0.22.5-4.fc40 -> 0.22.5-6.fc41
+  gettext-runtime 0.22.5-4.fc40 -> 0.22.5-6.fc41
+  ghostscript 10.02.1-12.fc40 -> 10.03.1-3.fc41
+  ghostscript-tools-fonts 10.02.1-12.fc40 -> 10.03.1-3.fc41
+  ghostscript-tools-printing 10.02.1-12.fc40 -> 10.03.1-3.fc41
+  giflib 5.2.2-1.fc40 -> 5.2.2-2.fc41
+  git-core 2.46.0-1.fc40 -> 2.47.0-1.fc41
+  git-core-doc 2.46.0-1.fc40 -> 2.47.0-1.fc41
+  glfw 1:3.3.8-6.fc40 -> 1:3.3.10-1.fc41
+  glib-networking 2.80.0-1.fc40 -> 2.80.0-4.fc41
+  glib2 2.80.3-1.fc40 -> 2.82.2-1.fc41
+  glib2 2.80.3-1.fc40 -> 2.82.2-1.fc41
+  glibc 2.39-22.fc40 -> 2.40-9.fc41
+  glibc 2.39-22.fc40 -> 2.40-9.fc41
+  glibc-all-langpacks 2.39-22.fc40 -> 2.40-9.fc41
+  glibc-common 2.39-22.fc40 -> 2.40-9.fc41
+  glibc-gconv-extra 2.39-22.fc40 -> 2.40-9.fc41
+  glibc-gconv-extra 2.39-22.fc40 -> 2.40-9.fc41
+  glibmm2.4 2.66.7-1.fc40 -> 2.66.7-2.fc41
+  glx-utils 9.0.0-6.fc40 -> 9.0.0-8.fc41
+  gmp 1:6.2.1-8.fc40 -> 1:6.3.0-2.fc41
+  gmp 1:6.2.1-8.fc40 -> 1:6.3.0-2.fc41
+  gnupg2 2.4.4-1.fc40 -> 2.4.5-3.fc41
+  gnutls 3.8.6-1.fc40 -> 3.8.6-7.fc41
+  gnutls 3.8.6-1.fc40 -> 3.8.6-7.fc41
+  gnutls-dane 3.8.6-1.fc40 -> 3.8.6-7.fc41
+  gobject-introspection 1.80.1-1.fc40 -> 1.82.0-1.fc41
+  google-droid-sans-fonts 20200215-19.fc40 -> 20200215-21.fc41
+  google-noto-color-emoji-fonts 20231130-1.fc40 -> 20241008-1.fc41
+  google-noto-fonts-common 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-naskh-arabic-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-sans-arabic-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-sans-armenian-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-sans-bengali-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-sans-canadian-aboriginal-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-sans-cherokee-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-sans-cjk-vf-fonts 1:2.004-7.fc40 -> 1:2.004-8.fc41
+  google-noto-sans-devanagari-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-sans-ethiopic-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-sans-georgian-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-sans-gujarati-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-sans-gurmukhi-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-sans-hebrew-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-sans-kannada-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-sans-khmer-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-sans-lao-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-sans-math-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-sans-mono-cjk-vf-fonts 1:2.004-7.fc40 -> 1:2.004-8.fc41
+  google-noto-sans-mono-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-sans-ol-chiki-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-sans-oriya-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-sans-sinhala-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-sans-symbols-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-sans-tamil-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-sans-telugu-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-sans-thaana-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-sans-thai-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-sans-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-serif-armenian-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-serif-bengali-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-serif-cjk-vf-fonts 1:2.002-4.fc40 -> 1:2.003-1.fc41
+  google-noto-serif-devanagari-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-serif-ethiopic-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-serif-georgian-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-serif-gujarati-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-serif-gurmukhi-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-serif-hebrew-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-serif-kannada-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-serif-khmer-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-serif-lao-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-serif-oriya-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-serif-sinhala-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-serif-tamil-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-serif-telugu-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-serif-thai-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  google-noto-serif-vf-fonts 20240301-2.fc40 -> 20240701-2.fc41
+  gpgme 1.23.2-3.fc40 -> 1.23.2-5.fc41
+  gpgmepp 1.23.2-3.fc40 -> 1.23.2-5.fc41
+  gpm-libs 1.20.7-46.fc40 -> 1.20.7-48.fc41
+  graphene 1.10.6-8.fc40 -> 1.10.6-9.fc41
+  graphite2 1.3.14-15.fc40 -> 1.3.14-16.fc41
+  graphite2 1.3.14-15.fc40 -> 1.3.14-16.fc41
+  grep 3.11-7.fc40 -> 3.11-9.fc41
+  grid 0.30.4-1.fc40 -> 0.37.0-1.fc40
+  groff-base 1.23.0-6.fc40 -> 1.23.0-7.fc41
+  grub2-common 1:2.06-123.fc40 -> 1:2.12-10.fc41
+  grub2-efi-ia32 1:2.06-123.fc40 -> 1:2.12-10.fc41
+  grub2-efi-x64 1:2.06-123.fc40 -> 1:2.12-10.fc41
+  grub2-pc 1:2.06-123.fc40 -> 1:2.12-10.fc41
+  grub2-pc-modules 1:2.06-123.fc40 -> 1:2.12-10.fc41
+  grub2-tools 1:2.06-123.fc40 -> 1:2.12-10.fc41
+  grub2-tools-minimal 1:2.06-123.fc40 -> 1:2.12-10.fc41
+  gsettings-desktop-schemas 46.1-1.fc40 -> 47.1-1.fc41
+  gsm 1.0.22-6.fc40 -> 1.0.22-7.fc41
+  gsm 1.0.22-6.fc40 -> 1.0.22-7.fc41
+  gssdp 1.6.3-2.fc40 -> 1.6.3-3.fc41
+  gssproxy 0.9.2-3.fc40 -> 0.9.2-4.fc41
+  gstreamer1 1.24.6-1.fc40 -> 1.24.9-1.fc41
+  gstreamer1-plugin-libav 1.24.6-1.fc40 -> 1.24.9-1.fc41
+  gstreamer1-plugin-openh264 1.24.6-1.fc40 -> 1.24.9-1.fc41
+  gstreamer1-plugins-bad-free 1.24.6-1.fc40 -> 1.24.9-1.fc41
+  gstreamer1-plugins-bad-free-libs 1.24.6-1.fc40 -> 1.24.9-1.fc41
+  gstreamer1-plugins-base 1.24.6-1.fc40 -> 1.24.9-1.fc41
+  gstreamer1-plugins-good 1.24.6-1.fc40 -> 1.24.9-3.fc41
+  gstreamer1-plugins-ugly 1:1.24.6-1.fc40 -> 1:1.24.9-1.fc41
+  gstreamer1-plugins-ugly-free 1.24.6-1.fc40 -> 1.24.9-1.fc41
+  gtk-update-icon-cache 3.24.43-1.fc40 -> 3.24.43-2.fc41
+  gtk2 2.24.33-18.fc40 -> 2.24.33-19.fc41
+  gtk2 2.24.33-18.fc40 -> 2.24.33-19.fc41
+  gtk3 3.24.43-1.fc40 -> 3.24.43-2.fc41
+  gtk3 3.24.43-1.fc40 -> 3.24.43-2.fc41
+  gtk4 4.14.4-2.fc40 -> 4.16.3-1.fc41
+  gtkmm3.0 3.24.9-1.fc40 -> 3.24.9-2.fc41
+  gupnp 1.6.6-2.fc40 -> 1.6.7-1.fc41
+  gupnp-igd 1.6.0-4.fc40 -> 1.6.0-5.fc41
+  gzip 1.13-1.fc40 -> 1.13-2.fc41
+  harfbuzz 8.5.0-1.fc40 -> 9.0.0-3.fc41
+  harfbuzz 8.5.0-1.fc40 -> 9.0.0-3.fc41
+  harfbuzz-icu 8.5.0-1.fc40 -> 9.0.0-3.fc41
+  hfsplus-tools 540.1.linux3-31.fc40 -> 540.1.linux3-32.fc41
+  hicolor-icon-theme 0.17-18.fc40 -> 0.17-19.fc41
+  highway 1.2.0-2.fc40 -> 1.2.0-3.fc41
+  hostname 3.23-12.fc40 -> 3.23-13.fc41
+  hunspell 1.7.2-7.fc40 -> 1.7.2-8.fc41
+  hunspell-en-US 0.20201207-9.fc40 -> 0.20201207-10.fc41
+  hunspell-filesystem 1.7.2-7.fc40 -> 1.7.2-8.fc41
+  hwdata 0.385-1.fc40 -> 0.388-1.fc41
+  hyperv-daemons 0-0.44.20220731git.fc40 -> 0-0.48.20240616git.fc41
+  hyperv-daemons-license 0-0.44.20220731git.fc40 -> 0-0.48.20240616git.fc41
+  hypervfcopyd 0-0.44.20220731git.fc40 -> 0-0.48.20240616git.fc41
+  hypervkvpd 0-0.44.20220731git.fc40 -> 0-0.48.20240616git.fc41
+  hypervvssd 0-0.44.20220731git.fc40 -> 0-0.48.20240616git.fc41
+  hyphen 2.8.8-24.fc40 -> 2.8.8-25.fc41
+  ilbc 3.0.4-10.fc40 -> 3.0.4-12.fc41
+  inputplumber 0.34.5-0.fc40 -> 0.36.5-0.fc41
+  intel-audio-firmware 20240811-2.fc40 -> 20241017-2.fc41
+  intel-gmmlib 22.3.20-1.fc40 -> 22.5.2-1.fc41
+  intel-gpu-firmware 20240811-2.fc40 -> 20241017-2.fc41
+  intel-media-driver 24.2.5-1.fc40 -> 24.3.4-1.fc41
+  ipcalc 1.0.3-9.fc40 -> 1.0.3-10.fc41
+  iproute 6.7.0-2.fc40 -> 6.10.0-1.fc41
+  iptables-libs 1.8.10-7.fc40 -> 1.8.10-15.fc41
+  iptables-nft 1.8.10-7.fc40 -> 1.8.10-15.fc41
+  iptstate 2.2.7-4.fc40 -> 2.2.7-6.fc41
+  iputils 20240117-4.fc40 -> 20240905-1.fc41
+  iso-codes 4.16.0-3.fc40 -> 4.16.0-5.fc41
+  iw 6.7-2.fc40 -> 6.9-2.fc41
+  iwlegacy-firmware 20240811-2.fc40 -> 20241017-2.fc41
+  iwlwifi-dvm-firmware 20240811-2.fc40 -> 20241017-2.fc41
+  iwlwifi-mvm-firmware 20240811-2.fc40 -> 20241017-2.fc41
+  jack-audio-connection-kit 1.9.22-5.fc40 -> 1.9.22-6.fc41
+  jansson 2.13.1-9.fc40 -> 2.13.1-10.fc41
+  javascriptcoregtk4.1 2.44.2-2.fc40 -> 2.46.3-1.fc41
+  jbig2dec-libs 0.20-4.fc40 -> 0.20-5.fc41
+  jbigkit-libs 2.1-29.fc40 -> 2.1-30.fc41
+  jbigkit-libs 2.1-29.fc40 -> 2.1-30.fc41
+  jemalloc 5.3.0-6.fc40 -> 5.3.0-7.fc41
+  jomolhari-fonts 0.003-41.fc40 -> 0.003-42.fc41
+  json-c 0.17-3.fc40 -> 0.17-4.fc41
+  json-glib 1.8.0-3.fc40 -> 1.10.0-1.fc41
+  json-glib 1.8.0-3.fc40 -> 1.10.0-1.fc41
+  kbd 2.6.4-3.fc40 -> 2.6.4-4.fc41
+  kbd-legacy 2.6.4-3.fc40 -> 2.6.4-4.fc41
+  kbd-misc 2.6.4-3.fc40 -> 2.6.4-4.fc41
+  kernel 6.10.5-201.fsync.fc40 -> 6.11.5-301.blu.fc41
+  kernel-core 6.10.5-201.fsync.fc40 -> 6.11.5-301.blu.fc41
+  kernel-modules 6.10.5-201.fsync.fc40 -> 6.11.5-301.blu.fc41
+  kernel-modules-core 6.10.5-201.fsync.fc40 -> 6.11.5-301.blu.fc41
+  kernel-modules-extra 6.10.5-201.fsync.fc40 -> 6.11.5-301.blu.fc41
+  keyutils 1.6.3-3.fc40 -> 1.6.3-4.fc41
+  keyutils-libs 1.6.3-3.fc40 -> 1.6.3-4.fc41
+  keyutils-libs 1.6.3-3.fc40 -> 1.6.3-4.fc41
+  kmod 31-5.fc40 -> 33-1.fc41
+  kmod-libs 31-5.fc40 -> 33-1.fc41
+  krb5-libs 1.21.3-1.fc40 -> 1.21.3-3.fc41
+  krb5-libs 1.21.3-1.fc40 -> 1.21.3-3.fc41
+  ladspa 1.17-4.fc40 -> 1.17-5.fc41
+  lame-libs 3.100-17.fc40 -> 3.100-18.fc41
+  lame-libs 3.100-17.fc40 -> 3.100-18.fc41
+  langpacks-core-en 4.0-13.fc40 -> 4.1-2.fc41
+  langpacks-en 4.0-13.fc40 -> 4.1-2.fc41
+  langpacks-fonts-en 4.0-13.fc40 -> 4.1-2.fc41
+  lcms2 2.16-3.fc40 -> 2.16-4.fc41
+  lcms2 2.16-3.fc40 -> 2.16-4.fc41
+  legendary 0.20.35-3.fc40 -> 0.20.36-1.fc41
+  leptonica 1.84.1-3.fc40 -> 1.84.1-4.fc41
+  less 643-4.fc40 -> 661-2.fc41
+  libGLEW 2.2.0-7.fc40 -> 2.2.0-8.fc41
+  libICE 1.1.1-3.fc40 -> 1.1.1-4.fc41
+  libICE 1.1.1-3.fc40 -> 1.1.1-4.fc41
+  libSM 1.2.4-3.fc40 -> 1.2.4-4.fc41
+  libX11 1.8.10-1.fc40 -> 1.8.10-2.fc41
+  libX11 1.8.10-1.fc40 -> 1.8.10-2.fc41
+  libX11-common 1.8.10-1.fc40 -> 1.8.10-2.fc41
+  libX11-xcb 1.8.10-1.fc40 -> 1.8.10-2.fc41
+  libX11-xcb 1.8.10-1.fc40 -> 1.8.10-2.fc41
+  libXScrnSaver 1.2.4-3.fc40 -> 1.2.4-4.fc41
+  libXScrnSaver 1.2.4-3.fc40 -> 1.2.4-4.fc41
+  libXau 1.0.11-6.fc40 -> 1.0.11-7.fc41
+  libXau 1.0.11-6.fc40 -> 1.0.11-7.fc41
+  libXcomposite 0.4.6-3.fc40 -> 0.4.6-4.fc41
+  libXcomposite 0.4.6-3.fc40 -> 0.4.6-4.fc41
+  libXcursor 1.2.1-7.fc40 -> 1.2.2-2.fc41
+  libXcursor 1.2.1-7.fc40 -> 1.2.2-2.fc41
+  libXdamage 1.1.6-3.fc40 -> 1.1.6-4.fc41
+  libXdamage 1.1.6-3.fc40 -> 1.1.6-4.fc41
+  libXdmcp 1.1.4-3.fc40 -> 1.1.5-2.fc41
+  libXext 1.3.6-1.fc40 -> 1.3.6-2.fc41
+  libXext 1.3.6-1.fc40 -> 1.3.6-2.fc41
+  libXfixes 6.0.1-3.fc40 -> 6.0.1-4.fc41
+  libXfixes 6.0.1-3.fc40 -> 6.0.1-4.fc41
+  libXfont2 2.0.7-1.fc40 -> 2.0.7-1.fc41
+  libXft 2.3.8-6.fc40 -> 2.3.8-7.fc41
+  libXft 2.3.8-6.fc40 -> 2.3.8-7.fc41
+  libXi 1.8.1-5.fc40 -> 1.8.2-1.fc41
+  libXi 1.8.1-5.fc40 -> 1.8.2-1.fc41
+  libXinerama 1.1.5-6.fc40 -> 1.1.5-7.fc41
+  libXinerama 1.1.5-6.fc40 -> 1.1.5-7.fc41
+  libXmu 1.2.1-1.fc40 -> 1.2.1-2.fc41
+  libXrandr 1.5.4-3.fc40 -> 1.5.4-4.fc41
+  libXrandr 1.5.4-3.fc40 -> 1.5.4-4.fc41
+  libXrender 0.9.11-6.fc40 -> 0.9.11-7.fc41
+  libXrender 0.9.11-6.fc40 -> 0.9.11-7.fc41
+  libXres 1.2.2-3.fc40 -> 1.2.2-4.fc41
+  libXt 1.3.0-3.fc40 -> 1.3.0-4.fc41
+  libXtst 1.2.5-1.fc40 -> 1.2.5-1.fc41
+  libXtst 1.2.5-1.fc40 -> 1.2.5-1.fc41
+  libXv 1.0.12-3.fc40 -> 1.0.12-4.fc41
+  libXvMC 1.0.13-5.fc40 -> 1.0.13-6.fc41
+  libXxf86vm 1.1.5-6.fc40 -> 1.1.5-7.fc41
+  libXxf86vm 1.1.5-6.fc40 -> 1.1.5-7.fc41
+  liba52 0.7.4-48.fc40 -> 0.7.4-49.fc41
+  libacl 2.3.2-1.fc40 -> 2.3.2-2.fc41
+  libadwaita 1.5.2-1.fc40 -> 1.6.1-1.fc41
+  libaio 0.3.111-19.fc40 -> 0.3.111-20.fc41
+  libaom 3.9.0-1.fc40 -> 3.9.0-3.fc41
+  libarchive 3.7.2-4.fc40 -> 3.7.4-4.fc41
+  libass 0.17.1-4.fc40 -> 0.17.3-2.fc41
+  libassuan 2.5.7-1.fc40 -> 2.5.7-2.fc41
+  libasyncns 0.8-28.fc40 -> 0.8-29.fc41
+  libasyncns 0.8-28.fc40 -> 0.8-29.fc41
+  libatasmart 0.19-28.fc40 -> 0.19-29.fc41
+  libatomic 14.2.1-1.fc40 -> 14.2.1-3.fc41
+  libatomic 14.2.1-1.fc40 -> 14.2.1-3.fc41
+  libattr 2.5.2-3.fc40 -> 2.5.2-4.fc41
+  libavif 1.0.4-3.fc40 -> 1.0.4-7.fc41
+  libb2 0.98.1-11.fc40 -> 0.98.1-12.fc41
+  libbasicobjects 0.1.1-56.fc40 -> 0.1.1-57.fc41
+  libblkid 2.40.1-1.fc40 -> 2.40.2-4.fc41
+  libblkid 2.40.1-1.fc40 -> 2.40.2-4.fc41
+  libblockdev 3.1.1-1.fc40 -> 3.2.0-1.fc41
+  libblockdev-crypto 3.1.1-1.fc40 -> 3.2.0-1.fc41
+  libblockdev-fs 3.1.1-1.fc40 -> 3.2.0-1.fc41
+  libblockdev-loop 3.1.1-1.fc40 -> 3.2.0-1.fc41
+  libblockdev-mdraid 3.1.1-1.fc40 -> 3.2.0-1.fc41
+  libblockdev-nvme 3.1.1-1.fc40 -> 3.2.0-1.fc41
+  libblockdev-part 3.1.1-1.fc40 -> 3.2.0-1.fc41
+  libblockdev-swap 3.1.1-1.fc40 -> 3.2.0-1.fc41
+  libblockdev-utils 3.1.1-1.fc40 -> 3.2.0-1.fc41
+  libbluray 1.3.4-5.fc40 -> 1.3.4-7.fc41
+  libbpf 2:1.2.0-3.fc40 -> 2:1.4.7-1.fc41
+  libbrotli 1.1.0-3.fc40 -> 1.1.0-5.fc41
+  libbrotli 1.1.0-3.fc40 -> 1.1.0-5.fc41
+  libbs2b 3.1.0-33.fc40 -> 3.1.0-34.fc41
+  libbytesize 2.10-3.fc40 -> 2.11-99.fc41
+  libcap 2.69-8.fc40 -> 2.70-4.fc41
+  libcap 2.69-8.fc40 -> 2.70-4.fc41
+  libcap-ng 0.8.4-4.fc40 -> 0.8.5-3.fc41
+  libcap-ng 0.8.4-4.fc40 -> 0.8.5-3.fc41
+  libcbor 0.11.0-1.fc40 -> 0.11.0-2.fc41
+  libcdio 2.1.0-12.fc40 -> 2.1.0-13.fc41
+  libcdio-paranoia 10.2+2.0.1-12.fc40 -> 10.2+2.0.1-13.fc41
+  libchromaprint 1.5.1-17.fc40 -> 1.5.1-22.fc41
+  libcloudproviders 0.3.5-3.fc40 -> 0.3.5-5.fc41
+  libcloudproviders 0.3.5-3.fc40 -> 0.3.5-5.fc41
+  libcollection 0.7.0-56.fc40 -> 0.7.0-57.fc41
+  libcom_err 1.47.0-5.fc40 -> 1.47.1-6.fc41
+  libcom_err 1.47.0-5.fc40 -> 1.47.1-6.fc41
+  libconfig 1.7.3-8.fc40 -> 1.7.3-9.fc41
+  libcupsfilters 1:2.0.0-7.fc40 -> 1:2.1~b1-3.fc41
+  libcurl-minimal 8.6.0-10.fc40 -> 8.9.1-2.fc41
+  libcurl-minimal 8.6.0-10.fc40 -> 8.9.1-2.fc41
+  libdaemon 0.14-29.fc40 -> 0.14-30.fc41
+  libdatrie 0.2.13-9.fc40 -> 0.2.13-10.fc41
+  libdatrie 0.2.13-9.fc40 -> 0.2.13-10.fc41
+  libdav1d 1.4.3-1.fc40 -> 1.5.0-1.fc41
+  libdb 5.3.28-62.fc40 -> 5.3.28-63.fc41
+  libdecor 0.2.2-3.fc40 -> 0.2.2-4.fc41
+  libdecor 0.2.2-3.fc40 -> 0.2.2-4.fc41
+  libdhash 0.5.0-56.fc40 -> 0.5.0-57.fc41
+  libdisplay-info 0.1.1-4.fc40 -> 0.2.0-2.fc41
+  libdovi 3.3.0-2.fc40 -> 3.3.0-3.fc41
+  libdrm 2.4.122-1.fc40 -> 2.4.123-1.fc41
+  libdrm 2.4.122-1.fc40 -> 2.4.123-1.fc41
+  libdvdnav 6.1.1-8.fc40 -> 6.1.1-9.fc41
+  libdvdread 6.1.3-6.fc40 -> 6.1.3-7.fc41
+  libeconf 0.6.2-2.fc40 -> 0.6.2-3.fc41
+  libeconf 0.6.2-2.fc40 -> 0.6.2-3.fc41
+  libedit 3.1-53.20240808cvs.fc40 -> 3.1-53.20240808cvs.fc41
+  libedit 3.1-53.20240808cvs.fc40 -> 3.1-53.20240808cvs.fc41
+  libei 1.3.0-1.fc40 -> 1.3.0-1.fc41
+  libepoxy 1.5.10-6.fc40 -> 1.5.10-8.fc41
+  libepoxy 1.5.10-6.fc40 -> 1.5.10-8.fc41
+  libertas-firmware 20240811-2.fc40 -> 20241017-2.fc41
+  libev 4.33-11.fc40 -> 4.33-12.fc41
+  libevdev 1.13.2-2.fc40 -> 1.13.3-1.fc41
+  libevent 2.1.12-12.fc40 -> 2.1.12-14.fc41
+  libevent 2.1.12-12.fc40 -> 2.1.12-14.fc41
+  libexif 0.6.24-7.fc40 -> 0.6.24-8.fc41
+  libfdisk 2.40.1-1.fc40 -> 2.40.2-4.fc41
+  libffado 2.4.8-4.fc40 -> 2.4.8-6.fc41
+  libffi 3.4.4-7.fc40 -> 3.4.6-3.fc41
+  libffi 3.4.4-7.fc40 -> 3.4.6-3.fc41
+  libfido2 1.14.0-4.fc40 -> 1.15.0-2.fc41
+  libfontenc 1.1.7-3.fc40 -> 1.1.8-2.fc41
+  libgcc 14.2.1-1.fc40 -> 14.2.1-3.fc41
+  libgcc 14.2.1-1.fc40 -> 14.2.1-3.fc41
+  libgcrypt 1.10.3-3.fc40 -> 1.11.0-3.fc41
+  libglvnd 1:1.7.0-4.fc40 -> 1:1.7.0-5.fc41
+  libglvnd 1:1.7.0-4.fc40 -> 1:1.7.0-5.fc41
+  libglvnd-egl 1:1.7.0-4.fc40 -> 1:1.7.0-5.fc41
+  libglvnd-egl 1:1.7.0-4.fc40 -> 1:1.7.0-5.fc41
+  libglvnd-gles 1:1.7.0-4.fc40 -> 1:1.7.0-5.fc41
+  libglvnd-glx 1:1.7.0-4.fc40 -> 1:1.7.0-5.fc41
+  libglvnd-glx 1:1.7.0-4.fc40 -> 1:1.7.0-5.fc41
+  libgomp 14.2.1-1.fc40 -> 14.2.1-3.fc41
+  libgpg-error 1.49-1.fc40 -> 1.50-2.fc41
+  libgs 10.02.1-12.fc40 -> 10.03.1-3.fc41
+  libgudev 238-5.fc40 -> 238-6.fc41
+  libgusb 0.4.9-1.fc40 -> 0.4.9-2.fc41
+  libgusb 0.4.9-1.fc40 -> 0.4.9-2.fc41
+  libicu 74.2-1.fc40 -> 74.2-2.fc41
+  libicu 74.2-1.fc40 -> 74.2-2.fc41
+  libidn2 2.3.7-1.fc40 -> 2.3.7-2.fc41
+  libidn2 2.3.7-1.fc40 -> 2.3.7-2.fc41
+  libiec61883 1.2.0-34.fc40 -> 1.2.0-35.fc41
+  libiio 0.25-3.fc40 -> 0.25-6.fc41
+  libijs 0.35-22.fc40 -> 0.35-23.fc41
+  libimobiledevice 1.3.0^20230705git6fc41f5-4.fc40 -> 1.3.0^20230705git6fc41f5-5.fc41
+  libimobiledevice-glue 1.0.0-3.fc40 -> 1.0.0-4.fc41
+  libini_config 1.3.1-56.fc40 -> 1.3.1-57.fc41
+  libinput 1.26.1-1.fc40 -> 1.26.2-1.fc41
+  libjcat 0.2.1-2.fc40 -> 0.2.2-1.fc41
+  libjpeg-turbo 3.0.2-1.fc40 -> 3.0.2-3.fc41
+  libjpeg-turbo 3.0.2-1.fc40 -> 3.0.2-3.fc41
+  libjxl 1:0.8.3-1.fc40 -> 1:0.10.3-5.fc41
+  libkcapi 1.4.0-10.fc40 -> 1.5.0-4.fc41
+  libkcapi-hmaccalc 1.4.0-10.fc40 -> 1.5.0-4.fc41
+  libksba 1.6.6-1.fc40 -> 1.6.7-2.fc41
+  liblc3 1.1.1-1.fc40 -> 1.1.1-3.fc41
+  liblc3 1.1.1-1.fc40 -> 1.1.1-3.fc41
+  libldac 2.0.2.3-15.fc40 -> 2.0.2.3-16.fc41
+  libldac 2.0.2.3-15.fc40 -> 2.0.2.3-16.fc41
+  libldb 2.9.1-4.fc40 -> 2:4.21.1-7.fc41
+  liblerc 4.0.0-6.fc40 -> 4.0.0-7.fc41
+  liblerc 4.0.0-6.fc40 -> 4.0.0-7.fc41
+  libliftoff 0.4.1-4.fc40 -> 0.5.0-2.fc41
+  libmanette 0.2.7-1.fc40 -> 0.2.9-1.fc41
+  libmaxminddb 1.10.0-1.fc40 -> 1.11.0-1.fc41
+  libmbim 1.30.0-3.fc40 -> 1.30.0-4.fc41
+  libmbim-utils 1.30.0-3.fc40 -> 1.30.0-4.fc41
+  libmnl 1.0.5-5.fc40 -> 1.0.5-6.fc41
+  libmodplug 1:0.8.9.0-19.fc40 -> 1:0.8.9.0-25.fc41
+  libmodulemd 2.15.0-12.fc40 -> 2.15.0-14.fc41
+  libmount 2.40.1-1.fc40 -> 2.40.2-4.fc41
+  libmount 2.40.1-1.fc40 -> 2.40.2-4.fc41
+  libmpeg2 0.5.1-29.fc40 -> 0.5.1-30.fc41
+  libmspack 0.10.1-0.12.alpha.fc40 -> 0.10.1-0.13.alpha.fc41
+  libmysofa 1.2.1-7.fc40 -> 1.3.3-1.fc41
+  libndp 1.8-9.fc40 -> 1.9-2.fc41
+  libnetfilter_conntrack 1.0.9-5.fc40 -> 1.0.9-6.fc41
+  libnfnetlink 1.0.1-27.fc40 -> 1.0.1-28.fc41
+  libnfsidmap 1:2.6.4-0.rc8.fc40 -> 1:2.8.1-0.fc41
+  libnftnl 1.2.6-5.fc40 -> 1.2.7-2.fc41
+  libnghttp2 1.59.0-3.fc40 -> 1.62.1-2.fc41
+  libnghttp2 1.59.0-3.fc40 -> 1.62.1-2.fc41
+  libnice 0.1.22-1.fc40 -> 0.1.22-2.fc41
+  libnl3 3.10.0-1.fc40 -> 3.11.0-1.fc41
+  libnotify 0.8.3-3.fc40 -> 0.8.3-4.fc41
+  libnsl 2.39-22.fc40 -> 2.40-9.fc41
+  libnsl 2.39-22.fc40 -> 2.40-9.fc41
+  libnsl2 2.0.1-1.fc40 -> 2.0.1-2.fc41
+  libnvme 1.8-1.fc40 -> 1.10-1.fc41
+  liboeffis 1.3.0-1.fc40 -> 1.3.0-1.fc41
+  libogg 2:1.3.5-8.fc40 -> 2:1.3.5-9.fc41
+  libogg 2:1.3.5-8.fc40 -> 2:1.3.5-9.fc41
+  libopenmpt 0.7.8-1.fc40 -> 0.7.10-1.fc41
+  libpaper 1:2.1.1-3.fc40 -> 1:2.1.1-7.fc41
+  libpasswdqc 2.0.3-4.fc40 -> 2.0.3-5.fc41
+  libpath_utils 0.2.1-56.fc40 -> 0.2.1-57.fc41
+  libpciaccess 0.16-12.fc40 -> 0.16-13.fc41
+  libpciaccess 0.16-12.fc40 -> 0.16-13.fc41
+  libpipeline 1.5.7-5.fc40 -> 1.5.7-6.fc41
+  libpkgconf 2.1.1-1.fc40 -> 2.3.0-1.fc41
+  libplacebo 6.338.2-1.fc40 -> 7.349.0-4.fc41
+  libplist 2.3.0-4.fc40 -> 2.3.0-6.fc41
+  libpng 2:1.6.40-3.fc40 -> 2:1.6.40-4.fc41
+  libpng 2:1.6.40-3.fc40 -> 2:1.6.40-4.fc41
+  libppd 1:2.0.0-6.fc40 -> 1:2.1~b1-2.fc41
+  libproxy 0.5.5-1.fc40 -> 0.5.8-1.fc41
+  libpsl 0.21.5-3.fc40 -> 0.21.5-4.fc41
+  libpsl 0.21.5-3.fc40 -> 0.21.5-4.fc41
+  libpwquality 1.4.5-9.fc40 -> 1.4.5-11.fc41
+  libqmi 1.34.0-5.fc40 -> 1.34.0-6.fc41
+  libqmi-utils 1.34.0-5.fc40 -> 1.34.0-6.fc41
+  libqrtr-glib 1.2.2-5.fc40 -> 1.2.2-6.fc41
+  librabbitmq 0.14.0-2.fc40 -> 0.14.0-3.fc41
+  libraw1394 2.1.2-20.fc40 -> 2.1.2-21.fc41
+  libref_array 0.1.5-56.fc40 -> 0.1.5-57.fc41
+  librepo 1.18.1-1.fc40 -> 1.18.1-1.fc41
+  libreport-filesystem 2.17.15-1.fc40 -> 2.17.15-3.fc41
+  librist 0.2.7-4.fc40 -> 0.2.7-5.fc41
+  librsvg2 2.57.1-6.fc40 -> 2.59.1-1.fc41
+  libsamplerate 0.2.2-8.fc40 -> 0.2.2-9.fc41
+  libsbc 2.0-4.fc40 -> 2.0-5.fc41
+  libsbc 2.0-4.fc40 -> 2.0-5.fc41
+  libseat 0.8.0-2.fc40 -> 0.8.0-3.fc41
+  libseccomp 2.5.5-1.fc40 -> 2.5.5-2.fc41
+  libsecret 0.21.4-2.fc40 -> 0.21.4-3.fc41
+  libselinux 3.6-4.fc40 -> 3.7-5.fc41
+  libselinux 3.6-4.fc40 -> 3.7-5.fc41
+  libselinux-utils 3.6-4.fc40 -> 3.7-5.fc41
+  libsemanage 3.6-3.fc40 -> 3.7-2.fc41
+  libsepol 3.6-3.fc40 -> 3.7-2.fc41
+  libsepol 3.6-3.fc40 -> 3.7-2.fc41
+  libshaderc 2024.0-1.fc40 -> 2024.3-1.fc41
+  libshout 2.4.6-6.fc40 -> 2.4.6-7.fc41
+  libsigc++20 2.12.1-2.fc40 -> 2.12.1-3.fc41
+  libsmartcols 2.40.1-1.fc40 -> 2.40.2-4.fc41
+  libsmbclient 2:4.20.4-1.fc40 -> 2:4.21.1-7.fc41
+  libsndfile 1.2.2-2.fc40 -> 1.2.2-4.fc41
+  libsndfile 1.2.2-2.fc40 -> 1.2.2-4.fc41
+  libsodium 1.0.20-1.fc40 -> 1.0.20-2.fc41
+  libsolv 0.7.30-1.fc40 -> 0.7.30-1.fc41
+  libsoup3 3.4.4-3.fc40 -> 3.6.0-1.fc41
+  libsoup3 3.4.4-3.fc40 -> 3.6.0-1.fc41
+  libsrtp 2.6.0-1.fc40 -> 2.6.0-1.fc41
+  libss 1.47.0-5.fc40 -> 1.47.1-6.fc41
+  libssh 0.10.6-5.fc40 -> 0.10.6-8.fc41
+  libssh-config 0.10.6-5.fc40 -> 0.10.6-8.fc41
+  libsss_certmap 2.9.5-1.fc40 -> 2.10.0-1.fc41
+  libsss_idmap 2.9.5-1.fc40 -> 2.10.0-1.fc41
+  libsss_nss_idmap 2.9.5-1.fc40 -> 2.10.0-1.fc41
+  libsss_sudo 2.9.5-1.fc40 -> 2.10.0-1.fc41
+  libstdc++ 14.2.1-1.fc40 -> 14.2.1-3.fc41
+  libstdc++ 14.2.1-1.fc40 -> 14.2.1-3.fc41
+  libstemmer 2.2.0-10.fc40 -> 2.2.0-13.fc41
+  libtalloc 2.4.2-1.fc40 -> 2.4.2-4.fc41
+  libtasn1 4.19.0-6.fc40 -> 4.19.0-9.fc41
+  libtasn1 4.19.0-6.fc40 -> 4.19.0-9.fc41
+  libtdb 1.4.10-1.fc40 -> 1.4.12-3.fc41
+  libtevent 0.16.1-1.fc40 -> 0.16.1-4.fc41
+  libtextstyle 0.22.5-4.fc40 -> 0.22.5-6.fc41
+  libthai 0.1.29-8.fc40 -> 0.1.29-9.fc41
+  libthai 0.1.29-8.fc40 -> 0.1.29-9.fc41
+  libtheora 1:1.1.1-36.fc40 -> 1:1.1.1-38.fc41
+  libtiff 4.6.0-2.fc40 -> 4.6.0-6.fc41
+  libtiff 4.6.0-2.fc40 -> 4.6.0-6.fc41
+  libtirpc 1.3.5-0.fc40 -> 1.3.6-0.fc41
+  libtool-ltdl 2.4.7-10.fc40 -> 2.4.7-12.fc41
+  libtracker-sparql 3.7.3-1.fc40 -> 3.7.3-3.fc41
+  libtracker-sparql 3.7.3-1.fc40 -> 3.7.3-3.fc41
+  libudfread 1.1.2-8.fc40 -> 1.1.2-9.fc41
+  libudisks2 2.10.1-5.fc40 -> 2.10.1-6.fc41
+  libunistring 1.1-7.fc40 -> 1.1-8.fc41
+  libunistring 1.1-7.fc40 -> 1.1-8.fc41
+  libunwind 1.8.0-3.fc40 -> 1.8.0-4.fc41
+  liburing 2.5-3.fc40 -> 2.6-2.fc41
+  libusb1 1.0.27-2.fc40 -> 1.0.27-4.fc41
+  libusb1 1.0.27-2.fc40 -> 1.0.27-4.fc41
+  libusbmuxd 2.0.2^20230620git8d30a55-5.fc40 -> 2.0.2^20230620git8d30a55-6.fc41
+  libutempter 1.2.1-13.fc40 -> 1.2.1-15.fc41
+  libuuid 2.40.1-1.fc40 -> 2.40.2-4.fc41
+  libuuid 2.40.1-1.fc40 -> 2.40.2-4.fc41
+  libuv 1:1.48.0-1.fc40 -> 1:1.49.2-1.fc41
+  libv4l 1.28.1-1.fc40 -> 1.28.1-1.fc41
+  libva 2.21.0-3.fc40 -> 2.22.0-3.fc41
+  libva 2.21.0-3.fc40 -> 2.22.0-3.fc41
+  libva-intel-media-driver 24.2.5-1.fc40 -> 24.3.4-1.fc41
+  libvdpau 1.5-6.fc40 -> 1.5-8.fc41
+  libvdpau 1.5-6.fc40 -> 1.5-8.fc41
+  libverto 0.3.2-8.fc40 -> 0.3.2-9.fc41
+  libverto 0.3.2-8.fc40 -> 0.3.2-9.fc41
+  libverto-libev 0.3.2-8.fc40 -> 0.3.2-9.fc41
+  libvisual 1:0.4.1-4.fc40 -> 1:0.4.1-5.fc41
+  libvmaf 2.3.0-7.fc40 -> 3.0.0-2.fc41
+  libvorbis 1:1.3.7-10.fc40 -> 1:1.3.7-11.fc41
+  libvorbis 1:1.3.7-10.fc40 -> 1:1.3.7-11.fc41
+  libvpx 1.14.1-1.fc40 -> 1.14.1-2.fc41
+  libwacom 2.11.0-1.fc40 -> 2.13.0-1.fc41
+  libwacom-data 2.11.0-1.fc40 -> 2.13.0-1.fc41
+  libwayland-client 1.23.0-2.fc40 -> 1.23.0-2.fc41
+  libwayland-client 1.23.0-2.fc40 -> 1.23.0-2.fc41
+  libwayland-cursor 1.23.0-2.fc40 -> 1.23.0-2.fc41
+  libwayland-cursor 1.23.0-2.fc40 -> 1.23.0-2.fc41
+  libwayland-egl 1.23.0-2.fc40 -> 1.23.0-2.fc41
+  libwayland-egl 1.23.0-2.fc40 -> 1.23.0-2.fc41
+  libwayland-server 1.23.0-2.fc40 -> 1.23.0-2.fc41
+  libwayland-server 1.23.0-2.fc40 -> 1.23.0-2.fc41
+  libwbclient 2:4.20.4-1.fc40 -> 2:4.21.1-7.fc41
+  libwebp 1.3.2-5.fc40 -> 1.4.0-4.fc41
+  libwebp 1.3.2-5.fc40 -> 1.4.0-4.fc41
+  libxcb 1.17.0-1.fc40 -> 1.17.0-3.fc41
+  libxcb 1.17.0-1.fc40 -> 1.17.0-3.fc41
+  libxcrypt 4.4.36-5.fc40 -> 4.4.36-7.fc41
+  libxcvt 0.1.2-6.fc40 -> 0.1.2-8.fc41
+  libxkbcommon 1.6.0-2.fc40 -> 1.7.0-4.fc41
+  libxkbcommon 1.6.0-2.fc40 -> 1.7.0-4.fc41
+  libxkbcommon-x11 1.6.0-2.fc40 -> 1.7.0-4.fc41
+  libxkbfile 1.1.3-1.fc40 -> 1.1.3-2.fc41
+  libxklavier 5.4-25.fc40 -> 5.4-26.fc41
+  libxml++ 2.42.3-3.fc40 -> 2.42.3-4.fc41
+  libxml2 2.12.8-1.fc40 -> 2.12.8-2.fc41
+  libxml2 2.12.8-1.fc40 -> 2.12.8-2.fc41
+  libxmlb 0.3.19-2.fc40 -> 0.3.21-1.fc41
+  libxshmfence 1.3.2-3.fc40 -> 1.3.2-4.fc41
+  libxshmfence 1.3.2-3.fc40 -> 1.3.2-4.fc41
+  libxslt 1.1.42-1.fc40 -> 1.1.42-2.fc41
+  libyaml 0.2.5-14.fc40 -> 0.2.5-15.fc41
+  libzstd 1.5.6-1.fc40 -> 1.5.6-2.fc41
+  libzstd 1.5.6-1.fc40 -> 1.5.6-2.fc41
+  lightdm 1.32.0-10.fc40 -> 1.32.0-11.fc41
+  lightdm-autologin-greeter 1.0-20.fc40 -> 1.0-21.fc41
+  lightdm-gobject 1.32.0-10.fc40 -> 1.32.0-11.fc41
+  lilv-libs 0.24.20-3.fc40 -> 0.24.24-2.fc41
+  linux-firmware 20240811-2.fc40 -> 20241017-2.fc41
+  linux-firmware-whence 20240811-2.fc40 -> 20241017-2.fc41
+  llvm-libs 18.1.6-2.fc40 -> 19.1.0-1.fc41
+  llvm-libs 18.1.6-2.fc40 -> 19.1.0-1.fc41
+  lm_sensors-libs 3.6.0-18.fc40 -> 3.6.0-20.fc41
+  lm_sensors-libs 3.6.0-18.fc40 -> 3.6.0-20.fc41
+  lmdb-libs 0.9.33-1.fc40 -> 0.9.33-2.fc41
+  logrotate 3.21.0-6.fc40 -> 3.22.0-2.fc41
+  lpcnetfreedv 0.5-5.fc40 -> 0.5-6.fc41
+  lrzsz 0.12.20-64.fc40 -> 0.12.20-65.fc41
+  lsb_release 3.3-3.fc40 -> 3.3-4.fc41
+  lsof 4.98.0-4.fc40 -> 4.98.0-5.fc41
+  lua-libs 5.4.6-5.fc40 -> 5.4.6-6.fc41
+  lv2 1.18.8-8.fc40 -> 1.18.8-9.fc41
+  lvm2 2.03.23-1.fc40 -> 2.03.25-4.fc41
+  lvm2-libs 2.03.23-1.fc40 -> 2.03.25-4.fc41
+  lz4-libs 1.9.4-6.fc40 -> 1.10.0-1.fc41
+  lzo 2.10-12.fc40 -> 2.10-13.fc41
+  madan-fonts 2.000-38.fc40 -> 2.000-39.fc41
+  malcontent-libs 0.11.1-5.fc40 -> 0.12.0-1.fc41
+  man-db 2.12.0-6.fc40 -> 2.12.1-2.fc41
+  man-pages 6.06-1.fc40 -> 6.9.1-2.fc41
+  mangohud 0.7.1-4.fc40 -> 0.7.1-5.fc41
+  mbedtls 2.28.8-1.fc40 -> 2.28.9-1.fc41
+  mcelog 3:175-10.fc40 -> 3:175-11.fc41
+  mdadm 4.2-8.fc40 -> 4.3-4.fc41
+  mesa-dri-drivers 24.1.2-1.fc40 -> 24.2.6-1.fc41
+  mesa-dri-drivers 24.1.2-1.fc40 -> 24.2.6-1.fc41
+  mesa-filesystem 24.1.2-1.fc40 -> 24.2.6-1.fc41
+  mesa-filesystem 24.1.2-1.fc40 -> 24.2.6-1.fc41
+  mesa-libEGL 24.1.2-1.fc40 -> 24.2.6-1.fc41
+  mesa-libEGL 24.1.2-1.fc40 -> 24.2.6-1.fc41
+  mesa-libGL 24.1.2-1.fc40 -> 24.2.6-1.fc41
+  mesa-libGL 24.1.2-1.fc40 -> 24.2.6-1.fc41
+  mesa-libgbm 24.1.2-1.fc40 -> 24.2.6-1.fc41
+  mesa-libgbm 24.1.2-1.fc40 -> 24.2.6-1.fc41
+  mesa-libglapi 24.1.2-1.fc40 -> 24.2.6-1.fc41
+  mesa-libglapi 24.1.2-1.fc40 -> 24.2.6-1.fc41
+  mesa-vulkan-drivers 24.1.2-1.fc40 -> 24.2.6-1.fc41
+  mesa-vulkan-drivers 24.1.2-1.fc40 -> 24.2.6-1.fc41
+  microcode_ctl 2:2.1-61.1.fc40 -> 2:2.1-65.fc41
+  mokutil 2:0.7.1-1.fc40 -> 2:0.7.1-2.fc41
+  mpage 2.5.7-19.fc40 -> 2.5.7-20.fc41
+  mpdecimal 2.5.1-9.fc40 -> 2.5.1-16.fc41
+  mpfr 4.2.1-4.fc40 -> 4.2.1-5.fc41
+  mpg123-libs 1.31.3-4.fc40 -> 1.31.3-5.fc41
+  mpg123-libs 1.31.3-4.fc40 -> 1.31.3-5.fc41
+  mt7xxx-firmware 20240811-2.fc40 -> 20241017-2.fc41
+  mtdev 1.1.6-8.fc40 -> 1.1.6-9.fc41
+  mtr 2:0.95-9.fc40 -> 2:0.95-10.fc41
+  nano 7.2-7.fc40 -> 8.1-1.fc41
+  nano-default-editor 7.2-7.fc40 -> 8.1-1.fc41
+  ncurses 6.4-12.20240127.fc40 -> 6.5-2.20240629.fc41
+  ncurses-base 6.4-12.20240127.fc40 -> 6.5-2.20240629.fc41
+  ncurses-libs 6.4-12.20240127.fc40 -> 6.5-2.20240629.fc41
+  ncurses-libs 6.4-12.20240127.fc40 -> 6.5-2.20240629.fc41
+  neatvnc 0.8.1-1.fc40 -> 0.8.1-3.fc41
+  netavark 2:1.12.1-1.fc40 -> 2:1.12.2-1.fc41
+  nettle 3.9.1-6.fc40 -> 3.10-3.fc41
+  nettle 3.9.1-6.fc40 -> 3.10-3.fc41
+  newt 0.52.24-3.fc40 -> 0.52.24-5.fc41
+  nfs-utils 1:2.6.4-0.rc8.fc40 -> 1:2.8.1-0.fc41
+  nftables 1:1.0.9-3.fc40 -> 1:1.0.9-7.fc41
+  npth 1.7-1.fc40 -> 1.7-2.fc41
+  nspr 4.35.0-28.fc40 -> 4.35.0-30.fc41
+  nspr 4.35.0-28.fc40 -> 4.35.0-30.fc41
+  nss 3.103.0-1.fc40 -> 3.105.0-1.fc41
+  nss 3.103.0-1.fc40 -> 3.105.0-1.fc41
+  nss-altfiles 2.23.0-4.fc40 -> 2.23.0-5.fc41
+  nss-mdns 0.15.1-11.fc40 -> 0.15.1-12.fc41
+  nss-softokn 3.103.0-1.fc40 -> 3.105.0-1.fc41
+  nss-softokn 3.103.0-1.fc40 -> 3.105.0-1.fc41
+  nss-softokn-freebl 3.103.0-1.fc40 -> 3.105.0-1.fc41
+  nss-softokn-freebl 3.103.0-1.fc40 -> 3.105.0-1.fc41
+  nss-sysinit 3.103.0-1.fc40 -> 3.105.0-1.fc41
+  nss-util 3.103.0-1.fc40 -> 3.105.0-1.fc41
+  nss-util 3.103.0-1.fc40 -> 3.105.0-1.fc41
+  ntfs-3g 2:2022.10.3-5.fc40 -> 2:2022.10.3-6.fc41
+  ntfs-3g-libs 2:2022.10.3-5.fc40 -> 2:2022.10.3-6.fc41
+  ntfsprogs 2:2022.10.3-5.fc40 -> 2:2022.10.3-6.fc41
+  numactl-libs 2.0.16-5.fc40 -> 2.0.18-2.fc41
+  nvidia-gpu-firmware 20240811-2.fc40 -> 20241017-2.fc41
+  nxpwireless-firmware 20240811-2.fc40 -> 20241017-2.fc41
+  ocl-icd 2.3.2-6.fc40 -> 2.3.2-7.fc41
+  oneVPL 2023.4.0-4.fc40 -> 2023.4.0-5.fc41
+  open-vm-tools 12.4.0-1.fc40 -> 12.4.0-2.fc41
+  open-vm-tools-desktop 12.4.0-1.fc40 -> 12.4.0-2.fc41
+  openal-soft 1.23.1-5.fc40 -> 1.23.1-6.fc41
+  opencore-amr 0.1.6-6.fc40 -> 0.1.6-7.fc41
+  openh264 2.4.1-2.fc40 -> 2.4.1-2.fc41
+  openldap 2.6.7-1.fc40 -> 2.6.8-5.fc41
+  openpgm 5.2.122-34.fc40 -> 5.2.122-35.fc41
+  opensc 0.25.0-1.fc40 -> 0.25.1-5.fc41
+  openssh 9.6p1-1.fc40.4 -> 9.8p1-3.fc41.2
+  openssh-clients 9.6p1-1.fc40.4 -> 9.8p1-3.fc41.2
+  openssh-server 9.6p1-1.fc40.4 -> 9.8p1-3.fc41.2
+  openssl-libs 1:3.2.2-3.fc40 -> 1:3.2.2-9.fc41
+  openssl-libs 1:3.2.2-3.fc40 -> 1:3.2.2-9.fc41
+  opus 1.5.1-1.fc40 -> 1.5.2-1.fc41
+  opus 1.5.1-1.fc40 -> 1.5.2-1.fc41
+  orc 0.4.39-1.fc40 -> 0.4.39-1.fc41
+  os-prober 1.81-6.fc40 -> 1.81-8.fc41
+  ostree 2024.7-1.fc40 -> 2024.8-3.fc41
+  ostree-grub2 2024.7-1.fc40 -> 2024.8-3.fc41
+  ostree-libs 2024.7-1.fc40 -> 2024.8-3.fc41
+  p11-kit 0.25.5-1.fc40 -> 0.25.5-3.fc41
+  p11-kit 0.25.5-1.fc40 -> 0.25.5-3.fc41
+  p11-kit-trust 0.25.5-1.fc40 -> 0.25.5-3.fc41
+  p7zip-plugins 16.02-28.fc40 -> 16.02-31.fc41
+  paktype-naskh-basic-fonts 6.0-12.fc40 -> 6.0-13.fc41
+  pam 1.6.1-3.fc40 -> 1.6.1-6.fc41
+  pam-libs 1.6.1-3.fc40 -> 1.6.1-6.fc41
+  pam-libs 1.6.1-3.fc40 -> 1.6.1-6.fc41
+  pam_afs_session 2.6-21.fc40 -> 2.6-22.fc41
+  pam_passwdqc 2.0.3-4.fc40 -> 2.0.3-5.fc41
+  pango 1.54.0-1.fc40 -> 1.54.0-2.fc41
+  pango 1.54.0-1.fc40 -> 1.54.0-2.fc41
+  pangomm 2.46.4-1.fc40 -> 2.46.4-2.fc41
+  paps 0.8.0-9.fc40 -> 0.8.0-11.fc41
+  parted 3.6-4.fc40 -> 3.6-7.fc41
+  passim-libs 0.1.7-1.fc40 -> 0.1.8-2.fc41
+  passt 0^20240814.g61c0b0d-1.fc40 -> 0^20241030.gee7d0b6-1.fc41
+  passt-selinux 0^20240814.g61c0b0d-1.fc40 -> 0^20241030.gee7d0b6-1.fc41
+  passwdqc 2.0.3-4.fc40 -> 2.0.3-5.fc41
+  passwdqc-utils 2.0.3-4.fc40 -> 2.0.3-5.fc41
+  pciutils 3.13.0-1.fc40 -> 3.13.0-5.fc41
+  pciutils-libs 3.13.0-1.fc40 -> 3.13.0-5.fc41
+  pcre 8.45-1.fc40.6 -> 8.45-1.fc41.7
+  pcre2 10.44-1.fc40 -> 10.44-1.fc41.1
+  pcre2 10.44-1.fc40 -> 10.44-1.fc41.1
+  pcre2-syntax 10.44-1.fc40 -> 10.44-1.fc41.1
+  pcre2-utf16 10.44-1.fc40 -> 10.44-1.fc41.1
+  pcsc-lite 2.0.3-1.fc40 -> 2.3.0-1.fc41
+  pcsc-lite-ccid 1.5.5-3.fc40 -> 1.6.1-2.fc41
+  pcsc-lite-libs 2.0.3-1.fc40 -> 2.3.0-1.fc41
+  perl-AutoLoader 5.74-506.fc40 -> 5.74-512.fc41
+  perl-B 1.88-506.fc40 -> 1.89-512.fc41
+  perl-Carp 1.54-502.fc40 -> 1.54-511.fc41
+  perl-Class-Struct 0.68-506.fc40 -> 0.68-512.fc41
+  perl-Data-Dumper 2.188-503.fc40 -> 2.189-512.fc41
+  perl-Digest 1.20-502.fc40 -> 1.20-511.fc41
+  perl-Digest-HMAC 1.04-10.fc40 -> 1.04-11.fc41
+  perl-Digest-MD5 2.59-3.fc40 -> 2.59-5.fc41
+  perl-Digest-SHA 1:6.04-503.fc40 -> 1:6.04-512.fc41
+  perl-DynaLoader 1.54-506.fc40 -> 1.56-512.fc41
+  perl-Encode 4:3.21-505.fc40 -> 4:3.21-511.fc41
+  perl-Errno 1.37-506.fc40 -> 1.38-512.fc41
+  perl-Exporter 5.78-3.fc40 -> 5.78-511.fc41
+  perl-Fcntl 1.15-506.fc40 -> 1.18-512.fc41
+  perl-File-Basename 2.86-506.fc40 -> 2.86-512.fc41
+  perl-File-Path 2.18-503.fc40 -> 2.18-511.fc41
+  perl-File-Temp 1:0.231.100-503.fc40 -> 1:0.231.100-511.fc41
+  perl-File-stat 1.13-506.fc40 -> 1.14-512.fc41
+  perl-FileHandle 2.05-506.fc40 -> 2.05-512.fc41
+  perl-Getopt-Long 1:2.57-4.fc40 -> 1:2.58-2.fc41
+  perl-Getopt-Std 1.13-506.fc40 -> 1.14-512.fc41
+  perl-HTTP-Tiny 0.088-5.fc40 -> 0.088-512.fc41
+  perl-IO 1.52-506.fc40 -> 1.55-512.fc41
+  perl-IO-Socket-IP 0.42-2.fc40 -> 0.42-512.fc41
+  perl-IO-Socket-SSL 2.085-1.fc40 -> 2.089-1.fc41
+  perl-IPC-Open3 1.22-506.fc40 -> 1.22-512.fc41
+  perl-MIME-Base64 3.16-503.fc40 -> 3.16-511.fc41
+  perl-Math-BigInt 1:2.0030.03-1.fc40 -> 1:2.0030.03-3.fc41
+  perl-Math-Complex 1.62-506.fc40 -> 1.62-512.fc41
+  perl-Mozilla-CA 20231213-3.fc40 -> 20240730-1.fc41
+  perl-Net-DNS 1.43-1.fc40 -> 1.47-1.fc41
+  perl-Net-IP 1.26-33.fc40 -> 1.26-34.fc41
+  perl-Net-SSLeay 1.94-3.fc40 -> 1.94-7.fc41
+  perl-POSIX 2.13-506.fc40 -> 2.20-512.fc41
+  perl-PathTools 3.89-502.fc40 -> 3.91-511.fc41
+  perl-Pod-Escapes 1:1.07-503.fc40 -> 1:1.07-511.fc41
+  perl-Pod-Perldoc 3.28.01-503.fc40 -> 3.28.01-512.fc41
+  perl-Pod-Simple 1:3.45-6.fc40 -> 1:3.45-511.fc41
+  perl-Pod-Usage 4:2.03-504.fc40 -> 4:2.03-511.fc41
+  perl-Scalar-List-Utils 5:1.63-503.fc40 -> 5:1.68-1.fc41
+  perl-SelectSaver 1.02-506.fc40 -> 1.02-512.fc41
+  perl-Socket 4:2.038-1.fc40 -> 4:2.038-511.fc41
+  perl-Storable 1:3.32-502.fc40 -> 1:3.32-511.fc41
+  perl-Symbol 1.09-506.fc40 -> 1.09-512.fc41
+  perl-Term-ANSIColor 5.01-504.fc40 -> 5.01-512.fc41
+  perl-Term-Cap 1.18-503.fc40 -> 1.18-511.fc41
+  perl-Text-ParseWords 3.31-502.fc40 -> 3.31-511.fc41
+  perl-Text-Tabs+Wrap 2024.001-1.fc40 -> 2024.001-511.fc41
+  perl-Time-Local 2:1.350-5.fc40 -> 2:1.350-511.fc41
+  perl-URI 5.28-1.fc40 -> 5.30-1.fc41
+  perl-base 2.27-506.fc40 -> 2.27-512.fc41
+  perl-constant 1.33-503.fc40 -> 1.33-512.fc41
+  perl-if 0.61.000-506.fc40 -> 0.61.000-512.fc41
+  perl-interpreter 4:5.38.2-506.fc40 -> 4:5.40.0-512.fc41
+  perl-libnet 3.15-503.fc40 -> 3.15-512.fc41
+  perl-libs 4:5.38.2-506.fc40 -> 4:5.40.0-512.fc41
+  perl-locale 1.10-506.fc40 -> 1.12-512.fc41
+  perl-mro 1.28-506.fc40 -> 1.29-512.fc41
+  perl-overload 1.37-506.fc40 -> 1.37-512.fc41
+  perl-overloading 0.02-506.fc40 -> 0.02-512.fc41
+  perl-parent 1:0.241-502.fc40 -> 1:0.242-1.fc41
+  perl-podlators 1:5.01-502.fc40 -> 1:6.0.2-2.fc41
+  perl-vars 1.05-506.fc40 -> 1.05-512.fc41
+  pinfo 0.6.13-6.fc40 -> 0.6.13-7.fc41
+  pipewire 1.0.7-2.fc40 -> 1.2.6-1.fc41
+  pipewire-alsa 1.0.7-2.fc40 -> 1.2.6-1.fc41
+  pipewire-alsa 1.0.7-2.fc40 -> 1.2.6-1.fc41
+  pipewire-gstreamer 1.0.7-2.fc40 -> 1.2.6-1.fc41
+  pipewire-libs 1.0.7-2.fc40 -> 1.2.6-1.fc41
+  pipewire-libs 1.0.7-2.fc40 -> 1.2.6-1.fc41
+  pipewire-pulseaudio 1.0.7-2.fc40 -> 1.2.6-1.fc41
+  pipewire-utils 1.0.7-2.fc40 -> 1.2.6-1.fc41
+  pixman 0.43.4-1.fc40 -> 0.43.4-2.fc41
+  pixman 0.43.4-1.fc40 -> 0.43.4-2.fc41
+  pkgconf 2.1.1-1.fc40 -> 2.3.0-1.fc41
+  pkgconf-m4 2.1.1-1.fc40 -> 2.3.0-1.fc41
+  pkgconf-pkg-config 2.1.1-1.fc40 -> 2.3.0-1.fc41
+  playserve 0.30.3-1 -> 0.37.0-1
+  playtron-os-files 0.16.8-1.fc40 -> 0.17.0-1.fc41
+  plocate 1.1.22-2.fc40 -> 1.1.22-4.fc41
+  plymouth 24.004.60-12.fc40 -> 24.004.60-14.fc41
+  plymouth-core-libs 24.004.60-12.fc40 -> 24.004.60-14.fc41
+  plymouth-graphics-libs 24.004.60-12.fc40 -> 24.004.60-14.fc41
+  plymouth-plugin-label 24.004.60-12.fc40 -> 24.004.60-14.fc41
+  plymouth-plugin-two-step 24.004.60-12.fc40 -> 24.004.60-14.fc41
+  plymouth-scripts 24.004.60-12.fc40 -> 24.004.60-14.fc41
+  plymouth-system-theme 24.004.60-12.fc40 -> 24.004.60-14.fc41
+  plymouth-theme-spinner 24.004.60-12.fc40 -> 24.004.60-14.fc41
+  podman 5:5.2.1-1.fc40 -> 5:5.2.5-1.fc41
+  policycoreutils 3.6-3.fc40 -> 3.7-3.fc41
+  policycoreutils-python-utils 3.6-3.fc40 -> 3.7-3.fc41
+  polkit 124-2.fc40 -> 125-1.fc41.1
+  polkit-libs 124-2.fc40 -> 125-1.fc41.1
+  polkit-pkla-compat 0.1-28.fc40 -> 0.1-29.fc41
+  poppler 24.02.0-2.fc40 -> 24.08.0-1.fc41
+  poppler-cpp 24.02.0-2.fc40 -> 24.08.0-1.fc41
+  poppler-data 0.4.11-7.fc40 -> 0.4.11-8.fc41
+  poppler-utils 24.02.0-2.fc40 -> 24.08.0-1.fc41
+  popt 1.19-6.fc40 -> 1.19-7.fc41
+  procps-ng 4.0.4-3.fc40 -> 4.0.4-4.fc41
+  protobuf-c 1.5.0-3.fc40 -> 1.5.0-4.fc41
+  psmisc 23.6-6.fc40 -> 23.7-3.fc41
+  publicsuffix-list-dafsa 20240107-3.fc40 -> 20240107-4.fc41
+  pulseaudio-libs 16.1-7.fc40 -> 17.0-2.fc41
+  pulseaudio-libs 16.1-7.fc40 -> 17.0-2.fc41
+  python-pip-wheel 23.3.2-1.fc40 -> 24.2-1.fc41
+  python3 3.12.4-1.fc40 -> 3.13.0-1.fc41
+  python3-audit 4.0.2-1.fc40 -> 4.0.2-1.fc41
+  python3-cairo 1.25.1-3.fc40 -> 1.25.1-5.fc41
+  python3-charset-normalizer 3.3.2-3.fc40 -> 3.3.2-5.fc41
+  python3-click 8.1.7-4.fc40 -> 8.1.7-6.fc41
+  python3-dbus 1.3.2-6.fc40 -> 1.3.2-8.fc41
+  python3-distro 1.9.0-3.fc40 -> 1.9.0-5.fc41
+  python3-filelock 3.13.1-1.fc40 -> 3.15.4-2.fc41
+  python3-firewall 2.1.3-1.fc40 -> 2.2.3-2.fc41
+  python3-gobject 3.48.2-1.fc40 -> 3.48.2-3.fc41
+  python3-gobject-base 3.48.2-1.fc40 -> 3.48.2-3.fc41
+  python3-idna 3.7-1.fc40 -> 3.7-4.fc41
+  python3-iniparse 0.5-8.fc40 -> 0.5-10.fc41
+  python3-libs 3.12.4-1.fc40 -> 3.13.0-1.fc41
+  python3-libselinux 3.6-4.fc40 -> 3.7-5.fc41
+  python3-libsemanage 3.6-3.fc40 -> 3.7-2.fc41
+  python3-nftables 1:1.0.9-3.fc40 -> 1:1.0.9-7.fc41
+  python3-packaging 23.2-4.fc40 -> 24.1-2.fc41
+  python3-pexpect 4.9.0-4.fc40 -> 4.9.0-6.fc41
+  python3-policycoreutils 3.6-3.fc40 -> 3.7-3.fc41
+  python3-ptyprocess 0.7.0-7.fc40 -> 0.7.0-9.fc41
+  python3-pyyaml 6.0.1-14.fc40 -> 6.0.1-18.fc41
+  python3-requests 2.31.0-3.fc40 -> 2.32.3-3.fc41
+  python3-setools 4.5.1-2.fc40 -> 4.5.1-4.fc41
+  python3-setuptools 69.0.3-4.fc40 -> 69.2.0-8.fc41
+  python3-six 1.16.0-14.fc40 -> 1.16.0-23.fc41
+  python3-urllib3 1.26.19-1.fc40 -> 1.26.20-1.fc41
+  python3-wheel 1:0.41.2-3.fc40 -> 1:0.43.0-4.fc41
+  qpdf-libs 11.9.1-1.fc40 -> 11.9.1-2.fc41
+  qt-settings 40.1-1.fc40 -> 41.2-1.fc41
+  qt5-filesystem 5.15.14-2.fc40 -> 5.15.15-1.fc41
+  qt5-qtbase 5.15.14-6.fc40 -> 5.15.15-1.fc41
+  qt5-qtbase-common 5.15.14-6.fc40 -> 5.15.15-1.fc41
+  qt5-qtbase-gui 5.15.14-6.fc40 -> 5.15.15-1.fc41
+  qt5-qtdeclarative 5.15.14-2.fc40 -> 5.15.15-1.fc41
+  qt5-qtxmlpatterns 5.15.14-1.fc40 -> 5.15.15-1.fc41
+  quota 1:4.09-5.fc40 -> 1:4.09-6.fc41
+  quota-nls 1:4.09-5.fc40 -> 1:4.09-6.fc41
+  rav1e-libs 0.7.1-2.fc40 -> 0.7.1-4.fc41
+  readline 8.2-8.fc40 -> 8.2-10.fc41
+  realmd 0.17.1-12.fc40 -> 0.17.1-13.fc41
+  realtek-firmware 20240811-2.fc40 -> 20241017-2.fc41
+  reaper 0.1.0-1.fc40 -> 0.1.0-2.fc41
+  rit-meera-new-fonts 1.6.1-0.fc40 -> 1.6.2-1.fc41
+  rit-rachana-fonts 1.5.0-1.fc40 -> 1.5.1-1.fc41
+  rootfiles 8.1-36.fc40 -> 8.1-37.fc41
+  rpcbind 1.2.7-1.fc40 -> 1.2.7-1.rc1.fc41
+  rpm 4.19.1.1-1.fc40 -> 4.20.0-1.fc41
+  rpm-libs 4.19.1.1-1.fc40 -> 4.20.0-1.fc41
+  rpm-ostree 2024.7-1.fc40 -> 2024.8-1.fc41
+  rpm-ostree-libs 2024.7-1.fc40 -> 2024.8-1.fc41
+  rpm-plugin-selinux 4.19.1.1-1.fc40 -> 4.20.0-1.fc41
+  rpm-sequoia 1.7.0-1.fc40 -> 1.7.0-2.fc41
+  rsvg-pixbuf-loader 2.57.1-6.fc40 -> 2.59.1-1.fc41
+  rsync 3.3.0-1.fc40 -> 3.3.0-3.fc41
+  rtkit 0.11-63.fc40 -> 0.11-64.fc41
+  rubberband 3.3.0-6.fc40 -> 3.3.0-7.fc41
+  samba-client-libs 2:4.20.4-1.fc40 -> 2:4.21.1-7.fc41
+  samba-common 2:4.20.4-1.fc40 -> 2:4.21.1-7.fc41
+  samba-common-libs 2:4.20.4-1.fc40 -> 2:4.21.1-7.fc41
+  sed 4.9-1.fc40 -> 4.9-3.fc41
+  selinux-policy 40.27-1.fc40 -> 41.24-1.fc41
+  selinux-policy-targeted 40.27-1.fc40 -> 41.24-1.fc41
+  serd 0.30.16-3.fc40 -> 0.32.2-2.fc41
+  setup 2.14.5-2.fc40 -> 2.15.0-5.fc41
+  setxkbmap 1.3.4-3.fc40 -> 1.3.4-4.fc41
+  shadow-utils 2:4.15.1-3.fc40 -> 2:4.15.1-12.fc41
+  shadow-utils-subid 2:4.15.1-3.fc40 -> 2:4.15.1-12.fc41
+  shared-mime-info 2.3-5.fc40 -> 2.3-6.fc41
+  sil-padauk-fonts 3.003-14.fc40 -> 3.003-15.fc41
+  skopeo 1:1.16.0-1.fc40 -> 1:1.16.1-1.fc41
+  slang 2.3.3-5.fc40 -> 2.3.3-6.fc41
+  snappy 1.1.10-4.fc40 -> 1.2.1-2.fc41
+  sord 0.16.14-3.fc40 -> 0.16.16-2.fc41
+  sos 4.7.2-1.fc40 -> 4.8.1-1.fc41
+  soundtouch 2.3.1-6.fc40 -> 2.3.3-1.fc41
+  soxr 0.1.3-15.fc40 -> 0.1.3-16.fc41
+  spdlog 1.12.0-4.fc40 -> 1.14.1-3.fc41
+  speex 1.2.0-17.fc40 -> 1.2.0-18.fc41
+  spirv-tools-libs 2024.2-1.fc40 -> 2024.3-3.fc41
+  sqlite-libs 3.45.1-2.fc40 -> 3.46.1-1.fc41
+  sqlite-libs 3.45.1-2.fc40 -> 3.46.1-1.fc41
+  sratom 0.6.14-3.fc40 -> 0.6.16-2.fc41
+  srt-libs 1.5.3-2.fc40 -> 1.5.4-0.rc0.fc41
+  sssd-client 2.9.5-1.fc40 -> 2.10.0-1.fc41
+  sssd-common 2.9.5-1.fc40 -> 2.10.0-1.fc41
+  sssd-kcm 2.9.5-1.fc40 -> 2.10.0-1.fc41
+  sssd-nfs-idmap 2.9.5-1.fc40 -> 2.10.0-1.fc41
+  steam 1.0.0.79-7.fc40 -> 1.0.0.81-1.fc41
+  steam-devices 1.0.0.79-7.fc40 -> 1.0.0.81-1.fc41
+  stix-fonts 2.13b171-5.fc40 -> 2.13b171-7.fc41
+  sudo 1.9.15-2.p5.fc40 -> 1.9.15-5.p5.fc41
+  svt-av1-libs 2.1.0-1.fc40 -> 2.1.0-2.fc41
+  systemd 255.10-3.fc40 -> 256.7-1.fc41
+  systemd-container 255.10-3.fc40 -> 256.7-1.fc41
+  systemd-libs 255.10-3.fc40 -> 256.7-1.fc41
+  systemd-libs 255.10-3.fc40 -> 256.7-1.fc41
+  systemd-oomd-defaults 255.10-3.fc40 -> 256.7-1.fc41
+  systemd-pam 255.10-3.fc40 -> 256.7-1.fc41
+  systemd-resolved 255.10-3.fc40 -> 256.7-1.fc41
+  systemd-udev 255.10-3.fc40 -> 256.7-1.fc41
+  taglib 1.12-10.fc40 -> 1.12-11.fc41
+  tar 2:1.35-3.fc40 -> 2:1.35-4.fc41
+  tayga 0.9.2-22.fc40 -> 0.9.2-23.fc41
+  tcl 1:8.6.13-2.fc40 -> 1:8.6.14-2.fc41
+  tesseract 5.3.4-4.fc40 -> 5.4.1-5.fc41
+  tesseract-langpack-eng 4.1.0-7.fc40 -> 4.1.0-8.fc41
+  tesseract-tessdata-doc 4.1.0-7.fc40 -> 4.1.0-8.fc41
+  thermald 2.5.6-1.fc40 -> 2.5.6-3.fc41
+  time 1.9-23.fc40 -> 1.9-24.fc41
+  tiwilink-firmware 20240811-2.fc40 -> 20241017-2.fc41
+  toolbox 0.0.99.5-11.fc40 -> 0.1.0-1.fc41
+  tor 0.4.8.12-2.fc40 -> 0.4.8.12-2.fc41
+  torsocks 2.4.0-6.fc40 -> 2.4.0-7.fc41
+  tpm2-tss 4.1.3-1.fc40 -> 4.1.3-3.fc41
+  tree 2.1.0-5.fc40 -> 2.1.0-6.fc41
+  turbojpeg 3.0.2-1.fc40 -> 3.0.2-3.fc41
+  twolame-libs 0.4.0-4.fc40 -> 0.4.0-5.fc41
+  tzdata 2024a-5.fc40 -> 2024a-9.fc41
+  udev-media-automount 0.1.0+59-2.fc40 -> 0.1.0+59-3.fc41
+  udisks2 2.10.1-5.fc40 -> 2.10.1-6.fc41
+  unbound-libs 1.20.0-1.fc40 -> 1.21.1-1.fc41
+  unrar 7.0.7-1.fc40 -> 7.0.7-2.fc41
+  unzip 6.0-63.fc40 -> 6.0-64.fc41
+  upower 1.90.4-2.fc40 -> 1.90.6-3.fc41
+  upower-libs 1.90.4-2.fc40 -> 1.90.6-3.fc41
+  uresourced 0.5.4-1.fc40 -> 0.5.4-2.fc41
+  urw-base35-bookman-fonts 20200910-20.fc40 -> 20200910-23.fc41
+  urw-base35-c059-fonts 20200910-20.fc40 -> 20200910-23.fc41
+  urw-base35-d050000l-fonts 20200910-20.fc40 -> 20200910-23.fc41
+  urw-base35-fonts 20200910-20.fc40 -> 20200910-23.fc41
+  urw-base35-fonts-common 20200910-20.fc40 -> 20200910-23.fc41
+  urw-base35-gothic-fonts 20200910-20.fc40 -> 20200910-23.fc41
+  urw-base35-nimbus-mono-ps-fonts 20200910-20.fc40 -> 20200910-23.fc41
+  urw-base35-nimbus-roman-fonts 20200910-20.fc40 -> 20200910-23.fc41
+  urw-base35-nimbus-sans-fonts 20200910-20.fc40 -> 20200910-23.fc41
+  urw-base35-p052-fonts 20200910-20.fc40 -> 20200910-23.fc41
+  urw-base35-standard-symbols-ps-fonts 20200910-20.fc40 -> 20200910-23.fc41
+  urw-base35-z003-fonts 20200910-20.fc40 -> 20200910-23.fc41
+  usb_modeswitch 2.6.1-10.fc40 -> 2.6.1-11.fc41
+  usb_modeswitch-data 20191128-11.fc40 -> 20191128-12.fc41
+  usbutils 017-2.fc40 -> 017-3.fc41
+  util-linux 2.40.1-1.fc40 -> 2.40.2-4.fc41
+  util-linux-core 2.40.1-1.fc40 -> 2.40.2-4.fc41
+  valve-firmware 20231113.1-3.fc40 -> 20231113.1-5.fc41
+  vamp-plugin-sdk 2.9.0-9.fc40 -> 2.10-1.fc41
+  vapoursynth-libs 65-2.fc40 -> 68-3.fc41
+  vazirmatn-vf-fonts 33.003-5.fc40 -> 33.003-8.fc41
+  vid.stab 1.1.1-2.fc40 -> 1.1.1-3.fc41
+  vim-common 2:9.1.672-1.fc40 -> 2:9.1.825-1.fc41
+  vim-data 2:9.1.672-1.fc40 -> 2:9.1.825-1.fc41
+  vim-enhanced 2:9.1.672-1.fc40 -> 2:9.1.825-1.fc41
+  vim-filesystem 2:9.1.672-1.fc40 -> 2:9.1.825-1.fc41
+  vim-minimal 2:9.1.672-1.fc40 -> 2:9.1.825-1.fc41
+  virtualbox-guest-additions 7.0.20-1.fc40 -> 7.1.4-1.fc41
+  vo-amrwbenc 0.1.3-20.fc40 -> 0.1.3-21.fc41
+  volume_key-libs 0.3.12-21.fc40 -> 0.3.12-23.fc41
+  vulkan-loader 1.3.283.0-2.fc40 -> 1.3.296.0-1.fc41
+  vulkan-loader 1.3.283.0-2.fc40 -> 1.3.296.0-1.fc41
+  wavpack 5.7.0-3.fc40 -> 5.7.0-3.fc41
+  webkit2gtk4.1 2.44.2-2.fc40 -> 2.46.3-1.fc41
+  webrtc-audio-processing 1.3-1.fc40 -> 1.3-3.fc41
+  webrtc-audio-processing 1.3-1.fc40 -> 1.3-3.fc41
+  webrtc-audio-processing0.3 0.3.1-12.fc40 -> 0.3.1-13.fc41
+  weston 13.0.0-5.fc40 -> 14.0.0-1.fc41
+  weston-libs 13.0.0-5.fc40 -> 14.0.0-1.fc41
+  weston-session 13.0.0-5.fc40 -> 14.0.0-1.fc41
+  wget2 2.1.0-11.fc40 -> 2.1.0-12.fc41
+  wget2-libs 2.1.0-11.fc40 -> 2.1.0-12.fc41
+  wget2-wget 2.1.0-11.fc40 -> 2.1.0-12.fc41
+  which 2.21-41.fc40 -> 2.21-42.fc41
+  whois 5.5.20-3.fc40 -> 5.5.20-4.fc41
+  whois-nls 5.5.20-3.fc40 -> 5.5.20-4.fc41
+  wireless-regdb 2024.01.23-1.fc40 -> 2024.01.23-2.fc41
+  wlroots0.17 0.17.4-1.fc40 -> 0.17.4-1.fc41
+  woff2 1.0.2-19.fc40 -> 1.0.2-20.fc41
+  words 3.0-45.fc40 -> 3.0-46.fc41
+  wpa_supplicant 1:2.11-3.fc40 -> 1:2.11-3.fc41
+  x264-libs 0.164-13.20231001git31e19f92.fc40 -> 0.164-15.20231001git31e19f92.fc41
+  xcb-util 0.4.1-5.fc40 -> 0.4.1-6.fc41
+  xcb-util-errors 1.0.1-3.fc40 -> 1.0.1-4.fc41
+  xcb-util-image 0.4.1-5.fc40 -> 0.4.1-6.fc41
+  xcb-util-keysyms 0.4.1-5.fc40 -> 0.4.1-6.fc41
+  xcb-util-renderutil 0.3.10-5.fc40 -> 0.3.10-6.fc41
+  xcb-util-wm 0.4.2-5.fc40 -> 0.4.2-6.fc41
+  xdg-dbus-proxy 0.1.5-2.fc40 -> 0.1.6-1.fc41
+  xdg-desktop-portal 1.18.4-1.fc40 -> 1.18.4-2.fc41
+  xdg-utils 1.2.1-1.fc40 -> 1.2.1-2.fc41
+  xhost 1.0.9-6.fc40 -> 1.0.9-8.fc41
+  xkbcomp 1.4.7-1.fc40 -> 1.4.7-2.fc41
+  xkeyboard-config 2.41-1.fc40 -> 2.42-2.fc41
+  xml-common 0.6.3-63.fc40 -> 0.6.3-65.fc41
+  xmlsec1 1:1.2.39-2.fc40 -> 1:1.2.39-4.fc41
+  xmlsec1-openssl 1:1.2.39-2.fc40 -> 1:1.2.39-4.fc41
+  xmodmap 1.0.11-6.fc40 -> 1.0.11-7.fc41
+  xorg-x11-drv-amdgpu 23.0.0-3.fc40 -> 23.0.0-6.fc41
+  xorg-x11-drv-ati 19.1.0-11.fc40 -> 22.0.0-3.fc41
+  xorg-x11-drv-evdev 2.10.6-15.fc40 -> 2.10.6-16.fc41
+  xorg-x11-drv-intel 2.99.917-57.20210115.fc40 -> 2.99.917^20240506gitce811e7-62.fc41
+  xorg-x11-drv-libinput 1.4.0-2.fc40 -> 1.4.0-3.fc41
+  xorg-x11-drv-nouveau 1:1.0.17-7.fc40 -> 1:1.0.17-11.fc41
+  xorg-x11-drv-qxl 0.1.6-3.fc40 -> 0.1.6-6.fc41
+  xorg-x11-drv-wacom 1.2.2-1.fc40 -> 1.2.2-2.fc41
+  xorg-x11-drv-wacom-serial-support 1.2.2-1.fc40 -> 1.2.2-2.fc41
+  xorg-x11-server-Xorg 1.20.14-35.fc40 -> 21.1.14-1.fc41
+  xorg-x11-server-Xvfb 1.20.14-35.fc40 -> 21.1.14-1.fc41
+  xorg-x11-server-Xwayland 24.1.2-1.fc40 -> 24.1.4-1.fc41
+  xorg-x11-server-common 1.20.14-35.fc40 -> 21.1.14-1.fc41
+  xorg-x11-xauth 1:1.1.2-6.fc40 -> 1:1.1.3-2.fc41
+  xorg-x11-xinit 1.4.2-2.fc40 -> 1.4.2-3.fc41
+  xprop 1.2.7-1.fc40 -> 1.2.7-2.fc41
+  xrdb 1.2.2-3.fc40 -> 1.2.2-4.fc41
+  xvidcore 1.3.7-11.fc40 -> 1.3.7-12.fc41
+  xwininfo 1.1.5-8.fc40 -> 1.1.5-9.fc41
+  xxd 2:9.1.672-1.fc40 -> 2:9.1.825-1.fc41
+  xxhash-libs 0.8.2-2.fc40 -> 0.8.2-4.fc41
+  xz 1:5.4.6-3.fc40 -> 1:5.6.2-2.fc41
+  xz-libs 1:5.4.6-3.fc40 -> 1:5.6.2-2.fc41
+  xz-libs 1:5.4.6-3.fc40 -> 1:5.6.2-2.fc41
+  yajl 2.1.0-23.fc40 -> 2.1.0-24.fc41
+  zchunk-libs 1.5.1-1.fc40 -> 1.5.1-1.fc41
+  zenity 4.0.2-1.fc40 -> 4.0.3-1.fc41
+  zeromq 4.3.5-16.fc40 -> 4.3.5-17.fc41
+  zimg 3.0.5-2.fc40 -> 3.0.5-3.fc41
+  zip 3.0-40.fc40 -> 3.0-41.fc41
+  zlib-ng-compat 2.1.7-1.fc40 -> 2.1.7-3.fc41
+  zlib-ng-compat 2.1.7-1.fc40 -> 2.1.7-3.fc41
+  zram-generator 1.1.2-11.fc40 -> 1.1.2-12.fc41
+  zram-generator-defaults 1.1.2-11.fc40 -> 1.1.2-12.fc41
+  zstd 1.5.6-1.fc40 -> 1.5.6-2.fc41
+  zvbi 0.2.35-22.fc40 -> 0.2.42-1.fc41
+Removed:
+  binutils-gold-2.41-37.fc40.x86_64
+  clang-libs-18.1.6-3.fc40.i686
+  clang-libs-18.1.6-3.fc40.x86_64
+  clang-resource-filesystem-18.1.6-3.fc40.noarch
+  compiler-rt-18.1.6-1.fc40.i686
+  compiler-rt-18.1.6-1.fc40.x86_64
+  crypto-policies-scripts-20240725-1.git28d3e2d.fc40.noarch
+  dbus-x11-1:1.14.10-3.fc40.x86_64
+  dconf-0.40.0-12.fc40.i686
+  duktape-2.7.0-7.fc40.i686
+  elfutils-debuginfod-client-0.191-4.fc40.i686
+  elfutils-libs-0.191-4.fc40.i686
+  fdk-aac-2.0.3-2.fc40.i686
+  fdk-aac-2.0.3-2.fc40.x86_64
+  ffmpeg-6.1.2-2.fc40.x86_64
+  ffmpeg-libs-6.1.2-2.fc40.x86_64
+  freerdp2-libs-2.11.7-5.fc40.x86_64
+  fuse-libs-2.9.9-21.fc40.x86_64
+  gamemode-1.7-5.fc40.i686
+  gamemode-1.7-5.fc40.x86_64
+  glib-networking-2.80.0-1.fc40.i686
+  google-noto-sans-meeteimayek-vf-fonts-20240301-2.fc40.noarch
+  google-noto-sans-symbols2-fonts-20240301-2.fc40.noarch
+  gstreamer1-1.24.6-1.fc40.i686
+  inih-58-1.fc40.i686
+  inih-58-1.fc40.x86_64
+  libavdevice-6.1.2-2.fc40.x86_64
+  libcanberra-0.30-35.fc40.i686
+  libcanberra-0.30-35.fc40.x86_64
+  libcanberra-gtk2-0.30-35.fc40.i686
+  libcanberra-gtk2-0.30-35.fc40.x86_64
+  libcanberra-gtk3-0.30-35.fc40.i686
+  libcanberra-gtk3-0.30-35.fc40.x86_64
+  libclc-18.1.6-1.fc40.i686
+  libclc-18.1.6-1.fc40.x86_64
+  libomp-18.1.6-2.fc40.i686
+  libomp-18.1.6-2.fc40.x86_64
+  libomp-devel-18.1.6-2.fc40.i686
+  libomp-devel-18.1.6-2.fc40.x86_64
+  libproxy-0.5.5-1.fc40.i686
+  libstemmer-2.2.0-10.fc40.i686
+  libtdb-1.4.10-1.fc40.i686
+  libtool-ltdl-2.4.7-10.fc40.i686
+  libunwind-1.8.0-3.fc40.i686
+  libwinpr2-2.11.7-5.fc40.x86_64
+  lz4-libs-1.9.4-6.fc40.i686
+  mesa-libOSMesa-24.1.2-1.fc40.i686
+  mesa-libOpenCL-24.1.2-1.fc40.i686
+  mesa-libd3d-24.1.2-1.fc40.i686
+  mesa-libxatracker-24.1.2-1.fc40.i686
+  mesa-libxatracker-24.1.2-1.fc40.x86_64
+  mesa-va-drivers-24.1.2-1.fc40.i686
+  mesa-vdpau-drivers-24.1.2-1.fc40.i686
+  ocl-icd-2.3.2-6.fc40.i686
+  opencl-filesystem-1.0-20.fc40.noarch
+  openjpeg2-2.5.2-1.fc40.x86_64
+  pipewire-1.0.7-2.fc40.i686
+  sil-nuosu-fonts-2.200-10.fc40.noarch
+  sound-theme-freedesktop-0.8-21.fc40.noarch
+  spirv-llvm-translator-18.1.2-1.fc40.i686
+  spirv-llvm-translator-18.1.2-1.fc40.x86_64
+  spirv-tools-libs-2024.2-1.fc40.i686
+  x265-libs-3.6-2.fc40.x86_64
+  xdg-user-dirs-0.18-4.fc40.x86_64
+  xorg-x11-drv-fbdev-0.5.0-15.fc40.x86_64
+  xorg-x11-drv-openchrome-0.6.400-7.20210215git5dbad06.fc40.x86_64
+  xorg-x11-drv-vesa-2.5.0-7.fc40.x86_64
+  xorg-x11-drv-vmware-13.4.0-4.fc40.x86_64
+Added:
+  add-determinism-0.3.6-1.fc41.x86_64
+  akmod-nvidia-3:565.57.01-1.fc41.x86_64
+  akmods-0.6.0-4.fc41.noarch
+  annobin-docs-12.69-1.fc41.noarch
+  annobin-plugin-gcc-12.69-1.fc41.x86_64
+  ansible-srpm-macros-1-16.fc41.noarch
+  aribb24-1.0.3^20160216git5e9be27-1.fc41.x86_64
+  bison-3.8.2-9.fc41.x86_64
+  build-reproducibility-srpm-macros-0.3.6-1.fc41.noarch
+  cmake-filesystem-3.30.5-1.fc41.x86_64
+  cpp-14.2.1-3.fc41.x86_64
+  cyrus-sasl-gssapi-2.1.28-27.fc41.x86_64
+  debugedit-5.1-1.fc41.x86_64
+  dnf5-5.2.6.2-1.fc41.x86_64
+  dnf5-plugins-5.2.6.2-1.fc41.x86_64
+  dwz-0.15-8.fc41.x86_64
+  ed-1.20.2-2.fc41.x86_64
+  efi-srpm-macros-5-12.fc41.noarch
+  egl-gbm-2:1.1.2^20240919gitb24587d-3.fc41.i686
+  egl-gbm-2:1.1.2^20240919gitb24587d-3.fc41.x86_64
+  egl-wayland-1.1.17^20241101git218f678-4.fc41.i686
+  egl-wayland-1.1.17^20241101git218f678-4.fc41.x86_64
+  egl-x11-1.0.0^20240916gitf13be94-1.fc41.i686
+  egl-x11-1.0.0^20240916gitf13be94-1.fc41.x86_64
+  elfutils-0.192-5.fc41.x86_64
+  elfutils-libelf-devel-0.192-5.fc41.x86_64
+  fakeroot-1.36-1.fc41.x86_64
+  fakeroot-libs-1.36-1.fc41.x86_64
+  fdk-aac-free-2.0.0-14.fc41.i686
+  fdk-aac-free-2.0.0-14.fc41.x86_64
+  ffmpeg-free-7.0.2-7.fc41.x86_64
+  flex-2.6.4-18.fc41.x86_64
+  fonts-srpm-macros-1:2.0.5-17.fc41.noarch
+  forge-srpm-macros-0.3.2-1.fc41.noarch
+  fpc-srpm-macros-1.3-13.fc41.noarch
+  freeglut-3.6.0-2.fc41.x86_64
+  freerdp-libs-2:3.9.0-1.fc41.x86_64
+  gcc-14.2.1-3.fc41.x86_64
+  gcc-plugin-annobin-14.2.1-3.fc41.x86_64
+  gdb-minimal-15.2-1.fc41.x86_64
+  ghc-srpm-macros-1.9.1-2.fc41.noarch
+  glibc-devel-2.40-9.fc41.x86_64
+  gnat-srpm-macros-6-6.fc41.noarch
+  go-srpm-macros-3.6.0-3.fc41.noarch
+  google-noto-sans-meetei-mayek-vf-fonts-20240701-2.fc41.noarch
+  google-noto-sans-symbols-2-fonts-20240701-2.fc41.noarch
+  grubby-8.40-76.fc41.x86_64
+  ima-evm-utils-libs-1.6.2-2.fc41.x86_64
+  imath-3.1.12-1.fc41.x86_64
+  kernel-devel-6.11.5-301.blu.fc41.x86_64
+  kernel-devel-matched-6.11.5-301.blu.fc41.x86_64
+  kernel-headers-6.11.5-301.blu.fc41.x86_64
+  kernel-srpm-macros-1.0-24.fc41.noarch
+  kmod-nvidia-6.11.5-301.blu.fc41.x86_64-3:565.57.01-1.fc41.x86_64
+  kmodtool-1.1-11.fc41.noarch
+  libaribcaption-1.1.1-1.fc41.x86_64
+  libavc1394-0.5.4-24.fc41.x86_64
+  libavcodec-free-7.0.2-7.fc41.x86_64
+  libavdevice-free-7.0.2-7.fc41.x86_64
+  libavfilter-free-7.0.2-7.fc41.x86_64
+  libavformat-free-7.0.2-7.fc41.x86_64
+  libavutil-free-7.0.2-7.fc41.x86_64
+  libcaca-0.99-0.75.beta20.fc41.x86_64
+  libdc1394-2.2.7-6.fc41.x86_64
+  libdeflate-1.22-2.fc41.x86_64
+  libdnf5-5.2.6.2-1.fc41.x86_64
+  libdnf5-cli-5.2.6.2-1.fc41.x86_64
+  libeis-1.3.0-1.fc41.x86_64
+  libfsverity-1.6-1.fc41.x86_64
+  libglvnd-gles-1:1.7.0-5.fc41.i686
+  libglvnd-opengl-1:1.7.0-5.fc41.i686
+  libglvnd-opengl-1:1.7.0-5.fc41.x86_64
+  libkcapi-hasher-1.5.0-4.fc41.x86_64
+  libmpc-1.3.1-6.fc41.x86_64
+  libnvidia-cfg-3:565.57.01-2.fc41.x86_64
+  libnvidia-fbc-3:565.57.01-2.fc41.x86_64
+  libnvidia-ml-3:565.57.01-2.fc41.i686
+  libnvidia-ml-3:565.57.01-2.fc41.x86_64
+  libpostproc-free-7.0.2-7.fc41.x86_64
+  libswresample-free-7.0.2-7.fc41.x86_64
+  libswscale-free-7.0.2-7.fc41.x86_64
+  libunibreak-6.1-2.fc41.x86_64
+  libwinpr-2:3.9.0-1.fc41.x86_64
+  libxcrypt-devel-4.4.36-7.fc41.x86_64
+  libzstd-devel-1.5.6-2.fc41.x86_64
+  lua-srpm-macros-1-14.fc41.noarch
+  m4-1.4.19-10.fc41.x86_64
+  make-1:4.4.1-8.fc41.x86_64
+  mesa-libGLU-9.0.3-5.fc41.x86_64
+  nvidia-driver-3:565.57.01-2.fc41.x86_64
+  nvidia-driver-cuda-libs-3:565.57.01-2.fc41.x86_64
+  nvidia-driver-libs-3:565.57.01-2.fc41.i686
+  nvidia-driver-libs-3:565.57.01-2.fc41.x86_64
+  nvidia-kmod-common-3:565.57.01-2.fc41.noarch
+  nvidia-modprobe-3:565.57.01-1.fc41.x86_64
+  nvidia-sdk-video-codec-1:12.2.72-1.fc41.noarch
+  ocaml-srpm-macros-10-3.fc41.noarch
+  openblas-srpm-macros-2-18.fc41.noarch
+  openexr-libs-3.2.4-3.fc41.x86_64
+  openjpeg-2.5.2-4.fc41.x86_64
+  openpace-1.1.3-2.fc41.x86_64
+  openssl-1:3.2.2-9.fc41.x86_64
+  openssl-devel-1:3.2.2-9.fc41.x86_64
+  package-notes-srpm-macros-0.5-12.fc41.noarch
+  patch-2.7.6-25.fc41.x86_64
+  perl-MIME-Base32-1.303-21.fc41.noarch
+  perl-srpm-macros-1-56.fc41.noarch
+  powerstation-0.3.0-1.x86_64
+  pyproject-srpm-macros-1.15.1-1.fc41.noarch
+  python-srpm-macros-3.13-3.fc41.noarch
+  python3-argcomplete-3.5.1-1.fc41.noarch
+  python3-progressbar2-3.53.2-13.fc41.noarch
+  python3-rpm-4.20.0-1.fc41.x86_64
+  python3-typing-extensions-4.12.2-3.fc41.noarch
+  python3-utils-3.7.0-6.fc41.noarch
+  qrencode-libs-4.1.1-8.fc41.x86_64
+  qt5-srpm-macros-5.15.15-1.fc41.noarch
+  qt6-srpm-macros-6.8.0-1.fc41.noarch
+  redhat-rpm-config-293-1.fc41.noarch
+  rpm-build-4.20.0-1.fc41.x86_64
+  rpm-build-libs-4.20.0-1.fc41.x86_64
+  rpm-sign-libs-4.20.0-1.fc41.x86_64
+  rpmdevtools-9.6-8.fc41.noarch
+  rust-srpm-macros-26.3-3.fc41.noarch
+  sdbus-cpp-1.5.0-3.fc41.x86_64
+  sssd-krb5-common-2.10.0-1.fc41.x86_64
+  switcheroo-control-2.6-6.fc41.x86_64
+  systemd-rpm-macros-256.7-1.fc41.noarch
+  tesseract-libs-5.4.1-5.fc41.x86_64
+  tzupdate-3.1.0-1.fc41.x86_64
+  uriparser-0.9.8-2.fc41.x86_64
+  wlroots-0.18.1-1.fc41.x86_64
+  zig-srpm-macros-1-3.fc41.noarch
+  zix-0.4.2-2.fc41.x86_64
+  zlib-ng-compat-devel-2.1.7-3.fc41.x86_64
+Changes queued for next boot. Run "systemctl reboot" to start a reboot

@@ -1,0 +1,235 @@
+#! /bin/bash
+
+if [ $EUID -ne 0 ] && [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+	# do not execute if loaded from test suite
+
+	echo "$(basename $0) must be run as root"
+	exit 1
+fi
+
+__ensure_dir() {
+	local path=$1
+	if [ -z "$path" ]; then
+		echo "ensure_dir: Path not specified"
+		return 1
+	fi
+
+	local dir=$(dirname $path)
+	mkdir -p $dir
+}
+
+# Contains the following optional variables:
+# - BASE: the full container URL
+# - PROJECT: the container's project in the registry
+# - TAG: the container tag/version
+#
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+	# do not execute if loaded from test suite
+
+	CONFIG_FILE=/etc/playtron-os.conf
+	__ensure_dir $CONFIG_FILE
+	touch $CONFIG_FILE
+	source $CONFIG_FILE
+
+	REMOTE_FILE=/etc/ostree/remotes.d/playtron-os.conf
+	AUTH_FILE=/etc/ostree/auth.json
+fi
+
+__write_remote() {
+local project=$1
+__ensure_dir $REMOTE_FILE
+cat > $REMOTE_FILE << EOL
+[remote "playtron-os"]
+url=ostree-unverified-registry:registry.playtron.one/${project}/playtronos
+gpg-verify=false
+EOL
+}
+
+__write_auth() {
+local token=$1
+__ensure_dir $AUTH_FILE
+cat > $AUTH_FILE << EOL
+{
+    "auths": {
+        "registry.playtron.one": {
+            "auth": "${token}"
+        }
+    }
+}
+EOL
+}
+
+rebase() {
+	local project=$1
+	local tag=$2
+
+	# Ensure $project and $tag are specified
+	if [ -z "$project" ]; then
+		echo "Project not specified"
+		exit 1
+	fi
+
+	if [ -z "$tag" ]; then
+		echo "Tag not specified"
+		exit 1
+	fi
+
+	echo "BASE=ostree-unverified-registry:registry.playtron.one/${project}/playtronos:${tag}" > $CONFIG_FILE
+	echo "PROJECT=${project}" >> $CONFIG_FILE
+	echo "TAG=${tag}" >> $CONFIG_FILE
+	__write_remote $project
+}
+
+__rebase_status() {
+	if [ -z "$BASE" ]; then
+		# there is no base specified, so no rebase
+		echo -n "none"
+		return
+	fi
+
+	current_base=$(rpm-ostree status | grep "●" | tr -d '●' | tr -d ' ')
+	next_base=$(rpm-ostree status | grep -A 1 "Deployments:" | tail -1 | tr -d '●' | tr -d ' ')
+
+	if [ "$BASE" != "$next_base" ]; then
+		# there is a rebase yet to be completed
+		echo -n "needed"
+	elif [ "$BASE" != "$current_base" ]; then
+		# rebase was completed, but the system needs a reboot
+		echo -n "completed"
+	else
+		# no rebase needed nor completed
+		echo -n "none"
+	fi
+}
+
+# Converts rpm-ostree upgrade/rebase output to the format:
+# PERCENT_COMPLETE%: COMPLETED/TOTAL MB
+#
+# Under some conditions, such as if the update is already downloaded, no output will be written.
+# To handle these cases, any consumer of this output should start at 0% and set progress to 100% when the process exits.
+function __report_progress {
+	function to_megabytes {
+	        read in
+	        original_num=$(echo $in | cut -d' ' -f1 | cut -d' ' -f1)
+	        unit=$(echo $in | cut -d' ' -f2 | cut -d' ' -f2)
+
+	        case $unit in
+	                "GB")
+	                        echo "$original_num * 1024" | bc
+	                ;;
+	                "MB")
+	                        echo $original_num
+	                ;;
+	                "kB")
+	                        echo "$original_num / 1024" | bc
+	                ;;
+	                "bytes")
+	                        echo "$original_num / 1048576" | bc
+	                ;;
+	        esac
+	}
+
+	done_mb=0
+	total_mb=0
+	done_parts=0
+	total_parts=0
+	while IFS=$'\n' read -r line; do
+	        if [[ $line =~ "ostree chunk layers needed:" ]] || [[ $line =~ "custom layers needed:" ]]; then
+	                total_mb2=$(echo $line | cut -d'(' -f2 | cut -d')' -f1 | to_megabytes)
+	                total_parts2=$(echo $line | cut -d':' -f2 | cut -d'(' -f1 | tr -d '[:space:]')
+
+			total_mb=$(echo "$total_mb + $total_mb2" | bc)
+			total_parts=$(echo "$total_parts + $total_parts2" | bc)
+	        elif [[ $line =~ "Fetching ostree chunk" ]] || [[ $line =~ "Fetching layer" ]]; then
+	                layer_size=$(echo $line | cut -d'(' -f2 | cut -d')' -f1 | to_megabytes)
+	                done_mb=$(echo "$done_mb + $layer_size" | bc)
+			done_parts=$(echo "$done_parts + 1" | bc)
+
+	                echo "{ \"done_mb\": $(echo $done_mb | awk '{printf "%d", $0}'), \"total_mb\": $(echo $total_mb | awk '{printf "%d", $0}'), \"done_parts\": ${done_parts}, \"total_parts\": ${total_parts} }"
+	        fi
+	done
+}
+
+update() {
+	case $(__rebase_status) in
+		"needed")
+			rpm-ostree rebase $BASE 2>&1 | __report_progress
+		;;
+		"completed")
+			return
+		;;
+		"none")
+			rpm-ostree upgrade 2>&1 | __report_progress
+		;;
+		*)
+			echo "ERROR: Unknown rebase status"
+			exit 1
+		;;
+	esac
+}
+
+print_available_version() {
+	VERSION_MATCH="[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+"
+	if cat "${CONFIG_FILE}" 2> /dev/null | grep -q "TAG="; then
+		# internal build case: grab the explicitly selected version
+		version=$(cat "${CONFIG_FILE}" | grep "TAG=" | cut -d"=" -f2)
+
+		if echo "${version}" | grep -q -E "${VERSION_MATCH}"; then
+			# exclude non-version number tags
+			echo "Available version: ${version}"
+		fi
+	else
+		# public build case: find the highest number version tag in the container registry
+		version=$(skopeo list-tags docker://ghcr.io/playtron-os/playtron-os | grep -E "${VERSION_MATCH}" | sort -n -r | head -1 | tr -d '[:blank:]",')
+		echo "Available version: ${version}"
+	fi
+}
+
+check() {
+	case $(__rebase_status) in
+		"needed")
+			echo "New update available (rebase)"
+			print_available_version
+			exit 0
+		;;
+		"completed")
+			echo "No update available (rebase completed)"
+			exit 1
+		;;
+		"none")
+			rpm-ostree upgrade --check
+			result=$?
+			if [ "$result" == "0" ]; then
+				print_available_version
+			fi
+			exit $result
+		;;
+		*)
+			echo "ERROR: Unknown rebase status"
+			exit 1
+		;;
+	esac
+}
+
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+	# do not execute if loaded from test suite
+
+	# save the registry token if provided
+	# must be the first and second arguments
+	if [ "$1" == "--registry-token" ]; then
+		__write_auth $2
+		shift
+		shift
+	fi
+
+	CMD=$1
+	shift
+
+	if [ "$CMD" == "--rebase" ]; then
+		rebase $@
+	elif [ "$CMD" == "--check" ]; then
+		check
+	else
+		update
+	fi
+fi

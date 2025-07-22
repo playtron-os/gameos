@@ -1,0 +1,231 @@
+#!/bin/bash
+# System Report
+#
+# Generates a system report archive which can contain useful information for
+# reporting bugs and troubleshooting.
+
+if [ $EUID -ne 0 ]; then
+  echo "$(basename "$0") must be run as root"
+  exit 1
+fi
+
+ENDCOLOR='\e[0m'
+RED='\e[0;31m'
+YELLOW='\e[0;33m'
+PURPLE='\e[0;35m'
+CYAN='\e[0;36m'
+
+TARGET_USER=playtron
+TARGET_UID=$(id -u "${TARGET_USER}")
+REPORT_NAME="report-$(date +%Y-%m-%d-%s)"
+REPORT_DIR_BASE="$(mktemp -d)"
+REPORT_DIR="${REPORT_DIR_BASE}/${REPORT_NAME}"
+
+ALL_REPORTS=(os hardware firmware process input power services gamescope audio storage network tpm)
+reports=()
+
+usage() {
+  echo -e "Usage: $0 [OPTIONS]"
+  echo -e ""
+  echo -e "Options:"
+  echo -e " -h, --help     Display this help message"
+  echo -e " -r, --report   Report type to include in archive. Can be one of: ${YELLOW}[${ALL_REPORTS[*]}]${ENDCOLOR}"
+}
+
+has_argument() {
+  [[ ("$1" == *=* && -n ${1#*=}) || (-n "$2" && "$2" != -*) ]]
+}
+
+extract_argument() {
+  echo "${2:-${1#*=}}"
+}
+
+handle_options() {
+  while [ $# -gt 0 ]; do
+    case $1 in
+    -h | --help)
+      usage
+      exit 0
+      ;;
+    -r | --report*)
+      if ! has_argument "$@"; then
+        echo "Report type not specified" >&2
+        usage
+        exit 1
+      fi
+
+      # Validate report type
+      report_type=$(extract_argument "$@")
+      if ! [[ "${ALL_REPORTS[*]}" =~ ${report_type} ]]; then
+        echo -e "${RED}Error:${ENDCOLOR} invalid report type: ${CYAN}${report_type}${ENDCOLOR}"
+        usage
+        exit 1
+      fi
+      reports+=("${report_type}")
+
+      shift
+      ;;
+    *)
+      echo -e "${RED}Error:${ENDCOLOR} invalid option: ${CYAN}$1${ENDCOLOR}" >&2
+      usage
+      exit 1
+      ;;
+    esac
+    shift
+  done
+
+  # Default to collecting all reports
+  if [ ${#reports[@]} -eq 0 ]; then
+    reports=("${ALL_REPORTS[@]}")
+  fi
+}
+
+handle_options "$@"
+echo -e "${CYAN}Generating system report...${ENDCOLOR}"
+mkdir -p "${REPORT_DIR}"
+
+# OS
+if [[ " ${reports[*]} " =~ "os" ]]; then
+  echo -e "  Collecting ${RED}os${ENDCOLOR} report..."
+  rpm-ostree status >"${REPORT_DIR}/rpm-ostree.out" 2>&1
+fi
+
+# Hardware
+if [[ " ${reports[*]} " =~ "hardware" ]]; then
+  echo -e "  Collecting ${RED}hardware${ENDCOLOR} report..."
+  dmesg >"${REPORT_DIR}/dmesg.log"
+  lspci -tv -nn >"${REPORT_DIR}/lspci.out"
+  lsusb -t -v >"${REPORT_DIR}/lsusb.out"
+  cat /proc/bus/input/devices >"${REPORT_DIR}/input-devices.out"
+  hwctl system-info >"${REPORT_DIR}/system.json" 2>/dev/null
+fi
+
+# Firmware
+if [[ " ${reports[*]} " =~ "firmware" ]]; then
+  echo -e "  Collecting ${RED}firmware${ENDCOLOR} report..."
+  fwupdmgr get-devices >"${REPORT_DIR}/firmware-devices.out" 2>&1
+  echo "BIOS version: $(cat /sys/class/dmi/id/bios_version)" >>"${REPORT_DIR}/firmware-devices.out"
+  fwupdmgr get-updates -y >"${REPORT_DIR}/firmware-updates.out" 2>&1
+fi
+
+# Processes
+if [[ " ${reports[*]} " =~ "process" ]]; then
+  echo -e "  Collecting ${RED}process${ENDCOLOR} report..."
+  ps afux >"${REPORT_DIR}/processes.out"
+fi
+
+# Input
+if [[ " ${reports[*]} " =~ "input" ]]; then
+  echo -e "  Collecting ${RED}input${ENDCOLOR} report..."
+  timeout 0.3 evtest >"${REPORT_DIR}/evtest.out" 2>&1
+  {
+    echo "InputPlumber State"
+    echo ""
+    echo "\$ inputplumber devices list"
+    inputplumber devices list
+    echo "\$ inputplumber device 0 info"
+    inputplumber device 0 info
+    echo "\$ inputplumber device 0 intercept get"
+    inputplumber device 0 intercept get
+    echo "\$ inputplumber device 0 targets list"
+    inputplumber device 0 targets list
+  } >"${REPORT_DIR}/inputplumber.out" 2>&1
+fi
+
+# Power/TDP/Battery
+if [[ " ${reports[*]} " =~ "power" ]]; then
+  echo -e "  Collecting ${RED}power${ENDCOLOR} report..."
+  busctl introspect org.shadowblip.PowerStation /org/shadowblip/Performance/GPU/card0 >"${REPORT_DIR}/powerstation.out"
+  upower -d >"${REPORT_DIR}/battery.out" 2>&1
+fi
+
+# System logs
+if [[ " ${reports[*]} " =~ "services" ]]; then
+  echo -e "  Collecting ${RED}services${ENDCOLOR} report..."
+  cp /var/log/audit/audit.log "${REPORT_DIR}/"
+  journalctl -b 0 >"${REPORT_DIR}/journal.log"
+  journalctl -b 0 -u inputplumber >"${REPORT_DIR}/inputplumber.log"
+  journalctl -b 0 -u powerstation >"${REPORT_DIR}/powerstation.log"
+  sudo -u "${TARGET_USER}" journalctl --user -u playserve -b >"${REPORT_DIR}/playserve.log"
+  sudo -u "${TARGET_USER}" journalctl --user -u gamescope-dbus -b >"${REPORT_DIR}/gamescope-dbus.log"
+  sudo -u "${TARGET_USER}" journalctl --user -u gamescope-session-plus@playtron -b >"${REPORT_DIR}/gamescope-session.log"
+fi
+
+# Gamescope
+if [[ " ${reports[*]} " =~ "gamescope" ]]; then
+  echo -e "  Collecting ${RED}gamescope${ENDCOLOR} report..."
+  {
+    echo "\$ xprop -display :0 -root"
+    sudo -u "${TARGET_USER}" xprop -display :0 -root
+    echo ""
+    echo "\$ xwininfo -display :0 -root -children -int"
+    sudo -u "${TARGET_USER}" xwininfo -display :0 -root -children -int
+    echo ""
+    echo "\$ xwininfo -display :1 -root -children -int"
+    sudo -u "${TARGET_USER}" xwininfo -display :1 -root -children -int
+  } >"${REPORT_DIR}/gamescope.out" 2>&1
+
+  # Take a screenshot
+  {
+    echo "Taking screenshot..."
+    timeout 5 sudo -u "${TARGET_USER}" XDG_RUNTIME_DIR="/run/user/${TARGET_UID}" DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${TARGET_UID}/bus" \
+      busctl --user call org.shadowblip.Gamescope \
+      /org/shadowblip/Gamescope/Wayland0 \
+      org.shadowblip.Gamescope.Wayland \
+      TakeScreenshot "sy" "${REPORT_DIR}/screenshot.png" 0
+  } >>"${REPORT_DIR}/gamescope.out" 2>&1
+fi
+
+# Audio
+if [[ " ${reports[*]} " =~ "audio" ]]; then
+  echo -e "  Collecting ${RED}audio${ENDCOLOR} report..."
+  sudo -u "${TARGET_USER}" XDG_RUNTIME_DIR="/run/user/${TARGET_UID}" wpctl status >"${REPORT_DIR}/audio.out" 2>&1
+fi
+
+# Storage
+if [[ " ${reports[*]} " =~ "storage" ]]; then
+  echo -e "  Collecting ${RED}storage${ENDCOLOR} report..."
+  {
+    echo "\$ lsblk -f"
+    lsblk -f
+    echo ""
+    echo "\$ mount"
+    mount
+    echo ""
+    echo "\$ df -h"
+    df -h
+  } >"${REPORT_DIR}/storage.out"
+fi
+
+# Network
+if [[ " ${reports[*]} " =~ "network" ]]; then
+  echo -e "  Collecting ${RED}network${ENDCOLOR} report..."
+  {
+    nmcli --overview
+    echo ""
+    ip addr
+    echo ""
+    ping -4 -c4 1.1.1.1
+    ping -4 -c4 8.8.8.8
+    echo ""
+    echo "dig +short playtron.one"
+    dig +short playtron.one
+  } >"${REPORT_DIR}/network.out" 2>&1
+fi
+
+# TPM
+if [[ " ${reports[*]} " =~ "tpm" ]]; then
+  echo -e "  Collecting ${RED}tpm${ENDCOLOR} report..."
+  tpm2_eventlog /sys/kernel/security/tpm0/binary_bios_measurements >"${REPORT_DIR}/tpm.log" 2>&1
+fi
+
+# Build the archive
+echo ""
+echo -e "${CYAN}Building report archive${ENDCOLOR}"
+cd "${REPORT_DIR_BASE}" && tar cvfz "${REPORT_NAME}.tar.gz" "${REPORT_NAME}"
+mv "${REPORT_DIR}.tar.gz" "/tmp/${REPORT_NAME}.tar.gz"
+chown ${TARGET_USER}: "/tmp/${REPORT_NAME}.tar.gz"
+rm -rf "${REPORT_DIR_BASE}"
+
+echo ""
+echo -e "Saved system report to: ${PURPLE}/tmp/${REPORT_NAME}.tar.gz${ENDCOLOR}"

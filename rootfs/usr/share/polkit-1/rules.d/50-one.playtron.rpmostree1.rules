@@ -1,0 +1,5 @@
+polkit.addRule(function(action, subject) {
+    if (action.id == "org.projectatomic.rpmostree1.upgrade" && subject.isInGroup("wheel")) {
+        return polkit.Result.YES;
+    }
+});

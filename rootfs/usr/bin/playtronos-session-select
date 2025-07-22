@@ -1,0 +1,82 @@
+#! /bin/bash
+
+
+if [ $EUID -ne 0 ]; then
+	echo "$(basename $0) must be run as root"
+	exit 1
+fi
+
+
+SESSION_OVERRIDE="/etc/sddm.conf.d/60-playtron-session-override.conf"
+SESSION_LIST=('user' 'dev')
+SELECTED_SESSION="$1"
+
+if [ "$2" = "--no-switch" ]; then
+	NO_SWITCH=1
+fi
+
+function dev() {
+	mkdir -p $(dirname $SESSION_OVERRIDE)
+
+	echo '
+[Autologin]
+Session=playtron-weston
+' > ${SESSION_OVERRIDE}
+}
+
+function user() {
+	rm -f ${SESSION_OVERRIDE}
+}
+
+function print_session_list() {
+	# detect active session
+	CURRENT_SESSION="unknown"
+	if test -f ${SESSION_OVERRIDE}; then
+		CURRENT_SESSION="dev"
+	else
+		CURRENT_SESSION="user"
+	fi
+
+	# print active and available sessions
+	for t in ${SESSION_LIST[@]}; do
+		if [ "${CURRENT_SESSION}" = "${t}" ]; then
+			echo "* $t"
+		else
+			echo "  $t"
+		fi
+	done
+}
+
+function print_invalid_session() {
+	echo "Unknown or invalid session type: ${SELECTED_SESSION}"
+	echo
+	echo "Available session types:"
+	print_session_list
+}
+
+# print current and available sessions when no argument specified
+if [ -z "${SELECTED_SESSION}" ]; then
+	print_session_list
+	exit 0
+fi
+
+# print message when invalid session is specified
+if [[ ! "${SESSION_LIST[*]}" =~ "${SELECTED_SESSION}" ]]; then
+	print_invalid_session
+	exit 1
+fi
+
+# apply the specified session type
+if [ "${SELECTED_SESSION}" = "user" ]; then
+	echo "Switching to user session"
+	user
+elif [ "${SELECTED_SESSION}" = "dev" ]; then
+	echo "Switching to dev session"
+	dev
+else
+	exit 1
+fi
+
+if [ -z "${NO_SWITCH}" ]; then
+	systemctl restart display-manager
+fi

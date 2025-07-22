@@ -1,0 +1,11 @@
+
+module dontaudit-powerprofiles_t-passwd_file_t 1.0;
+
+require {
+	type powerprofiles_t;
+	type passwd_file_t;
+	class file { getattr open read };
+}
+
+#============= powerprofiles_t ==============
+dontaudit powerprofiles_t passwd_file_t:file { getattr open read };

@@ -1,0 +1,13 @@
+[Unit]
+Description=A wrapper for the 464XLAT CLAT daemon to see if it is needed
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/clatd-ipv6-check
+Restart=on-failure
+RestartSec=5.0s
+
+[Install]
+WantedBy=multi-user.target

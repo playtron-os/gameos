@@ -1,0 +1,14 @@
+Pulling manifest: ostree-unverified-registry:registry.playtron.one/internal/playtronos:0.18.0.65
+Importing: ostree-unverified-registry:registry.playtron.one/internal/playtronos:0.18.0.65 (digest: sha256:f8b791072394086d50e8b4f5caa4783410f1b7935b48f28de41563c1cf0ed8c8)
+ostree chunk layers already present: 65
+custom layers already present: 13
+custom layers needed: 3 (156.3 MB)
+Fetching layer sha256:c7ddb9ce6b31 (238 bytes)...done
+Fetching layer sha256:88d5eda5b163 (100.9 MB)...done
+Fetching layer sha256:d18be23da402 (55.4 MB)...done
+Staging deployment...done
+Pruned images: 1 (layers: 6)
+Freed: 54.6 MB (pkgcache branches: 0)
+Upgraded:
+  playserve 0.30.2-1 -> 0.30.3-1
+Changes queued for next boot. Run "systemctl reboot" to start a reboot
