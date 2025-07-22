@@ -1,6 +1,6 @@
-[playtron-app-x86_64]
+[playtron-app]
 name=Playtron Labs and App repository
-baseurl=https://playtron-dev2-global-os-public.s3.us-west-2.amazonaws.com/repos/playtron-app/x86_64/
+baseurl=https://playtron-dev2-global-os-public.s3.us-west-2.amazonaws.com/repos/playtron-app/aarch64/
 type=rpm-md
 skip_if_unavailable=True
 gpgkey=https://playtron-dev2-global-os-public.s3.us-west-2.amazonaws.com/gpg-public-keys/RPM-GPG-KEY-playtronos

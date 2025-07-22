@@ -20,5 +20,4 @@ gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
 skip_if_unavailable=True
 cost=10000 # default is 1000
-exclude=gamescope* kernel* mangohud
 
