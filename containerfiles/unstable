@@ -180,13 +180,10 @@ COPY rootfs/etc/yum.repos.d/audinux.repo						/etc/yum.repos.d/
 COPY rootfs/etc/yum.repos.d/fedora.repo							/etc/yum.repos.d/
 COPY rootfs/etc/yum.repos.d/fedora-updates-archive.repo					/etc/yum.repos.d/
 COPY rootfs/etc/yum.repos.d/fedora-updates.repo						/etc/yum.repos.d/
-COPY rootfs/etc/yum.repos.d/inputplumber-x86_64.repo					/etc/yum.repos.d/
+COPY rootfs/etc/yum.repos.d/inputplumber.repo						/etc/yum.repos.d/
 COPY rootfs/etc/yum.repos.d/negativo17-fedora-nvidia.repo				/etc/yum.repos.d/
-COPY rootfs/etc/yum.repos.d/nobara-41-i386.repo						/etc/yum.repos.d/
-COPY rootfs/etc/yum.repos.d/nobara-41-x86_64.repo					/etc/yum.repos.d/
-COPY rootfs/etc/yum.repos.d/playtron-app-x86_64.repo					/etc/yum.repos.d/
-COPY rootfs/etc/yum.repos.d/playtron-gaming-i386.repo					/etc/yum.repos.d/
-COPY rootfs/etc/yum.repos.d/playtron-gaming-x86_64.repo					/etc/yum.repos.d/
+COPY rootfs/etc/yum.repos.d/playtron-app.repo						/etc/yum.repos.d/
+COPY rootfs/etc/yum.repos.d/playtron-gaming.repo					/etc/yum.repos.d/
 COPY rootfs/etc/yum.repos.d/rpmfusion-nonfree-steam.repo				/etc/yum.repos.d/
 
 # Check if only IPv6 is used (no IPv4) and then start clatd for 464XLAT support
