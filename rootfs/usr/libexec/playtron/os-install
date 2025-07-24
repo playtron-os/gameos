@@ -1,0 +1,41 @@
+#!/bin/bash
+
+if [ $EUID -ne 0 ]; then
+	echo "$(basename "$0") must be run as root"
+	exit 1
+fi
+
+
+function disable_install_mode {
+	rm -rf root/ostree/deploy/default/deploy/*/etc/environment.d
+	rm -f root/ostree/deploy/default/deploy/*/etc/systemd/system/resize-root-file-system.service
+}
+
+OS_NAME="Playtron GameOS"
+RAW_DISK_SIZE=20G
+SOURCE_DISK=$1
+TARGET_DISK=$2
+
+umount ${TARGET_DISK}*
+
+pv ${SOURCE_DISK} --output ${TARGET_DISK} --size ${RAW_DISK_SIZE} --stop-at-size --numeric 2>&1
+
+if [ "$?" != "0" ]; then
+    exit 1
+fi
+
+# ensure progress is at 100%
+echo "100"
+
+efibootmgr --delete-bootnum --label "${OS_NAME}" || true
+efibootmgr --create --disk ${TARGET_DISK} --part 2 --loader \\EFI\\fedora\\shim.efi --label "${OS_NAME}"
+
+mkdir -p /tmp/playtron-install-target
+mount  ${TARGET_DISK}*4 /tmp/playtron-install-target
+pushd  /tmp/playtron-install-target
+disable_install_mode
+popd
+
+sync
+
+umount ${TARGET_DISK}*4
