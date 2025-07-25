@@ -27,6 +27,8 @@ Read more about Playtron on [our official website](https://www.playtron.one/).
     - Intel Xe
     - NVIDIA Turing
 
+Devices tested on Playtron GameOS are reported in [this document](DEVICES.md).
+
 ## Game Compatibility
 
 Most games are expected to work. For problematic games, you can help our community by using [GameLAB](https://github.com/playtron-os/gamelab) to create custom launch configurations and/or controller configurations. Our team will work to get these fixes upstream into [umu-protonfixes](https://github.com/Open-Wine-Components/umu-protonfixes) for everyone to benefit. Full guides on how to use GameLAB can be found [here](https://www.playtron.one/contribute).
