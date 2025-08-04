@@ -10,9 +10,11 @@ Table of Contents:
 
 ## Introduction
 
-Turn your PC into a game console. GameOS has native integration with Epic Games Store, GOG.com, and Steam. Your library of games is accessible via a simple gamer-focused interface.
+Turn your PC into a game console. Playtron GameOS has native integration with Epic Games Store, GOG.com, and Steam. Your library of games is accessible via a simple gamer-focused interface.
 
-Read more about Playtron GameOS on our official [website](https://www.playtron.one/).
+Read more about Playtron on [our official website](https://www.playtron.one/).
+
+[Download Playtron GameOS here](https://www.playtron.one/game-os#download-playtron-os).
 
 ## Minimum Hardware Requirements
 
@@ -25,13 +27,15 @@ Read more about Playtron GameOS on our official [website](https://www.playtron.o
     - Intel Xe
     - NVIDIA Turing
 
+Devices tested on Playtron GameOS are reported in [this document](DEVICES.md).
+
 ## Game Compatibility
 
 Most games are expected to work. For problematic games, you can help our community by using [GameLAB](https://github.com/playtron-os/gamelab) to create custom launch configurations and/or controller configurations. Our team will work to get these fixes upstream into [umu-protonfixes](https://github.com/Open-Wine-Components/umu-protonfixes) for everyone to benefit. Full guides on how to use GameLAB can be found [here](https://www.playtron.one/contribute).
 
 ## Sideloading Games
 
-Local games can be copied over to GameOS and integrated using the [local](https://github.com/playtron-os/plugin-local) plugin. It is installed by default as of GameOS Beta 1.
+Local games can be copied over to Playtron GameOS and integrated using the [local](https://github.com/playtron-os/plugin-local) plugin.
 
 ## Build
 
@@ -175,7 +179,7 @@ $ sudo podman build --tag desktop:latest .
 $ sudo bootc switch --transport containers-storage localhost/desktop:latest
 ```
 
-The Software Update feature in Settings will no longer work with a custom container from the last example. All future updates must be done with locally built containers. Otherwise, switch back to an unmodified installation of GameOS.
+The Software Update feature in Settings will no longer work with a custom container from the last example. All future updates must be done with locally built containers. Otherwise, switch back to an unmodified installation of Playtron GameOS.
 
 ```
 $ sudo bootc switch ghcr.io/playtron-os/playtron-os:latest
