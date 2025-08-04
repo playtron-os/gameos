@@ -35,6 +35,8 @@ COPY rootfs/usr/bin/playtron-factory-reset                              /usr/bin
 COPY rootfs/usr/bin/playtronos-systemreport				/usr/bin/
 COPY rootfs/usr/lib/systemd/system-preset/50-playtron.preset		/usr/lib/systemd/system-preset/
 COPY rootfs/usr/share/inputplumber/devices/25-playtron-rog_ally_x.yaml	/usr/share/inputplumber/devices/
+COPY rootfs/usr/lib/udev/hwdb.d/60-powerstation-autostart.hwdb		/usr/lib/udev/hwdb.d/
+COPY rootfs/usr/lib/udev/rules.d/90-powerstation-autostart.rules	/usr/lib/udev/rules.d/
 
 # Configure SELinux.
 RUN mkdir -p /usr/share/selinux/playtron-modules
