@@ -256,7 +256,7 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 
 | Hardware | Status |
 | -------- | ------ |
-| AutoTDP | No |
+| AutoTDP | Yes |
 | Battery Status | Yes |
 | Bluetooth | Yes |
 | Controller | Yes |
@@ -275,7 +275,7 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 
 | Hardware | Status |
 | -------- | ------ |
-| AutoTDP | No |
+| AutoTDP | Yes |
 | Battery Status | Yes |
 | Bluetooth | Yes |
 | Controller | Yes |
