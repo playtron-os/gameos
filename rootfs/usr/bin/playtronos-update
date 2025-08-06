@@ -159,7 +159,7 @@ update() {
 			rpm-ostree rebase $BASE 2>&1 | __report_progress
 		;;
 		"completed")
-			return
+			true
 		;;
 		"none")
 			rpm-ostree upgrade 2>&1 | __report_progress
@@ -169,6 +169,10 @@ update() {
 			exit 1
 		;;
 	esac
+	# In newer versions of Playtron GameOS, the "tss" group membership is now handled by a system-level user service for Playserve.
+	if groupmems --list --group tss | grep playtron; then
+		gpasswd --delete playtron tss
+	fi
 }
 
 print_available_version() {

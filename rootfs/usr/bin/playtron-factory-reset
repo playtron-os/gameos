@@ -25,7 +25,7 @@ fi
 echo "Shutting down services..."
 
 # make sure playserve is not running so that it does not write any files while we are performing the factory reset
-systemctl --user --machine=playtron@ stop playserve
+systemctl stop playserve
 
 if [ -n "$PRESERVE_USER_FILES" ]; then
 	echo "Performing partial factory reset..."

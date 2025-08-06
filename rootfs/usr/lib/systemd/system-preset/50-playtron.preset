@@ -2,6 +2,7 @@ enable auditd.service
 enable clatd-ipv6-check.service
 enable inputplumber.service
 enable NetworkManager-wait-online.service
+enable playserve.service
 enable resize-root-file-system.service
 enable restorecon-bootc.service
 enable sddm.service

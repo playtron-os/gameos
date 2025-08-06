@@ -146,7 +146,7 @@ if [[ " ${reports[*]} " =~ "services" ]]; then
   journalctl -b 0 >"${REPORT_DIR}/journal.log"
   journalctl -b 0 -u inputplumber >"${REPORT_DIR}/inputplumber.log"
   journalctl -b 0 -u powerstation >"${REPORT_DIR}/powerstation.log"
-  sudo -u "${TARGET_USER}" journalctl --user -u playserve -b >"${REPORT_DIR}/playserve.log"
+  journalctl -u playserve -b >"${REPORT_DIR}/playserve.log"
   sudo -u "${TARGET_USER}" journalctl --user -u gamescope-dbus -b >"${REPORT_DIR}/gamescope-dbus.log"
   sudo -u "${TARGET_USER}" journalctl --user -u gamescope-session-plus@playtron -b >"${REPORT_DIR}/gamescope-session.log"
 fi
