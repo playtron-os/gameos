@@ -158,6 +158,9 @@ if [[ " ${reports[*]} " =~ "gamescope" ]]; then
     echo "\$ xprop -display :0 -root"
     sudo -u "${TARGET_USER}" xprop -display :0 -root
     echo ""
+    echo "\$ xprop -display :0 -name Grid"
+    sudo -u "${TARGET_USER}" xprop -display :0 -name Grid
+    echo ""
     echo "\$ xwininfo -display :0 -root -children -int"
     sudo -u "${TARGET_USER}" xwininfo -display :0 -root -children -int
     echo ""
@@ -168,11 +171,16 @@ if [[ " ${reports[*]} " =~ "gamescope" ]]; then
   # Take a screenshot
   {
     echo "Taking screenshot..."
-    timeout 5 sudo -u "${TARGET_USER}" XDG_RUNTIME_DIR="/run/user/${TARGET_UID}" DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${TARGET_UID}/bus" \
-      busctl --user call org.shadowblip.Gamescope \
-      /org/shadowblip/Gamescope/Wayland0 \
-      org.shadowblip.Gamescope.Wayland \
-      TakeScreenshot "sy" "${REPORT_DIR}/screenshot.png" 0
+    echo "\$ xprop -display :0 -root -f GAMESCOPECTRL_REQUEST_SCREENSHOT 32c -set GAMESCOPECTRL_REQUEST_SCREENSHOT 2"
+    rm /tmp/gamescope.png
+    sudo -u "${TARGET_USER}" xprop -display :0 -root -f GAMESCOPECTRL_REQUEST_SCREENSHOT 32c -set GAMESCOPECTRL_REQUEST_SCREENSHOT 2
+    for i in {1..5}; do
+      if [ -f /tmp/gamescope.png ]; then
+        break
+      fi
+      sleep 1
+    done
+    mv /tmp/gamescope.png "${REPORT_DIR}/screenshot.png"
   } >>"${REPORT_DIR}/gamescope.out" 2>&1
 fi
 

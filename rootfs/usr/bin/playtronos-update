@@ -146,6 +146,9 @@ function __report_progress {
 			done_parts=$(echo "$done_parts + 1" | bc)
 
 	                echo "{ \"done_mb\": $(echo $done_mb | awk '{printf "%d", $0}'), \"total_mb\": $(echo $total_mb | awk '{printf "%d", $0}'), \"done_parts\": ${done_parts}, \"total_parts\": ${total_parts} }"
+		elif [[ $line =~ "error:" ]]; then
+			echo $line
+			exit 1
 	        fi
 	done
 }

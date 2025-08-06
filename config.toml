@@ -2,3 +2,17 @@
 name = "playtron"
 password = "playtron"
 groups = ["wheel"]
+
+[[customizations.directories]]
+path = "/etc/environment.d"
+user = "root"
+group = "root"
+
+# switch Grid to install mode
+[[customizations.files]]
+path = "/etc/environment.d/playtron-installer.conf"
+data = "GRID_INSTALL_MODE=1"
+
+# disable resize-root-file-system service
+[[customizations.files]]
+path = "/etc/systemd/system/resize-root-file-system.service"

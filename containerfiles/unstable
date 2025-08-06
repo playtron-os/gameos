@@ -102,6 +102,7 @@ RUN ${CMD_INSTALL} \
   plymouth-theme-spinner \
   powerstation \
   powertop \
+  pv \
   python3-pygame \
   python3-dbus \
   python3-gobject \
@@ -321,6 +322,10 @@ COPY rootfs/usr/share/polkit-1/rules.d/50-one.playtron.rpmostree1.rules			/usr/s
 
 # Custom playtron weston session file
 COPY rootfs/usr/share/wayland-sessions/playtron-weston.desktop				/usr/share/wayland-sessions/
+
+# Install mode files
+COPY rootfs/usr/libexec/playtron/os-install						/usr/libexec/playtron/
+COPY rootfs/usr/share/polkit-1/rules.d/50-one.playtron.os-install.rules			/usr/share/polkit-1/rules.d/
 
 # Configure SELinux.
 RUN mkdir -p /usr/share/selinux/playtron-modules
