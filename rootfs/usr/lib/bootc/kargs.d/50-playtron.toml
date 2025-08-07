@@ -1,2 +1,5 @@
 match-architectures = ["x86_64"]
 kargs = ["splash", "quiet", "iomem=relaxed"]
+
+match-architectures = ["aarch64"]
+kargs = ["splash", "quiet", "arm64.nopauth", "clk_ignore_unused", "pd_ignore_unused", "efi=noruntime", "modprobe.blacklist=qcom_q6v5_pas"]
