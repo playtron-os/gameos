@@ -280,6 +280,10 @@ COPY rootfs/usr/lib/udev/hwdb.d/59-sui.hwdb						/usr/lib/udev/hwdb.d/
 COPY rootfs/usr/lib/udev/rules.d/50-ayaneo2s.rules					/usr/lib/udev/rules.d/
 COPY rootfs/usr/lib/udev/rules.d/50-suiplay0x1.rules					/usr/lib/udev/rules.d/
 
+# Powerstation autostart
+COPY rootfs/usr/lib/udev/hwdb.d/60-powerstation-autostart.hwdb				/usr/lib/udev/hwdb.d/
+COPY rootfs/usr/lib/udev/rules.d/90-powerstation-autostart.rules			/usr/lib/udev/rules.d/
+
 # Use the Kyber I/O scheduler for NVMe drives
 COPY rootfs/usr/lib/udev/rules.d/50-block-scheduler.rules				/usr/lib/udev/rules.d/
 
