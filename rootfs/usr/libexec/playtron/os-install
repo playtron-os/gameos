@@ -27,9 +27,6 @@ fi
 # ensure progress is at 100%
 echo "100"
 
-efibootmgr --delete-bootnum --label "${OS_NAME}" || true
-efibootmgr --create --disk ${TARGET_DISK} --part 2 --loader \\EFI\\fedora\\shim.efi --label "${OS_NAME}"
-
 mkdir -p /tmp/playtron-install-target
 mount  ${TARGET_DISK}*4 /tmp/playtron-install-target
 pushd  /tmp/playtron-install-target
@@ -39,3 +36,6 @@ popd
 sync
 
 umount ${TARGET_DISK}*4
+
+efibootmgr --delete-bootnum --label "${OS_NAME}" || true
+efibootmgr --create --disk ${TARGET_DISK} --part 2 --loader \\EFI\\fedora\\shim.efi --label "${OS_NAME}"
