@@ -18,6 +18,7 @@
     - [Valve Steam Deck LCD](#valve-steam-deck-lcd)
     - [Valve Steam Deck OLED](#valve-steam-deck-oled)
 - [Laptops](#laptops)
+    - [ASUS ROG Zephyrus M16 GU603](#asus-rog-zephyrus-m16-gu603)
     - [Framework Laptop 13](#framework-laptop-13)
     - [Framework Laptop 16](#framework-laptop-16)
 
@@ -291,6 +292,28 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 | Wi-Fi | Yes |
 
 ## Laptops
+
+### ASUS ROG Zephyrus M16 GU603
+
+| Hardware | Status |
+| -------- | ------ |
+| AutoTDP | No |
+| Battery Status | Yes |
+| Bluetooth | Yes |
+| Brightness Buttons\* | Partial |
+| Ethernet | Yes |
+| Headphones | Yes |
+| Keyboard | Yes |
+| microSD | Yes |
+| Screen Orientation | Yes |
+| Speakers | Yes |
+| Sleep | Yes |
+| Touch Pad | Yes |
+| Touch Screen | None |
+| Volume Buttons | Yes |
+| Wi-Fi | Yes |
+
+\*Brightness can only be adjusted using the Quick Access Menu (QAM). The physical keys do not work.
 
 ### Framework Laptop 13
 
