@@ -180,6 +180,7 @@ COPY rootfs/etc/yum.repos.d/inputplumber-x86_64.repo					/etc/yum.repos.d/
 COPY rootfs/etc/yum.repos.d/negativo17-fedora-nvidia.repo				/etc/yum.repos.d/
 COPY rootfs/etc/yum.repos.d/nobara-41-i386.repo						/etc/yum.repos.d/
 COPY rootfs/etc/yum.repos.d/nobara-41-x86_64.repo					/etc/yum.repos.d/
+COPY rootfs/etc/yum.repos.d/nobara-42-x86_64.repo					/etc/yum.repos.d/
 COPY rootfs/etc/yum.repos.d/playtron-app-x86_64.repo					/etc/yum.repos.d/
 COPY rootfs/etc/yum.repos.d/playtron-gaming-i386.repo					/etc/yum.repos.d/
 COPY rootfs/etc/yum.repos.d/playtron-gaming-x86_64.repo					/etc/yum.repos.d/

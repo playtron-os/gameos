@@ -8,3 +8,4 @@ gpgkey=https://download.copr.fedorainfracloud.org/results/playtron/gaming/pubkey
 repo_gpgcheck=0
 enabled=1
 enabled_metadata=1
+exclude=kernel*

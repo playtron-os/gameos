@@ -1,0 +1,11 @@
+[nobara-42-x86_64]
+name=Copr repo for Nobara 42
+baseurl=https://download.copr.fedorainfracloud.org/results/gloriouseggroll/nobara-42/fedora-42-x86_64/
+type=rpm-md
+skip_if_unavailable=True
+gpgcheck=1
+gpgkey=https://download.copr.fedorainfracloud.org/results/gloriouseggroll/nobara-42/pubkey.gpg
+repo_gpgcheck=0
+enabled=1
+enabled_metadata=1
+includepkgs=kernel*
