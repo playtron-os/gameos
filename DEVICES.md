@@ -306,6 +306,8 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 
 ## Laptops
 
+Brightness can only be adjusted using the Quick Access Menu (QAM). Physical keyboard keys currently do not work.
+
 ### ASUS ROG Zephyrus M16 GU603
 
 | Hardware | Status |
@@ -313,7 +315,7 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 | AutoTDP | No |
 | Battery Status | Yes |
 | Bluetooth | Yes |
-| Brightness Control\* | Partial |
+| Brightness Control | Partial |
 | Ethernet | Yes |
 | Headphones | Yes |
 | Keyboard | Yes |
@@ -326,8 +328,6 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 | Volume Control | Yes |
 | Wi-Fi | Yes |
 
-\*Brightness can only be adjusted using the Quick Access Menu (QAM). The physical keys do not work.
-
 ### Framework Laptop 13
 
 | Hardware | Status |
@@ -335,7 +335,7 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 | AutoTDP | No |
 | Battery Status | Yes |
 | Bluetooth | Yes |
-| Brightness Control | Yes |
+| Brightness Control | Partial |
 | Ethernet | Yes |
 | Headphones | Yes |
 | Keyboard | Yes |
@@ -355,7 +355,7 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 | AutoTDP | No |
 | Battery Status | Yes |
 | Bluetooth | Yes |
-| Brightness Control | Yes |
+| Brightness Control | Partial |
 | Ethernet | Yes |
 | Headphones | Yes |
 | Keyboard | Yes |
