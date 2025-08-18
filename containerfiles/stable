@@ -59,6 +59,7 @@ COPY rootfs/usr/share/inputplumber/devices/25-playtron-rog_ally_x.yaml	/usr/shar
 COPY rootfs/usr/share/inputplumber/devices/60-keyboard-meta.yaml	/usr/share/inputplumber/devices/
 COPY rootfs/usr/lib/udev/hwdb.d/60-powerstation-autostart.hwdb		/usr/lib/udev/hwdb.d/
 COPY rootfs/usr/lib/udev/rules.d/90-powerstation-autostart.rules	/usr/lib/udev/rules.d/
+COPY rootfs/usr/share/plymouth/themes/spinner/watermark.png		/usr/share/plymouth/themes/spinner/
 
 # Configure SELinux.
 RUN mkdir -p /usr/share/selinux/playtron-modules
