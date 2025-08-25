@@ -286,6 +286,7 @@ COPY rootfs/usr/lib/udev/rules.d/90-powerstation-autostart.rules			/usr/lib/udev
 COPY rootfs/usr/lib/udev/rules.d/50-block-scheduler.rules				/usr/lib/udev/rules.d/
 
 # InputPlumber configuration
+COPY rootfs/usr/share/inputplumber/capability_maps/kbd-meta.yaml			/usr/share/inputplumber/capability_maps/
 COPY rootfs/usr/share/inputplumber/capability_maps/playtron_ayaneo_type7.yaml		/usr/share/inputplumber/capability_maps/
 COPY rootfs/usr/share/inputplumber/devices/24-playtron-ayaneo_2s_v2.yaml		/usr/share/inputplumber/devices/
 COPY rootfs/usr/share/inputplumber/devices/24-playtron-suiplay0x1_v2.yaml		/usr/share/inputplumber/devices/
@@ -299,6 +300,7 @@ COPY rootfs/usr/share/inputplumber/devices/25-playtron-rog_ally_x.yaml			/usr/sh
 COPY rootfs/usr/share/inputplumber/devices/25-playtron-rog_ally.yaml			/usr/share/inputplumber/devices/
 COPY rootfs/usr/share/inputplumber/devices/25-playtron-steam_deck.yaml			/usr/share/inputplumber/devices/
 COPY rootfs/usr/share/inputplumber/devices/25-playtron-suiplay0x1.yaml			/usr/share/inputplumber/devices/
+COPY rootfs/usr/share/inputplumber/devices/60-keyboard-meta.yaml			/usr/share/inputplumber/devices/
 
 # PipeWire configuration for RNNoise
 COPY rootfs/usr/share/pipewire/pipewire.conf.d/pipewire-rnnoise.conf			/usr/share/pipewire/pipewire.conf.d/

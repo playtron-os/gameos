@@ -3,23 +3,44 @@ FROM registry.playtron.one/internal/playtronos:1.0.0.13
 # Set OS version
 COPY rootfs/usr/lib/os-release-playtron /usr/lib/
 
+# Upgrade kernel.
+RUN dnf remove -y kmod-nvidia* && \
+  rpm-ostree override replace \
+  https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-41-x86_64/09410114-kernel/kernel-6.15.8-203.nobara.fc41.x86_64.rpm \
+  https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-41-x86_64/09410114-kernel/kernel-core-6.15.8-203.nobara.fc41.x86_64.rpm \
+  https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-41-x86_64/09410114-kernel/kernel-devel-6.15.8-203.nobara.fc41.x86_64.rpm \
+  https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-41-x86_64/09410114-kernel/kernel-devel-matched-6.15.8-203.nobara.fc41.x86_64.rpm \
+  https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-41-x86_64/09410114-kernel/kernel-headers-6.15.8-203.nobara.fc41.x86_64.rpm \
+  https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-41-x86_64/09410114-kernel/kernel-modules-6.15.8-203.nobara.fc41.x86_64.rpm
+# Rebuild NVIDIA drivers.
+RUN cp -r /etc/pam.d /etc/pam.d.bak; sed -i -r 's/^(session\s+required\s+pam_limits.so)/#\1/' /etc/pam.d/*; \
+  mkdir -p /run/akmods; \
+  for k in $(ls -1 /usr/src/kernels); do \
+    akmods --force --kernels "${k}" --kmod "nvidia" || exit 1; \
+    ls /var/cache/akmods/nvidia/*.failed.log > /dev/null 2>&1 && cat /var/cache/akmods/nvidia/*.failed.log || true; \
+    ls /usr/lib/modules/"${k}"/extra/nvidia/nvidia.ko.xz || exit 1; \
+  done; \
+  rm -rf /run/akmods; \
+  rm -rf /etc/pam.d; mv /etc/pam.d.bak /etc/pam.d;
+
 # https://github.com/playtron-os/rpm-specs-gaming
 RUN dnf5 -y upgrade \
   gamescope-dbus-1.10.4-1 \
   gamescope-session-0.1.0+319-1.fc41 \
-  gamescope-session-playtron-0.4.0-1.fc41 \
-  grid-1.10.0-1.fc40 \
-  inputplumber-0.61.0-0.fc41 \
-  legendary-0.20.37-1.playtron \
+  gamescope-session-playtron-0.4.1-1.fc41 \
+  grid-1.17.0-1.fc40 \
+  inputplumber-0.62.1-0.fc41 \
+  legendary-0.20.39-1.playtron \
   libpact-0.3.0-1 \
   libplaytron-0.4.0-1 \
-  powerstation-0.6.1-1 \
-  playserve-1.6.0-1 \
-  playtron-plugin-local-1.3.2-1 \
+  powerstation-0.7.0-1 \
+  playserve-1.8.3-1 \
+  playtron-plugin-local-1.3.3-1 \
   reaper-0.1.0-2.fc41 \
   tzupdate-3.1.0-1.fc41 \
   udev-media-automount-0.1.0+71-1.fc41 \
-  SteamBus-1.25.3-1.fc41
+  SteamBus-1.25.6-1.fc41 \
+  xdg-desktop-portal-openuri-1.0.1-1.fc41
 
 # Clear cache.
 RUN dnf5 clean all && \
@@ -34,9 +55,17 @@ RUN cd /etc/systemd/system/multi-user.target.wants && ln -s /usr/lib/systemd/sys
 COPY rootfs/usr/bin/playtron-factory-reset                              /usr/bin/
 COPY rootfs/usr/bin/playtronos-systemreport				/usr/bin/
 COPY rootfs/usr/lib/systemd/system-preset/50-playtron.preset		/usr/lib/systemd/system-preset/
+COPY rootfs/usr/lib/systemd/user-preset/50-playtron.preset		/usr/lib/systemd/user-preset/
+COPY rootfs/usr/share/inputplumber/capability_maps/kbd-meta.yaml	/usr/share/inputplumber/capability_maps/
 COPY rootfs/usr/share/inputplumber/devices/25-playtron-rog_ally_x.yaml	/usr/share/inputplumber/devices/
+COPY rootfs/usr/share/inputplumber/devices/60-keyboard-meta.yaml	/usr/share/inputplumber/devices/
 COPY rootfs/usr/lib/udev/hwdb.d/60-powerstation-autostart.hwdb		/usr/lib/udev/hwdb.d/
 COPY rootfs/usr/lib/udev/rules.d/90-powerstation-autostart.rules	/usr/lib/udev/rules.d/
+COPY rootfs/usr/share/plymouth/themes/spinner/watermark.png		/usr/share/plymouth/themes/spinner/
+
+# Ensure services are enabled according to presets
+RUN systemctl preset-all
+RUN systemctl --user --global preset-all
 
 # Configure SELinux.
 RUN mkdir -p /usr/share/selinux/playtron-modules
@@ -47,6 +76,10 @@ RUN cd /usr/share/selinux/playtron-modules/ && checkmodule -M -m -o systemd_time
 COPY rootfs/usr/lib/systemd/system/restorecon-bootc.service	/usr/lib/systemd/system/
 COPY rootfs/usr/bin/restorecon-bootc	/usr/bin/
 RUN sed -E -i 's/SELINUX=.+/SELINUX=enforcing/g' /etc/sysconfig/selinux && systemctl enable restorecon-bootc.service
+
+# Build initramfs
+RUN KERNEL=$(echo /lib/modules/*/vmlinuz | cut -d'/' -f4) \
+  && dracut --reproducible -v --omit-drivers nouveau --add 'ostree' -f --no-hostonly --kver ${KERNEL} /lib/modules/${KERNEL}/initramfs.img
 
 # View final packages.
 RUN rpm -qa | sort

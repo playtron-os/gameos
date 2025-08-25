@@ -1,3 +1,4 @@
 enable pipewire-rnnoise-switch.service
 enable playserve.service
 enable gamescope-dbus.service
+enable xdg-desktop-portal-openuri.service
