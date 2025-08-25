@@ -1,0 +1,11 @@
+#!/bin/bash
+# NetworkManager dispatcher script tp set the timezone automatically
+
+IFACE="$1"  
+STATUS="$2"
+
+if [ "$STATUS" = "up" ]; then
+    if [ ! -f /var/lib/playtron/timezone-method ]; then
+        hwctl datetime set-timezone-auto
+    fi
+fi
