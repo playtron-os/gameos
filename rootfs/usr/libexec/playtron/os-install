@@ -7,8 +7,8 @@ fi
 
 
 function disable_install_mode {
-	rm -rf root/ostree/deploy/default/deploy/*/etc/environment.d
-	rm -f root/ostree/deploy/default/deploy/*/etc/systemd/system/resize-root-file-system.service
+	rm -rf etc/environment.d
+	rm -f etc/systemd/system/resize-root-file-system.service
 }
 
 OS_NAME="Playtron GameOS"
@@ -27,15 +27,26 @@ fi
 # ensure progress is at 100%
 echo "100"
 
-mkdir -p /tmp/playtron-install-target
-mount  ${TARGET_DISK}*4 /tmp/playtron-install-target
-pushd  /tmp/playtron-install-target
+EFI_PART=1
+BOOT_PART=2
+ROOT_PART=3
+
+if [ "$(uname -m)" == "x86_64" ]; then
+	EFI_PART=2
+	BOOT_PART=3
+	ROOT_PART=4
+fi
+
+# update root filesystem
+mkdir -p /tmp/playtron-install-target-root
+mount  ${TARGET_DISK}*${ROOT_PART} /tmp/playtron-install-target-root
+pushd /tmp/playtron-install-target-root/root/ostree/deploy/default/deploy/*.0
+
 disable_install_mode
+
 popd
-
 sync
-
-umount ${TARGET_DISK}*4
+umount ${TARGET_DISK}*${ROOT_PART}
 
 efibootmgr --delete-bootnum --label "${OS_NAME}" || true
-efibootmgr --create --disk ${TARGET_DISK} --part 2 --loader \\EFI\\fedora\\shim.efi --label "${OS_NAME}"
+efibootmgr --create --disk ${TARGET_DISK} --part ${EFI_PART} --loader \\EFI\\fedora\\shim.efi --label "${OS_NAME}"
