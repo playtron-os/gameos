@@ -112,6 +112,7 @@ fi
 if [[ " ${reports[*]} " =~ "process" ]]; then
   echo -e "  Collecting ${RED}process${ENDCOLOR} report..."
   ps afux >"${REPORT_DIR}/processes.out"
+  uptime >"${REPORT_DIR}/uptime.out"
 fi
 
 # Input
