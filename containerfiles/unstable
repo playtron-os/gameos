@@ -19,14 +19,14 @@ RUN ${CMD_INSTALL} \
 
 # Install custom kernel version
 RUN  dnf remove  -y kernel kernel-core kernel-devel kernel-devel-matched kernel-headers kernel-modules kernel-modules-core kernel-modules-extra && dnf install -y \
-    kernel-6.14.0-63.fc42 \
-    kernel-core-6.14.0-63.fc42 \
-    kernel-devel-6.14.0-63.fc42 \
-    kernel-devel-matched-6.14.0-63.fc42 \
-    kernel-headers-6.14.0-63.fc42 \
-    kernel-modules-6.14.0-63.fc42 \
-    kernel-modules-core-6.14.0-63.fc42 \
-    kernel-modules-extra-6.14.0-63.fc42
+    kernel-6.16.3-200.fc42 \
+    kernel-core-6.16.3-200.fc42 \
+    kernel-devel-6.16.3-200.fc42 \
+    kernel-devel-matched-6.16.3-200.fc42 \
+    kernel-headers-6.16.2-200.fc42 \
+    kernel-modules-6.16.3-200.fc42 \
+    kernel-modules-core-6.16.3-200.fc42 \
+    kernel-modules-extra-6.16.3-200.fc42
 
 # Prevent kernel upgrades
 RUN dnf versionlock add kernel kernel-core kernel-devel kernel-devel-matched kernel-headers kernel-modules
@@ -181,6 +181,7 @@ COPY rootfs/etc/yum.repos.d/audinux.repo						/etc/yum.repos.d/
 COPY rootfs/etc/yum.repos.d/fedora.repo							/etc/yum.repos.d/
 COPY rootfs/etc/yum.repos.d/fedora-updates-archive.repo					/etc/yum.repos.d/
 COPY rootfs/etc/yum.repos.d/fedora-updates.repo						/etc/yum.repos.d/
+COPY rootfs/etc/yum.repos.d/fedora-updates-testing.repo					/etc/yum.repos.d/
 COPY rootfs/etc/yum.repos.d/inputplumber.repo						/etc/yum.repos.d/
 COPY rootfs/etc/yum.repos.d/negativo17-fedora-nvidia.repo				/etc/yum.repos.d/
 COPY rootfs/etc/yum.repos.d/playtron-app.repo						/etc/yum.repos.d/
