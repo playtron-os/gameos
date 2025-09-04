@@ -139,9 +139,9 @@ RUN ${CMD_INSTALL} \
 
 # Install Arm specific packages
 RUN ${CMD_INSTALL} \
-  box64-a9f4e72c4b4f15289c8eef0b9be0359e2acf50dc \
-  box64-binfmts-a9f4e72c4b4f15289c8eef0b9be0359e2acf50dc \
-  box64-data-a9f4e72c4b4f15289c8eef0b9be0359e2acf50dc \
+  box64-sd888 \
+  box64-binfmts \
+  box64-data \
   dnf-utils \
   ibus-libs \
   libnsl \
