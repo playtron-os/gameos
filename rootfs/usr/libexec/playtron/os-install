@@ -9,6 +9,7 @@ fi
 function disable_install_mode {
 	rm -rf etc/environment.d
 	rm -f etc/systemd/system/resize-root-file-system.service
+	rm -f etc/modprobe.d/playtron-installer.conf
 }
 
 OS_NAME="Playtron GameOS"
