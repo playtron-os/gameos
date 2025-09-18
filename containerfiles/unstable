@@ -320,6 +320,7 @@ COPY rootfs/usr/share/polkit-1/rules.d/50-one.playtron.factory-reset.rules		/usr
 COPY rootfs/usr/share/polkit-1/rules.d/50-one.playtron.hwctl.rules			/usr/share/polkit-1/rules.d/
 COPY rootfs/usr/share/polkit-1/rules.d/50-one.playtron.playtronos-session-select.rules	/usr/share/polkit-1/rules.d/
 COPY rootfs/usr/share/polkit-1/rules.d/50-one.playtron.playtronos-update.rules		/usr/share/polkit-1/rules.d/
+COPY rootfs/usr/share/polkit-1/rules.d/50-one.playtron.playtronos-systemreport.rules	/usr/share/polkit-1/rules.d/
 
 # Allow running OS upgrades without a password
 COPY rootfs/usr/share/polkit-1/rules.d/50-one.playtron.rpmostree1.rules			/usr/share/polkit-1/rules.d/
