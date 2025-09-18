@@ -20,6 +20,7 @@ TARGET_UID=$(id -u "${TARGET_USER}")
 REPORT_NAME="report-$(date +%Y-%m-%d-%s)"
 REPORT_DIR_BASE="$(mktemp -d)"
 REPORT_DIR="${REPORT_DIR_BASE}/${REPORT_NAME}"
+OUTPUT_PATH="/tmp/${REPORT_NAME}.tar.gz"
 
 ALL_REPORTS=(os hardware firmware process input power services gamescope audio storage network tpm)
 reports=()
@@ -28,8 +29,9 @@ usage() {
   echo -e "Usage: $0 [OPTIONS]"
   echo -e ""
   echo -e "Options:"
-  echo -e " -h, --help     Display this help message"
-  echo -e " -r, --report   Report type to include in archive. Can be one of: ${YELLOW}[${ALL_REPORTS[*]}]${ENDCOLOR}"
+  echo -e " -h, --help      Display this help message"
+  echo -e " -r, --report    Report type to include in archive. Can be one of: ${YELLOW}[${ALL_REPORTS[*]}]${ENDCOLOR}"
+  echo -e " -o, --out PATH  Specify output file path including filename"
 }
 
 has_argument() {
@@ -46,6 +48,32 @@ handle_options() {
     -h | --help)
       usage
       exit 0
+      ;;
+    -o|--out)
+      if ! has_argument "$@"; then
+        echo "Output path not specified" >&2
+        usage
+        exit 1
+      fi
+
+      # Validate output path
+      OUTPUT_PATH=$(extract_argument "$@")
+
+      # Validate output path if specified
+      # Check if path is relative
+      if [[ "$OUTPUT_PATH" != /* ]]; then
+        echo "Error: Output path must be absolute"
+        exit 1
+      fi
+
+      OUTPUT_DIR=$(dirname "$OUTPUT_PATH")
+
+      if [ ! -d "$OUTPUT_DIR" ]; then
+        echo "Error: Output directory '$OUTPUT_DIR' does not exist"
+        exit 1
+      fi
+
+      shift
       ;;
     -r | --report*)
       if ! has_argument "$@"; then
@@ -231,9 +259,9 @@ fi
 echo ""
 echo -e "${CYAN}Building report archive${ENDCOLOR}"
 cd "${REPORT_DIR_BASE}" && tar cvfz "${REPORT_NAME}.tar.gz" "${REPORT_NAME}"
-mv "${REPORT_DIR}.tar.gz" "/tmp/${REPORT_NAME}.tar.gz"
-chown ${TARGET_USER}: "/tmp/${REPORT_NAME}.tar.gz"
+mv "${REPORT_DIR}.tar.gz" "$OUTPUT_PATH"
+chown ${TARGET_USER}: "$OUTPUT_PATH"
 rm -rf "${REPORT_DIR_BASE}"
 
 echo ""
-echo -e "Saved system report to: ${PURPLE}/tmp/${REPORT_NAME}.tar.gz${ENDCOLOR}"
+echo -e "Saved system report to: ${PURPLE}${OUTPUT_PATH}${ENDCOLOR}"
