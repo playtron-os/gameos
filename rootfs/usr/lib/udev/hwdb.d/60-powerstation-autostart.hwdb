@@ -90,6 +90,10 @@ dmi:*svnONE-NETBOOK:pnONEXPLAYERX1i:*
 dmi:*svnONE-NETBOOK:pnONEXPLAYERX1mini:*
 # OrangePi Neo
 dmi:*svnOrangePi:pnNEO-01:*
+# Steam Deck LCD
+dmi:*svnValve:pnJupiter:*
+# Steam Deck OLED
+dmi:*svnValve:pnGalileo:*
 # Zotac Zone
 dmi:*svnZOTAC:*rnG0A1W:*
 dmi:*svnZOTAC:*rnG1A1W:*

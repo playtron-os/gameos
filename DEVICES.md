@@ -18,6 +18,7 @@
     - [Valve Steam Deck LCD](#valve-steam-deck-lcd)
     - [Valve Steam Deck OLED](#valve-steam-deck-oled)
 - [Laptops](#laptops)
+    - [ASUS ROG Zephyrus M16 GU603](#asus-rog-zephyrus-m16-gu603)
     - [Framework Laptop 13](#framework-laptop-13)
     - [Framework Laptop 16](#framework-laptop-16)
 
@@ -31,6 +32,7 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 
 | Hardware | Status |
 | -------- | ------ |
+| AutoTDP | No |
 | Bluetooth | Yes |
 | Ethernet | Yes |
 | Headphones | Yes |
@@ -44,8 +46,10 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 
 | Hardware | Status |
 | -------- | ------ |
+| AutoTDP | Yes |
 | Battery Status | Yes |
 | Bluetooth | Yes |
+| Brightness Control | Yes |
 | Controller | Yes |
 | Gyro | Yes |
 | Headphones | Yes |
@@ -55,15 +59,17 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 | Sleep | No |
 | Touch Pad | None |
 | Touch Screen | Yes |
-| Volume Buttons | Yes |
+| Volume Control | Yes |
 | Wi-Fi | Yes |
 
 ### AYANEO 2S
 
 | Hardware | Status |
 | -------- | ------ |
+| AutoTDP | Yes |
 | Battery Status | Yes |
 | Bluetooth | Yes |
+| Brightness Control | Yes |
 | Controller | Yes |
 | Gyro | Yes |
 | Headphones | Yes |
@@ -73,7 +79,7 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 | Sleep\* | Yes |
 | Touch Pad | None |
 | Touch Screen | Yes |
-| Volume Buttons | Yes |
+| Volume Control | Yes |
 | Wi-Fi | Yes |
 
 \*Requires the latest BIOS.
@@ -82,8 +88,10 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 
 | Hardware | Status |
 | -------- | ------ |
+| AutoTDP | Yes |
 | Battery Status | Yes |
 | Bluetooth | Yes |
+| Brightness Control | Yes |
 | Controller | Yes |
 | Gyro | Yes |
 | Headphones | Yes |
@@ -93,15 +101,17 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 | Sleep | Yes |
 | Touch Pad | None |
 | Touch Screen | Yes |
-| Volume Buttons | Yes |
+| Volume Control | Yes |
 | Wi-Fi | Yes |
 
 ### ASUS ROG Ally X
 
 | Hardware | Status |
 | -------- | ------ |
+| AutoTDP | Yes |
 | Battery Status | Yes |
 | Bluetooth | Yes |
+| Brightness Control | Yes |
 | Controller | Yes |
 | Gyro | Yes |
 | Headphones | Yes |
@@ -111,15 +121,37 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 | Sleep | Yes |
 | Touch Pad | None |
 | Touch Screen | Yes |
-| Volume Buttons | Yes |
+| Volume Control | Yes |
 | Wi-Fi | Yes |
 
 ### GPD Win 4 2023
 
 | Hardware | Status |
 | -------- | ------ |
+| AutoTDP | Yes |
 | Battery Status | Yes |
 | Bluetooth | Yes |
+| Brightness Control | Yes |
+| Controller | Yes |
+| Gyro | Yes |
+| Headphones | Yes |
+| microSD | Yes |
+| Screen Orientation | Yes |
+| Speakers | Yes |
+| Sleep | Yes |
+| Touch Pad | Yes |
+| Touch Screen | Yes |
+| Volume Control | Yes |
+| Wi-Fi | Yes |
+
+### GPD Win 4 2025
+
+| Hardware | Status |
+| -------- | ------ |
+| AutoTDP | Yes |
+| Battery Status | Yes |
+| Bluetooth | Yes |
+| Brightness Control | Yes |
 | Controller | Yes |
 | Gyro | No |
 | Headphones | Yes |
@@ -129,33 +161,17 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 | Sleep | Yes |
 | Touch Pad | Yes |
 | Touch Screen | Yes |
-| Volume Buttons | Yes |
-| Wi-Fi | Yes |
-
-### GPD Win 4 2025
-
-| Hardware | Status |
-| -------- | ------ |
-| Battery Status | Yes |
-| Bluetooth | Yes |
-| Controller | Partial |
-| Gyro | Yes |
-| Headphones | Yes |
-| microSD | Yes |
-| Screen Orientation | Yes |
-| Speakers | Yes |
-| Sleep | Yes |
-| Touch Pad | Yes |
-| Touch Screen | Yes |
-| Volume Buttons | Yes |
+| Volume Control | Yes |
 | Wi-Fi | Yes |
 
 ### Lenovo Legion Go
 
 | Hardware | Status |
 | -------- | ------ |
+| AutoTDP | Yes |
 | Battery Status | Yes |
 | Bluetooth | Yes |
+| Brightness Control | Yes |
 | Controller | Yes |
 | Gyro | Yes |
 | Headphones | Yes |
@@ -165,15 +181,17 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 | Sleep | Yes |
 | Touch Pad | Yes |
 | Touch Screen | Yes |
-| Volume Buttons | Yes |
+| Volume Control | Yes |
 | Wi-Fi | Yes |
 
 ### MSI Claw A1M
 
 | Hardware | Status |
 | -------- | ------ |
+| AutoTDP | Partial |
 | Battery Status | Yes |
 | Bluetooth | Yes |
+| Brightness Control | Yes |
 | Controller | Yes |
 | Gyro | Yes |
 | Headphones | Yes |
@@ -183,15 +201,17 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 | Sleep | Yes |
 | Touch Pad | None |
 | Touch Screen | Yes |
-| Volume Buttons | Yes |
+| Volume Control | Yes |
 | Wi-Fi | Yes |
 
 ### MSI Claw 7 AIPlus A2VM
 
 | Hardware | Status |
 | -------- | ------ |
+| AutoTDP | Partial |
 | Battery Status | Yes |
 | Bluetooth | Yes |
+| Brightness Control | Yes |
 | Controller | Yes |
 | Gyro | Yes |
 | Headphones | Yes |
@@ -201,15 +221,17 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 | Sleep | Yes |
 | Touch Pad | None |
 | Touch Screen | Yes |
-| Volume Buttons | Yes |
+| Volume Control | Yes |
 | Wi-Fi | Yes |
 
 ### MSI Claw 8 AIPlus A2VM
 
 | Hardware | Status |
 | -------- | ------ |
+| AutoTDP | Partial |
 | Battery Status | Yes |
 | Bluetooth | Yes |
+| Brightness Control | Yes |
 | Controller | Yes |
 | Gyro | Yes |
 | Headphones | Yes |
@@ -219,15 +241,17 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 | Sleep | Yes |
 | Touch Pad | None |
 | Touch Screen | Yes |
-| Volume Buttons | Yes |
+| Volume Control | Yes |
 | Wi-Fi | Yes |
 
 ### SuiPlay0X1
 
 | Hardware | Status |
 | -------- | ------ |
+| AutoTDP | Yes |
 | Battery Status | Yes |
 | Bluetooth | Yes |
+| Brightness Control | Yes |
 | Controller | Yes |
 | Gyro | Yes |
 | Headphones | Yes |
@@ -237,15 +261,17 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 | Sleep | Yes |
 | Touch Pad | None |
 | Touch Screen | Yes |
-| Volume Buttons | Yes |
+| Volume Control | Yes |
 | Wi-Fi | Yes |
 
 ### Valve Steam Deck LCD
 
 | Hardware | Status |
 | -------- | ------ |
+| AutoTDP | Yes |
 | Battery Status | Yes |
 | Bluetooth | Yes |
+| Brightness Control | Yes |
 | Controller | Yes |
 | Gyro | Yes |
 | Headphones | Yes |
@@ -255,15 +281,17 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 | Sleep | Yes |
 | Touch Pad | Yes |
 | Touch Screen | Yes |
-| Volume Buttons | Yes |
+| Volume Control | Yes |
 | Wi-Fi | Yes |
 
 ### Valve Steam Deck OLED
 
 | Hardware | Status |
 | -------- | ------ |
+| AutoTDP | Yes |
 | Battery Status | Yes |
 | Bluetooth | Yes |
+| Brightness Control | Yes |
 | Controller | Yes |
 | Gyro | Yes |
 | Headphones | Yes |
@@ -273,18 +301,21 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 | Sleep | Yes |
 | Touch Pad | Yes |
 | Touch Screen | Yes |
-| Volume Buttons | Yes |
+| Volume Control | Yes |
 | Wi-Fi | Yes |
 
 ## Laptops
 
-### Framework Laptop 13
+Brightness can only be adjusted using the Quick Access Menu (QAM). Physical keyboard keys currently do not work.
+
+### ASUS ROG Zephyrus M16 GU603
 
 | Hardware | Status |
 | -------- | ------ |
+| AutoTDP | No |
 | Battery Status | Yes |
 | Bluetooth | Yes |
-| Brightness Buttons | Yes |
+| Brightness Control | Partial |
 | Ethernet | Yes |
 | Headphones | Yes |
 | Keyboard | Yes |
@@ -294,16 +325,37 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 | Sleep | Yes |
 | Touch Pad | Yes |
 | Touch Screen | None |
-| Volume Buttons | Yes |
+| Volume Control | Yes |
+| Wi-Fi | Yes |
+
+### Framework Laptop 13
+
+| Hardware | Status |
+| -------- | ------ |
+| AutoTDP | No |
+| Battery Status | Yes |
+| Bluetooth | Yes |
+| Brightness Control | Partial |
+| Ethernet | Yes |
+| Headphones | Yes |
+| Keyboard | Yes |
+| microSD | Yes |
+| Screen Orientation | Yes |
+| Speakers | Yes |
+| Sleep | Yes |
+| Touch Pad | Yes |
+| Touch Screen | None |
+| Volume Control | Yes |
 | Wi-Fi | Yes |
 
 ### Framework Laptop 16
 
 | Hardware | Status |
 | -------- | ------ |
+| AutoTDP | No |
 | Battery Status | Yes |
 | Bluetooth | Yes |
-| Brightness Buttons | Yes |
+| Brightness Control | Partial |
 | Ethernet | Yes |
 | Headphones | Yes |
 | Keyboard | Yes |
@@ -313,7 +365,7 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 | Sleep | Yes |
 | Touch Pad | Yes |
 | Touch Screen | None |
-| Volume Buttons | Yes |
+| Volume Control | Yes |
 | Wi-Fi | Yes |
 
 \*Requires setting speakers to Linux mode in the BIOS.
