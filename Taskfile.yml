@@ -127,7 +127,7 @@ tasks:
       - rm -rf output
       - mkdir output
       - podman pull ${REGISTRY}/${PROJECT}/${IMAGE}:${TAG}
-      - podman run --rm -it --privileged --pull=newer --security-opt label=type:unconfined_t -v ./config.toml:/config.toml:ro -v ./output:/output -v /var/lib/containers/storage:/var/lib/containers/storage ghcr.io/playtron-os/bootc-image-builder:latest --type raw --rootfs btrfs ${REGISTRY}/${PROJECT}/${IMAGE}:${TAG}
+      - podman run --rm -it --privileged --pull=newer --security-opt label=type:unconfined_t -v ./config.toml:/config.toml:ro -v ./output:/output -v /var/lib/containers/storage:/var/lib/containers/storage quay.io/centos-bootc/bootc-image-builder:latest --type raw --rootfs btrfs ${REGISTRY}/${PROJECT}/${IMAGE}:${TAG}
 
   disk-image:bootc:local:
     desc: Build the OS image from a local container using bootc image builder.
@@ -139,7 +139,7 @@ tasks:
     cmds:
       - rm -rf output
       - mkdir output
-      - podman run --rm -it --privileged --pull=newer --security-opt label=type:unconfined_t -v ./config.toml:/config.toml:ro -v ./output:/output -v /var/lib/containers/storage:/var/lib/containers/storage ghcr.io/playtron-os/bootc-image-builder:latest --type raw --rootfs btrfs localhost/${IMAGE}:${TAG}
+      - podman run --rm -it --privileged --pull=newer --security-opt label=type:unconfined_t -v ./config.toml:/config.toml:ro -v ./output:/output -v /var/lib/containers/storage:/var/lib/containers/storage quay.io/centos-bootc/bootc-image-builder:latest --type raw --rootfs btrfs localhost/${IMAGE}:${TAG}
 
   disk-image:x13s:
     desc: Customize the generic ARM disk image to boot on the X13S
