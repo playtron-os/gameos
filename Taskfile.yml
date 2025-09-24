@@ -3,7 +3,7 @@
 
 version: "3"
 
-env:
+vars:
   IMAGE: playtronos
   PUBLIC_IMAGE: playtron-os
 
@@ -19,27 +19,43 @@ tasks:
       - grep "  - local" playtron-os.yaml || sed -i s'/repos:/repos:\n  - local'/g playtron-os.yaml
       - echo -e "[local]\nname=local\nbaseurl=file:///tmp/repo\nenabled=1\nrepo_gpgcheck=0\ngpgcheck=0" > local.repo
 
-
   container-image:auth:
     desc: Authenticate with the container registry.
     preconditions:
-      - sh: test -n "$REGISTRY"
-        msg: "A value for REGISTRY must be provided"
-      - sh: test -n "$REGISTRY_TOKEN"
-        msg: "A value for REGISTRY_TOKEN must be provided"
+      - sh: test -n "{{.REGISTRY}}"
+        msg: "A value for REGISTRY must be provided. E.g. `REGISTRY=ghcr.io`"
+    status:
+      - podman login --get-login {{.REGISTRY}}
     cmds:
-      - mkdir -p ${XDG_RUNTIME_DIR}/containers
-      - echo "{ \"auths\":{ \"${REGISTRY}\":{ \"auth\":\"${REGISTRY_TOKEN}\" } } }" > "${XDG_RUNTIME_DIR}/containers/auth.json"
+      - podman login {{.REGISTRY}}
+
+  container-image:build:
+    desc: Build the OCI container image
+    requires:
+      vars:
+        - name: BUILD_TYPE
+          enum: [stable, unstable]
+    preconditions:
+      - sh: test -n "{{.TAG}}"
+        msg: "A value for TAG must be provided. E.g. `TAG=1.1.6.0`"
+    env:
+      TAG: "{{.TAG}}"
+    cmds:
+      - mkdir -p rootfs/usr/lib
+      - cat os-release.template | envsubst '${TAG}' > rootfs/usr/lib/os-release-playtron
+      - podman build --no-cache --tag {{.IMAGE}}:{{.TAG}} --file containerfiles/{{.BUILD_TYPE}} .
 
   container-image:build:unstable:
     desc: Build the OCI container image using the latest upstream.
     preconditions:
-      - sh: test -n "$TAG"
-        msg: "A value for TAG must be provided"
+      - sh: test -n "${{.TAG}}"
+        msg: "A value for TAG must be provided. E.g. `TAG=1.1.6.0`"
+    env:
+      TAG: "{{.TAG}}"
     cmds:
       - mkdir -p rootfs/usr/lib
       - cat os-release.template | envsubst '${TAG}' > rootfs/usr/lib/os-release-playtron
-      - podman build --no-cache --tag ${IMAGE}:${TAG} --file containerfiles/unstable .
+      - podman build --no-cache --tag {{.IMAGE}}:{{.TAG}} --file containerfiles/unstable .
 
   container-image:build:stable:
     desc: Build the OCI container image using a previously built image.
@@ -53,42 +69,38 @@ tasks:
 
   container-image:push:
     desc: Push the OCI container image to the container registry.
+    deps:
+      - container-image:auth
     preconditions:
-      - sh: test -n "$REGISTRY"
-        msg: "A value for REGISTRY must be provided"
-      - sh: grep "${REGISTRY}" "${XDG_RUNTIME_DIR}/containers/auth.json"
-        msg: "Please use `container-image:auth` to authenticate with the registry"
-      - sh: test -n "$TAG"
-        msg: "A value for TAG must be provided"
-      - sh: test -n "$PROJECT"
-        msg: "A value for PROJECT must be provided"
+      - sh: test -n "{{.TAG}}"
+        msg: "A value for TAG must be provided. E.g. `TAG=1.1.6.0`"
+      - sh: test -n "{{.PROJECT}}"
+        msg: "A value for PROJECT must be provided. E.g. `PROJECT=internal`"
     cmds:
-      - podman push ${IMAGE}:${TAG} ${REGISTRY}/${PROJECT}/${IMAGE}:${TAG}
+      - podman push {{.IMAGE}}:{{.TAG}} {{.REGISTRY}}/{{.PROJECT}}/{{.IMAGE}}:{{.TAG}}
 
   container-image:release:
     desc: Release the OCI container image by tagging it as `latest` in the container registry.
+    deps:
+      - container-image:auth
     preconditions:
-      - sh: test -n "$REGISTRY"
-        msg: "A value for REGISTRY must be provided"
-      - sh: grep "${REGISTRY}" "${XDG_RUNTIME_DIR}/containers/auth.json"
-        msg: "Please use `container-image:auth` to authenticate with the registry"
-      - sh: test -n "$TAG"
-        msg: "A value for TAG must be provided"
-      - sh: test -n "$PROJECT"
-        msg: "A value for PROJECT must be provided"
+      - sh: test -n "{{.TAG}}"
+        msg: "A value for TAG must be provided. E.g. `TAG=1.1.6.0`"
+      - sh: test -n "{{.PROJECT}}"
+        msg: "A value for PROJECT must be provided. E.g. `PROJECT=internal`"
     cmds:
-      - podman pull ${REGISTRY}/${PROJECT}/${IMAGE}:${TAG}
-      - podman push ${REGISTRY}/${PROJECT}/${IMAGE}:${TAG} ${REGISTRY}/${PROJECT}/${IMAGE}:latest
+      - podman pull {{.REGISTRY}}/{{.PROJECT}}/{{.IMAGE}}:{{.TAG}}
+      - podman push {{.REGISTRY}}/{{.PROJECT}}/{{.IMAGE}}:{{.TAG}} {{.REGISTRY}}/{{.PROJECT}}/{{.IMAGE}}:latest
 
   container-image:inspect:
     desc: Inspect the OCI container image by opening a shell inside the container.
     preconditions:
-      - sh: test -n "$TAG"
-        msg: "A value for TAG must be provided"
-      - sh: test -n "$REGISTRY"
-        msg: "A value for REGISTRY must be provided"
-      - sh: test -n "$PROJECT"
-        msg: "A value for PROJECT must be provided"
+      - sh: test -n "{{.TAG}}"
+        msg: "A value for TAG must be provided. E.g. `TAG=1.1.6.0`"
+      - sh: test -n "{{.REGISTRY}}"
+        msg: "A value for REGISTRY must be provided. E.g. `REGISTRY=ghcr.io`"
+      - sh: test -n "{{.PROJECT}}"
+        msg: "A value for PROJECT must be provided. E.g. `PROJECT=internal`"
     cmds:
       - podman run --rm -it ${REGISTRY}/${PROJECT}/${IMAGE}:${TAG} bash
 
@@ -111,7 +123,6 @@ tasks:
       - mv /var/lib/libvirt/images/playtron-os.img "/var/lib/libvirt/images/playtron-os.img_$(date -Iseconds)"
       - virsh undefine --nvram playtron-os
 
-
   disk-image:bootc:
     desc: Build the OS image from a container hosted in a registry using bootc image builder.
     preconditions:
@@ -123,6 +134,8 @@ tasks:
         msg: "A value for PROJECT must be provided"
       - sh: test -n "$IMAGE"
         msg: "A value for IMAGE must be provided"
+    generates:
+      - output/image/disk.raw
     cmds:
       - rm -rf output
       - mkdir output
@@ -136,6 +149,8 @@ tasks:
         msg: "This task must be run as root"
       - sh: test -n "$IMAGE"
         msg: "A value for IMAGE must be provided"
+    generates:
+      - output/image/disk.raw
     cmds:
       - rm -rf output
       - mkdir output
@@ -143,6 +158,8 @@ tasks:
 
   disk-image:x13s:
     desc: Customize the generic ARM disk image to boot on the X13S
+    deps:
+      - disk-image:bootc
     env:
       TARGET: x13s
     preconditions:
@@ -157,35 +174,31 @@ tasks:
       - ./arm/customize ${TARGET}
 
   repo:update:
-    desc: "Update the package repository"
+    desc: "Update the package repository with packages in ./repo"
+    requires:
+      vars:
+        - name: ARCH
+          enum: [x86_64, aarch64]
+    preconditions:
+      - sh: ls repo/*.{{.ARCH}}.rpm
+        msg: "Packages to upload must be placed in the './repo' directory"
     cmds:
       - rm -rf /tmp/repo
       - mkdir -p /tmp/repo
-      - aws s3 cp s3://playtron-dev2-global-os-public/repos/playtron-app/x86_64/ /tmp/repo/ --recursive
-      - read -p "Copy new packages into /tmp/repo and press ENTER to continue"
+      - aws s3 cp s3://playtron-dev2-global-os-public/repos/playtron-app/{{.ARCH}}/ /tmp/repo/ --recursive
+      - mv repo/*.{{.ARCH}}.rpm /tmp/repo
       - createrepo /tmp/repo
-      - aws s3 sync /tmp/repo/ s3://playtron-dev2-global-os-public/repos/playtron-app/x86_64/
-
-  repo:update:arm:
-    desc: "Update the ARM package repository"
-    cmds:
-      - rm -rf /tmp/repo
-      - mkdir -p /tmp/repo
-      - aws s3 cp s3://playtron-dev2-global-os-public/repos/playtron-app/aarch64/ /tmp/repo/ --recursive
-      - read -p "Copy new packages into /tmp/repo and press ENTER to continue"
-      - createrepo /tmp/repo
-      - aws s3 sync /tmp/repo/ s3://playtron-dev2-global-os-public/repos/playtron-app/aarch64/
-
+      - aws s3 sync /tmp/repo/ s3://playtron-dev2-global-os-public/repos/playtron-app/{{.ARCH}}/
 
   public:auth:
     desc: Authenticate with the GitHub container registry.
     preconditions:
-      - sh: test -n "$GITHUB_USER"
+      - sh: test -n "{{.GITHUB_USER}}"
         msg: "A value for GITHUB_USER must be provided"
-      - sh: test -n "$GITHUB_TOKEN"
+      - sh: test -n "{{.GITHUB_TOKEN}}"
         msg: "A value for GITHUB_TOKEN must be provided"
     cmds:
-      - echo $GITHUB_TOKEN | podman login ghcr.io -u $GITHUB_USER --password-stdin
+      - echo {{.GITHUB_TOKEN}} | podman login ghcr.io -u {{.GITHUB_USER}} --password-stdin
 
   public:push:
     desc: Publish the container to the public registry.
@@ -271,3 +284,18 @@ tasks:
     dir: tests
     cmds:
       - ./run.sh
+
+  container:run:
+    desc: Run tasks inside a container (e.g. go-task in-container TARGET=repo:update)
+    aliases:
+      - in-docker
+      - in-container
+    cmds:
+      - podman build -f ./containerfiles/task-runner -t task-runner:latest .
+      - |-
+        podman run --env-host -it --rm \
+          -v $(pwd):/src \
+          -w /src \
+          -e PATH=/root/.local/bin:/root/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
+          task-runner:latest \
+          go-task {{.TARGET}}
