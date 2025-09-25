@@ -36,9 +36,6 @@ function system-info {
 	GPU_NAME=$(grep 'OpenGL renderer string:' /tmp/glxinfo.txt | cut -d':' -f2 | sed 's/^ //' | sed 's/ (/\n/' | head -1)
 	GPU_VENDOR=$(grep 'OpenGL vendor string:' /tmp/glxinfo.txt | cut -d':' -f2 | tr -d ' ')
 	VRAM=$(grep "Dedicated video memory:" /tmp/glxinfo.txt | cut -d':' -f2 | sed 's/^ *//' | tr -d ' MB')
-	if [[ "$VRAM" == "" ]]; then
-		VRAM="0"
-	fi
 
 	# Operating system
 	source /etc/os-release
@@ -75,8 +72,8 @@ function system-info {
 
 	if [ "$1" == "extended" ]; then
 		echo -n "
-	\"resolutionWidth\": $RES_WIDTH,
-	\"resolutionHeight\": $RES_HEIGHT,"
+	\"resolutionWidth\": $(ensure_number $RES_WIDTH),
+	\"resolutionHeight\": $(ensure_number $RES_HEIGHT),"
 	fi
 
 	echo "
@@ -86,12 +83,12 @@ function system-info {
 	\"cpuArchitecture\": \"$CPU_ARCH\",
 	\"cpuVendor\": \"$CPU_VENDOR\",
 	\"cpuName\": \"$CPU_NAME\",
-	\"cpuNumCores\": $CPU_PHYSICAL,
-	\"cpuSpeedMHZ\": $CPU_SPEED,
-	\"ramTotalMB\": $TOTAL_RAM,
+	\"cpuNumCores\": $(ensure_number $CPU_PHYSICAL),
+	\"cpuSpeedMHZ\": $(ensure_number $CPU_SPEED),
+	\"ramTotalMB\": $(ensure_number $TOTAL_RAM),
 	\"gpuVendor\": \"$GPU_VENDOR\",
 	\"gpuName\": \"$GPU_NAME\",
-	\"vramMB\": $VRAM,
+	\"vramMB\": $(ensure_number $VRAM),
 	\"osName\": \"$OS_NAME\",
 	\"osVersion\": \"$OS_VERSION\",
 	\"autotestVersion\": \"$AUTOTEST_VERSION\",
@@ -108,7 +105,7 @@ function system-info {
 		        free=$(echo "$line" | cut -d' ' -f3 | tr -d 'M')
 		        echo "		},
 		{
-			\"totalMB\": $total,
+			\"totalMB\": $(ensure_number $total),
 			\"primary\": false"
 		done <<< "$secondary_storage_devices"
 	fi
@@ -409,6 +406,17 @@ function validate_value {
 	else
 		return 0
 	fi
+}
+
+function ensure_number {
+	value=$1
+	re='^[+-]?[0-9]+([.][0-9]+)?$'
+	if ! [[ "$value" =~ $re ]]; then
+		echo "0"
+		exit 1
+	fi
+	echo "$value"
+	exit 0
 }
 
 function audio_common {
