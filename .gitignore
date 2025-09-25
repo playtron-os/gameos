@@ -2,3 +2,5 @@
 rootfs/usr/lib/os-release-playtron
 # This file is created from "kickstart/playtron-os_kickstart.cfg.template".
 playtron-os_kickstart.cfg
+# Directory for uploading packages to S3 bucket
+repo/

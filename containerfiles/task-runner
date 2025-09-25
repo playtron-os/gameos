@@ -1,0 +1,9 @@
+FROM fedora:41
+
+RUN dnf install -y \
+  awscli \
+  bc \
+  createrepo_c \
+  go-task \
+  sudo \
+  wget
