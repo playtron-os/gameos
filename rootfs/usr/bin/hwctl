@@ -20,8 +20,8 @@ function system-info {
 	CPU_VENDOR=$(grep 'vendor_id' /tmp/cpuinfo.txt | head -n1 | cut -d':' -f2 | sed 's/^ //')
 	CPU_NAME=$(grep 'model name' /tmp/cpuinfo.txt | head -n1 | cut -d':' -f2 | sed 's/^ //')
 	CPU_PHYSICAL=$(grep 'cpu cores' /tmp/cpuinfo.txt | head -n1 | cut -d':' -f2 | tr -d ' ')
-	CPU_SPEED="$(lscpu | grep 'CPU max MHz' | cut -d':' -f2 | tr -d ' ' | cut -d'.' -f1)"
-	CPU_ARCH="$(lscpu | grep 'Architecture:' | cut -d':' -f2 | tr -d ' ')"
+	CPU_SPEED="$(lscpu | grep 'CPU max MHz' | head -n 1 | cut -d':' -f2 | tr -d ' ' | cut -d'.' -f1)"
+	CPU_ARCH="$(lscpu | grep 'Architecture:' | head -n 1 | cut -d':' -f2 | tr -d ' ')"
 
 	# Memory
 	TOTAL_RAM=$(grep MemTotal /proc/meminfo | tr -s ' ' | cut -d' ' -f2)
