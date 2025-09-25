@@ -63,6 +63,7 @@ COPY rootfs/usr/lib/udev/hwdb.d/60-powerstation-autostart.hwdb		/usr/lib/udev/hw
 COPY rootfs/usr/lib/udev/rules.d/90-powerstation-autostart.rules	/usr/lib/udev/rules.d/
 COPY rootfs/usr/share/plymouth/themes/spinner/watermark.png		/usr/share/plymouth/themes/spinner/
 COPY rootfs/usr/share/polkit-1/rules.d/50-one.playtron.playtronos-systemreport.rules /usr/share/polkit-1/rules.d/
+COPY rootfs/usr/lib/NetworkManager/conf.d/50-playtron.conf		/usr/lib/NetworkManager/conf.d/
 
 # Ensure services are enabled according to presets
 RUN systemctl preset-all
