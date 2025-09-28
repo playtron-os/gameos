@@ -1,7 +1,6 @@
-[copr:copr.fedorainfracloud.org:playtron:gaming]
+[playtron-gaming]
 name=Copr repo for gaming owned by playtron
-#baseurl=https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-$releasever-$basearch/
-baseurl=https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-41-$basearch/
+baseurl=https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-$releasever-$basearch/
 type=rpm-md
 skip_if_unavailable=True
 gpgcheck=1

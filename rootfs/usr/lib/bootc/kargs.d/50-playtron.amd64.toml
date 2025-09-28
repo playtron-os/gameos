@@ -1,0 +1,1 @@
+kargs = ["splash", "quiet", "iomem=relaxed"]

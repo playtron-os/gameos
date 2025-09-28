@@ -1,7 +1,6 @@
 [rpmfusion-nonfree-steam]
 name=RPM Fusion for Fedora $releasever - Nonfree - Steam
-#baseurl=http://download1.rpmfusion.org/nonfree/fedora/steam/$releasever/$basearch/
-metalink=https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-steam-$releasever&arch=x86_64
+metalink=https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-steam-$releasever&arch=$basearch
 enabled=1
 type=rpm-md
 gpgcheck=1

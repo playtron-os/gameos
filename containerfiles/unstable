@@ -1,5 +1,7 @@
 FROM quay.io/fedora/fedora-bootc:42
 
+ARG TARGETARCH
+
 # Force dnf5
 RUN rm -f /usr/bin/dnf && ln -s /usr/bin/dnf5 /usr/bin/dnf
 
@@ -11,7 +13,17 @@ ENV CMD_INSTALL="dnf install -y --setopt=install_weak_deps=false --setopt=max_pa
 
 RUN ${CMD_INSTALL} distribution-gpg-keys
 
-# Prevent kernel upgrades
+# Required for kernel-modules* and NVIDIA packages.
+RUN ${CMD_INSTALL} \
+  --setopt=disable_excludes=* \
+  kernel-rpm-macros \
+  kernel-srpm-macros
+
+# Update kernel according to our repos
+RUN  dnf remove  -y kernel kernel-core kernel-devel kernel-devel-matched kernel-headers kernel-modules kernel-modules-core \
+  && dnf install -y kernel kernel-core kernel-devel kernel-devel-matched kernel-headers kernel-modules
+
+# Prevent further kernel upgrades
 RUN dnf versionlock add kernel kernel-core kernel-devel kernel-devel-matched kernel-headers kernel-modules
 
 # Remove qemu packages
@@ -58,8 +70,6 @@ RUN ${CMD_INSTALL} \
   ladspa-noise-suppression-for-voice \
   langpacks-en \
   legendary \
-  #libpact \
-  #libplaytron \
   libertas-firmware \
   linuxconsoletools \
   lsb_release \
@@ -120,19 +130,48 @@ RUN ${CMD_INSTALL} \
   zenity \
   zram-generator
 
-# Install Arm specific packages
-RUN ${CMD_INSTALL} \
-  box64-sd888 \
-  box64-binfmts \
-  box64-data \
-  dnf-utils \
-  ibus-libs \
-  libnsl \
-  patch \
-  qcom-firmware
+RUN if [ "$TARGETARCH" = "amd64" ]; then \
+      # Install x86_64 specific packages
+      ${CMD_INSTALL} \
+        libpact \
+        libplaytron \
+        steam.i686 \
+        thermald \
+        valve-firmware; \
+    elif [ "$TARGETARCH" = "arm64" ]; then \
+      # Install arm64 specific packages
+      ${CMD_INSTALL} \
+        box64-sd888 \
+        box64-binfmts \
+        box64-data \
+        dnf-utils \
+        ibus-libs \
+        libnsl \
+        patch \
+        qcom-firmware; \
+    fi
 
-# Force install x86 Steam
-RUN rpm -Uvh --nodeps --ignorearch $(repoquery --location steam.i686)
+# Force install x86 Steam on arm64
+RUN if [ "$TARGETARCH" = "arm64" ]; then \
+  rpm -Uvh --nodeps --ignorearch $(repoquery --location steam.i686); \
+fi
+
+# Install Nvidia
+ RUN ${CMD_INSTALL} \
+  akmod-nvidia \
+  nvidia-driver \
+  nvidia-driver-NvFBCOpenGL \
+  nvidia-driver-libs.i686
+
+RUN cp -r /etc/pam.d /etc/pam.d.bak; sed -i -r 's/^(session\s+required\s+pam_limits.so)/#\1/' /etc/pam.d/*; \
+  mkdir -p /run/akmods; \
+  for k in $(ls -1 /usr/src/kernels); do \
+    akmods --force --kernels "${k}" --kmod "nvidia" || exit 1; \
+    ls /var/cache/akmods/nvidia/*.failed.log > /dev/null 2>&1 && cat /var/cache/akmods/nvidia/*.failed.log || true; \
+    ls /usr/lib/modules/"${k}"/extra/nvidia/nvidia.ko.xz || exit 1; \
+  done; \
+  rm -rf /run/akmods; \
+  rm -rf /etc/pam.d; mv /etc/pam.d.bak /etc/pam.d;
 
 
 #################### Begin Copy OS Files
@@ -158,17 +197,6 @@ COPY rootfs/etc/xdg/weston/weston.ini							/etc/xdg/weston/
 
 # Default dev session configuration (with screen rotation)
 COPY rootfs/etc/xdg/weston/weston-rotated.ini						/etc/xdg/weston/
-
-# Package repositories
-COPY rootfs/etc/yum.repos.d/audinux.repo						/etc/yum.repos.d/
-COPY rootfs/etc/yum.repos.d/fedora.repo							/etc/yum.repos.d/
-COPY rootfs/etc/yum.repos.d/fedora-updates-archive.repo					/etc/yum.repos.d/
-COPY rootfs/etc/yum.repos.d/fedora-updates.repo						/etc/yum.repos.d/
-COPY rootfs/etc/yum.repos.d/inputplumber.repo						/etc/yum.repos.d/
-COPY rootfs/etc/yum.repos.d/negativo17-fedora-nvidia.repo				/etc/yum.repos.d/
-COPY rootfs/etc/yum.repos.d/playtron-app.repo						/etc/yum.repos.d/
-COPY rootfs/etc/yum.repos.d/playtron-gaming.repo					/etc/yum.repos.d/
-COPY rootfs/etc/yum.repos.d/rpmfusion-nonfree-steam.repo				/etc/yum.repos.d/
 
 # Check if only IPv6 is used (no IPv4) and then start clatd for 464XLAT support
 COPY rootfs/usr/bin/clatd-ipv6-check							/usr/bin/
@@ -198,10 +226,10 @@ COPY rootfs/usr/bin/playtron-weston							/usr/bin/
 COPY rootfs/usr/bin/resize-root-file-system.sh						/usr/bin/
 
 # Default kernel arguments
-COPY rootfs/usr/lib/bootc/kargs.d/50-playtron.toml					/usr/lib/bootc/kargs.d/
+COPY rootfs/usr/lib/bootc/kargs.d/50-playtron.${TARGETARCH}.toml				/usr/lib/bootc/kargs.d/50-playtron.toml
 
 # Configuration additions to hide grub at boot
-COPY rootfs/usr/lib/bootupd/grub2-static/grub-static-post.cfg				/usr/lib/bootupd/grub2-static/
+COPY rootfs/usr/lib/bootupd/grub2-static/grub-static-post.${TARGETARCH}.cfg			/usr/lib/bootupd/grub2-static/grub-static-post.cfg
 
 # A script run during FTUE that listens for a key combo to switch to the dev session
 COPY rootfs/usr/libexec/playtron/dev-session-trigger					/usr/libexec/playtron/

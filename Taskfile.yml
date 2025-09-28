@@ -113,7 +113,7 @@ tasks:
 
 
   disk-image:bootc:
-    desc: Build the OS image from a container hosted in a registry using bootc image builder.
+    desc: Build the OS image from a container hosted in a registry using bootc image builder (AMD64).
     preconditions:
       - sh: test "$EUID" == 0
         msg: "This task must be run as root"
@@ -123,23 +123,41 @@ tasks:
         msg: "A value for PROJECT must be provided"
       - sh: test -n "$IMAGE"
         msg: "A value for IMAGE must be provided"
+    env:
+      BOOTC_IMAGE: ghcr.io/playtron-os/bootc-image-builder:latest
     cmds:
       - rm -rf output
       - mkdir output
       - podman pull ${REGISTRY}/${PROJECT}/${IMAGE}:${TAG}
-      - podman run --rm -it --privileged --pull=newer --security-opt label=type:unconfined_t -v ./config.toml:/config.toml:ro -v ./output:/output -v /var/lib/containers/storage:/var/lib/containers/storage quay.io/centos-bootc/bootc-image-builder:latest --type raw --rootfs btrfs ${REGISTRY}/${PROJECT}/${IMAGE}:${TAG}
+      - podman run --rm -it --privileged --pull=newer --security-opt label=type:unconfined_t -v ./config.toml:/config.toml:ro -v ./output:/output -v /var/lib/containers/storage:/var/lib/containers/storage ${BOOTC_IMAGE} --type raw --rootfs btrfs ${REGISTRY}/${PROJECT}/${IMAGE}:${TAG}
+
+  disk-image:bootc:arm:
+    desc: Build the OS image from a container hosted in a registry using bootc image builder (ARM).
+    cmds:
+      - task: disk-image:bootc
+        env:
+          BOOTC_IMAGE: quay.io/centos-bootc/bootc-image-builder:latest
 
   disk-image:bootc:local:
-    desc: Build the OS image from a local container using bootc image builder.
+    desc: Build the OS image from a local container using bootc image builder (AMD64).
     preconditions:
       - sh: test "$EUID" == 0
         msg: "This task must be run as root"
       - sh: test -n "$IMAGE"
         msg: "A value for IMAGE must be provided"
+    env:
+      BOOTC_IMAGE: ghcr.io/playtron-os/bootc-image-builder:latest
     cmds:
       - rm -rf output
       - mkdir output
-      - podman run --rm -it --privileged --pull=newer --security-opt label=type:unconfined_t -v ./config.toml:/config.toml:ro -v ./output:/output -v /var/lib/containers/storage:/var/lib/containers/storage quay.io/centos-bootc/bootc-image-builder:latest --type raw --rootfs btrfs localhost/${IMAGE}:${TAG}
+      - podman run --rm -it --privileged --pull=newer --security-opt label=type:unconfined_t -v ./config.toml:/config.toml:ro -v ./output:/output -v /var/lib/containers/storage:/var/lib/containers/storage ${BOOTC_IMAGE} --type raw --rootfs btrfs localhost/${IMAGE}:${TAG}
+
+  disk-image:bootc:local:arm:
+    desc: Build the OS image from a local container using bootc image builder (ARM).
+    cmds:
+      - task: disk-image:bootc:local
+        env:
+          BOOTC_IMAGE: quay.io/centos-bootc/bootc-image-builder:latest
 
   disk-image:x13s:
     desc: Customize the generic ARM disk image to boot on the X13S
