@@ -160,8 +160,11 @@ fi
  RUN ${CMD_INSTALL} \
   akmod-nvidia \
   nvidia-driver \
-  nvidia-driver-NvFBCOpenGL \
-  nvidia-driver-libs.i686
+  nvidia-driver-NvFBCOpenGL
+
+RUN if [ "$TARGETARCH" = "amd64" ]; then \
+  ${CMD_INSTALL} nvidia-driver-libs.i686; \
+fi
 
 RUN cp -r /etc/pam.d /etc/pam.d.bak; sed -i -r 's/^(session\s+required\s+pam_limits.so)/#\1/' /etc/pam.d/*; \
   mkdir -p /run/akmods; \
