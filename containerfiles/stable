@@ -1,4 +1,4 @@
-FROM registry.playtron.one/internal/playtronos:1.0.0.13
+FROM ghcr.io/playtron-os/playtron-os:1.0.0.13
 
 # Set OS version
 COPY rootfs/usr/lib/os-release-playtron /usr/lib/
@@ -22,6 +22,9 @@ RUN cp -r /etc/pam.d /etc/pam.d.bak; sed -i -r 's/^(session\s+required\s+pam_lim
   done; \
   rm -rf /run/akmods; \
   rm -rf /etc/pam.d; mv /etc/pam.d.bak /etc/pam.d;
+
+# Install a fully featured desktop environment.
+RUN dnf5 group install -y --allowerasing kde-desktop
 
 # https://github.com/playtron-os/rpm-specs-gaming
 RUN dnf5 -y upgrade \
