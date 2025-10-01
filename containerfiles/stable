@@ -1,4 +1,4 @@
-FROM registry.playtron.one/internal/playtronos:1.0.0.13
+FROM ghcr.io/playtron-os/playtron-os:1.0.0.13
 
 # Set OS version
 COPY rootfs/usr/lib/os-release-playtron /usr/lib/
