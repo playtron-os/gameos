@@ -23,6 +23,9 @@ RUN cp -r /etc/pam.d /etc/pam.d.bak; sed -i -r 's/^(session\s+required\s+pam_lim
   rm -rf /run/akmods; \
   rm -rf /etc/pam.d; mv /etc/pam.d.bak /etc/pam.d;
 
+# Install a fully featured desktop environment.
+RUN dnf5 group install -y --allowerasing kde-desktop
+
 # https://github.com/playtron-os/rpm-specs-gaming
 RUN dnf5 -y upgrade \
   gamescope-dbus-1.10.4-1 \

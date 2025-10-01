@@ -130,6 +130,9 @@ RUN ${CMD_INSTALL} \
   zenity \
   zram-generator
 
+# Install a fully featured desktop environment.
+RUN dnf5 group install -y --allowerasing kde-desktop
+
 RUN ${CMD_INSTALL} \
   akmod-nvidia \
   nvidia-driver \

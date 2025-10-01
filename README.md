@@ -167,15 +167,14 @@ $ distrobox create --init --additional-packages systemd --image fedora:41 --pull
 $ distrobox enter fedora41
 ```
 
-Install a full desktop environment and other additional packages.
+Install additional packages.
 
 ```
 $ nano Containerfile
 FROM ghcr.io/playtron-os/playtron-os:latest
-RUN dnf5 group install -y kde-desktop && echo -e '[Autologin]\nSession=plasma' > /etc/sddm.conf.d/60-playtron-session-override.conf
 RUN dnf5 install -y firefox
 RUN dnf5 clean all && bootc container lint
-$ sudo podman build --tag desktop:latest .
+$ sudo podman build --pull=always --tag desktop:latest .
 $ sudo bootc switch --transport containers-storage localhost/desktop:latest
 ```
 
