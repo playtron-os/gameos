@@ -1,0 +1,17 @@
+#! /bin/bash
+
+target=$1
+
+diskimage=output/image/$target.raw
+mountpoint=$(mktemp -d)
+device=$(kpartx -av $diskimage | cut -d' ' -f3 | grep p2$)
+mount /dev/mapper/$device $mountpoint
+
+# copy dtb file -- bootc-image-builder does not allow file customizations on /boot
+cp arm/dtbs/$target $mountpoint/dtb
+
+# copy grub config file -- a bug in bootc-image-builder prevents the grub customizations already in place from working on ARM
+cp arm/grub.cfg $mountpoint/grub2/
+
+umount $mountpoint
+kpartx -d $diskimage

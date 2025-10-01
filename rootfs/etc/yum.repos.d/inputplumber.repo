@@ -1,4 +1,4 @@
-[inputplumber-x86_64]
+[inputplumber]
 name=Copr repo for InputPlumber owned by shadowblip
 baseurl=https://download.copr.fedorainfracloud.org/results/shadowblip/InputPlumber/fedora-$releasever-$basearch/
 type=rpm-md

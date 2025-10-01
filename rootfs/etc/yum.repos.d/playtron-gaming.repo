@@ -1,6 +1,6 @@
-[playtron-gaming-x86_64]
+[playtron-gaming]
 name=Copr repo for gaming owned by playtron
-baseurl=https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-$releasever-x86_64/
+baseurl=https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-$releasever-$basearch/
 type=rpm-md
 skip_if_unavailable=True
 gpgcheck=1
