@@ -8,4 +8,4 @@ gpgkey=https://download.copr.fedorainfracloud.org/results/ycollet/audinux/pubkey
 repo_gpgcheck=0
 enabled=1
 enabled_metadata=1
-includepkgs=ladspa-noise-suppression-for-voice
+includepkgs=ladspa-noise-suppression-for-voice,license-noise-suppression-for-voice

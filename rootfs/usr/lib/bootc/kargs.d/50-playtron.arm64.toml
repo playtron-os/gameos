@@ -1,0 +1,1 @@
+kargs = ["splash", "quiet", "arm64.nopauth", "clk_ignore_unused", "pd_ignore_unused", "efi=noruntime"]

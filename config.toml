@@ -16,3 +16,13 @@ data = "GRID_INSTALL_MODE=1"
 # disable resize-root-file-system service
 [[customizations.files]]
 path = "/etc/systemd/system/resize-root-file-system.service"
+
+# disable media automount
+[[customizations.files]]
+path = "/etc/udev/rules.d/99-media-automount.rules"
+
+# disable qcom_q6v5_pas to allow installer to boot from usb device on X13s
+# NOTE: this prevents audio from working on the X13s
+[[customizations.files]]
+path = "/etc/modprobe.d/playtron-installer.conf"
+data = "blacklist qcom_q6v5_pas"

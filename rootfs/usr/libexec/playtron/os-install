@@ -5,10 +5,19 @@ if [ $EUID -ne 0 ]; then
 	exit 1
 fi
 
+set -x
+set -e
+
 
 function disable_install_mode {
-	rm -rf root/ostree/deploy/default/deploy/*/etc/environment.d
-	rm -f root/ostree/deploy/default/deploy/*/etc/systemd/system/resize-root-file-system.service
+	rm -rf etc/environment.d
+	rm -f etc/systemd/system/resize-root-file-system.service
+	rm -f etc/udev/rules.d/99-media-automount.rules
+	rm -f etc/modprobe.d/playtron-installer.conf
+}
+
+function get_uuid {
+	blkid $1 | grep -oP ' UUID="[^"]*"' | sed 's/ UUID="\(.*\)"/\1/'
 }
 
 OS_NAME="Playtron GameOS"
@@ -16,7 +25,7 @@ RAW_DISK_SIZE=20G
 SOURCE_DISK=$1
 TARGET_DISK=$2
 
-umount ${TARGET_DISK}*
+umount ${TARGET_DISK}* || true
 
 pv ${SOURCE_DISK} --output ${TARGET_DISK} --size ${RAW_DISK_SIZE} --stop-at-size --numeric 2>&1
 
@@ -27,15 +36,77 @@ fi
 # ensure progress is at 100%
 echo "100"
 
-efibootmgr --delete-bootnum --label "${OS_NAME}" || true
-efibootmgr --create --disk ${TARGET_DISK} --part 2 --loader \\EFI\\fedora\\shim.efi --label "${OS_NAME}"
+EFI_PART=1
+BOOT_PART=2
+ROOT_PART=3
 
-mkdir -p /tmp/playtron-install-target
-mount  ${TARGET_DISK}*4 /tmp/playtron-install-target
-pushd  /tmp/playtron-install-target
-disable_install_mode
+if [ "$(uname -m)" == "x86_64" ]; then
+	EFI_PART=2
+	BOOT_PART=3
+	ROOT_PART=4
+fi
+
+
+# get current UUIDs
+old_efi_uuid=$(get_uuid ${TARGET_DISK}*${EFI_PART})
+old_boot_uuid=$(get_uuid ${TARGET_DISK}*${BOOT_PART})
+old_root_uuid=$(get_uuid ${TARGET_DISK}*${ROOT_PART})
+
+# regenerate UUIDs
+fatlabel --volume-id --reset ${TARGET_DISK}*${EFI_PART}
+tune2fs -U random ${TARGET_DISK}*${BOOT_PART}
+btrfstune -f -u ${TARGET_DISK}*${ROOT_PART}
+
+# get new UUIDs
+new_efi_uuid=$(get_uuid ${TARGET_DISK}*${EFI_PART})
+new_boot_uuid=$(get_uuid ${TARGET_DISK}*${BOOT_PART})
+new_root_uuid=$(get_uuid ${TARGET_DISK}*${ROOT_PART})
+
+
+# update efi filesystem
+mkdir -p /tmp/playtron-install-target-efi
+mount  ${TARGET_DISK}*${EFI_PART} /tmp/playtron-install-target-efi
+pushd  /tmp/playtron-install-target-efi
+
+# update UUID references
+sed -i -e "s/${old_boot_uuid}/${new_boot_uuid}/" EFI/fedora/bootuuid.cfg
+
 popd
-
 sync
+umount ${TARGET_DISK}*${EFI_PART}
 
-umount ${TARGET_DISK}*4
+
+# update boot filesystem
+mkdir -p /tmp/playtron-install-target-boot
+mount  ${TARGET_DISK}*${BOOT_PART} /tmp/playtron-install-target-boot
+pushd  /tmp/playtron-install-target-boot
+
+# update UUID references
+sed -i -e "s/${old_boot_uuid}/${new_boot_uuid}/" grub2/bootuuid.cfg
+sed -i -e "s/${old_boot_uuid}/${new_boot_uuid}/" loader.1/entries/ostree-1.conf
+sed -i -e "s/${old_root_uuid}/${new_root_uuid}/" loader.1/entries/ostree-1.conf
+
+popd
+sync
+umount ${TARGET_DISK}*${BOOT_PART}
+
+
+# update root filesystem
+mkdir -p /tmp/playtron-install-target-root
+mount  ${TARGET_DISK}*${ROOT_PART} /tmp/playtron-install-target-root
+pushd /tmp/playtron-install-target-root/root/ostree/deploy/default/deploy/*.0
+
+disable_install_mode
+
+# update UUID references
+sed -i -e "s/${old_boot_uuid}/${new_boot_uuid}/" etc/fstab
+sed -i -e "s/${old_efi_uuid}/${new_efi_uuid}/" etc/systemd/system/boot-efi.mount
+sed -i -e "s/${old_root_uuid}/${new_root_uuid}/" etc/systemd/system/-.mount
+sed -i -e "s/${old_boot_uuid}/${new_boot_uuid}/" etc/systemd/system/boot.mount
+
+popd
+sync
+umount ${TARGET_DISK}*${ROOT_PART}
+
+efibootmgr --delete-bootnum --label "${OS_NAME}" || true
+efibootmgr --create --disk ${TARGET_DISK} --part ${EFI_PART} --loader \\EFI\\fedora\\shim.efi --label "${OS_NAME}"
