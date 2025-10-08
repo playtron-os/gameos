@@ -1,0 +1,31 @@
+#!/bin/bash
+set -e
+
+if [ $EUID -ne 0 ]; then
+  echo "$(basename "$0") must be run as root"
+  exit 1
+fi
+
+# Enable the nix store bind mount
+systemctl enable --now nix.mount
+
+# SELinux restore
+restorecon -RF /nix
+
+# Run Nix installer
+ping -c 1 releases.nixos.org >/dev/null
+sh <(curl -L https://releases.nixos.org/nix/nix-2.32.0/install) --daemon --yes
+
+# Copy service files
+rm /etc/systemd/system/nix-daemon.socket
+rm /etc/systemd/system/nix-daemon.service
+cp /nix/var/nix/profiles/default/lib/systemd/system/nix-daemon.socket /etc/systemd/system/nix-daemon.socket
+cp /nix/var/nix/profiles/default/lib/systemd/system/nix-daemon.service /etc/systemd/system/nix-daemon.service
+
+# Set default configuration
+cat >/etc/nix/nix.conf <<EOF
+allowed-users = *
+auto-optimise-store = true
+experimental-features = nix-command flakes
+build-users-group = nixbld
+EOF
