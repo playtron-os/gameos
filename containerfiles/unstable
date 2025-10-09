@@ -99,6 +99,7 @@ RUN ${CMD_INSTALL} \
   realtek-firmware \
   rsync \
   sddm \
+  snapd \
   steam.i686 \
   SteamBus \
   stress-ng \
