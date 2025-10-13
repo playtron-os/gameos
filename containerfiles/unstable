@@ -47,6 +47,7 @@ RUN ${CMD_INSTALL} \
   crudini \
   dbus-daemon \
   distrobox \
+  dnf-utils \
   dracut-config-generic \
   evtest \
   ffmpeg-free \
