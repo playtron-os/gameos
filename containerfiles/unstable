@@ -102,6 +102,7 @@ RUN ${CMD_INSTALL} \
   realtek-firmware \
   rsync \
   sddm \
+  snapd \
   SteamBus \
   stress-ng \
   switcheroo-control \
@@ -383,6 +384,11 @@ RUN cd /usr/lib/systemd/system && rm default.target && ln -s graphical.target de
 # Build initramfs
 RUN KERNEL=$(echo /lib/modules/*/vmlinuz | cut -d'/' -f4) \
   && dracut --reproducible -v --omit-drivers nouveau --add 'ostree' -f --no-hostonly --kver ${KERNEL} /lib/modules/${KERNEL}/initramfs.img
+
+# Configure Nix
+COPY rootfs/usr/lib/systemd/system/nix.mount  /usr/lib/systemd/system/
+COPY rootfs/usr/libexec/playtron/nix-install /usr/libexec/playtron/nix-install
+RUN install -d -m 0755 /nix
 
 # Clear /var/run
 RUN rm -rf /var/run
