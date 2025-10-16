@@ -1,0 +1,17 @@
+[mesa-git]
+name=Copr repo with mesa built from the official mesa git - x86_64
+baseurl=https://copr-be.cloud.fedoraproject.org/results/xxmitsu/mesa-git/fedora-$releasever-$basearch/
+skip_if_unavailable=True
+gpgcheck=1
+gpgkey=https://copr-be.cloud.fedoraproject.org/results/xxmitsu/mesa-git/pubkey.gpg
+enabled=1
+enabled_metadata=1
+
+[mesa-git-x86]
+name=Copr repo with mesa built from the official mesa git - i386
+baseurl=https://copr-be.cloud.fedoraproject.org/results/xxmitsu/mesa-git/fedora-$releasever-i386/
+skip_if_unavailable=True
+gpgcheck=1
+gpgkey=https://copr-be.cloud.fedoraproject.org/results/xxmitsu/mesa-git/pubkey.gpg
+enabled=1
+enabled_metadata=1
