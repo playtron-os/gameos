@@ -91,6 +91,8 @@ RUN ${CMD_INSTALL} \
   playserve \
   playtron-plugin-local \
   playview \
+  plugin-egs \
+  plugin-gog \
   plymouth \
   plymouth-theme-spinner \
   powerstation \
