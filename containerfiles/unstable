@@ -96,9 +96,9 @@ RUN ${CMD_INSTALL} \
   powerstation \
   powertop \
   pv \
-  python3-pygame \
   python3-dbus \
   python3-gobject \
+  python3-pygame \
   realtek-firmware \
   rsync \
   sddm \
@@ -115,8 +115,8 @@ RUN ${CMD_INSTALL} \
   unrar \
   unzip \
   upower \
-  usbutils \
   usb_modeswitch \
+  usbutils \
   vim \
   vkmark \
   webkit2gtk4.1 \
