@@ -39,7 +39,7 @@ RUN dnf5 -y upgrade \
   reaper-0.1.0-2.fc41 \
   tzupdate-3.1.0-1.fc41 \
   udev-media-automount-0.1.0+72-1.fc41 \
-  SteamBus-1.26.3-1.fc41 \
+  SteamBus-1.26.4-1.fc41 \
   xdg-desktop-portal-openuri-1.0.1-1.fc41
 
 # Clear cache.
