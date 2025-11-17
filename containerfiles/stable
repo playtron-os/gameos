@@ -6,12 +6,12 @@ COPY rootfs/usr/lib/os-release-playtron /usr/lib/
 # Upgrade kernel.
 RUN dnf remove -y kmod-nvidia* && \
   rpm-ostree override replace \
-  https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-41-x86_64/09410114-kernel/kernel-6.15.8-203.nobara.fc41.x86_64.rpm \
-  https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-41-x86_64/09410114-kernel/kernel-core-6.15.8-203.nobara.fc41.x86_64.rpm \
-  https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-41-x86_64/09410114-kernel/kernel-devel-6.15.8-203.nobara.fc41.x86_64.rpm \
-  https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-41-x86_64/09410114-kernel/kernel-devel-matched-6.15.8-203.nobara.fc41.x86_64.rpm \
-  https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-41-x86_64/09410114-kernel/kernel-headers-6.15.8-203.nobara.fc41.x86_64.rpm \
-  https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-41-x86_64/09410114-kernel/kernel-modules-6.15.8-203.nobara.fc41.x86_64.rpm
+  https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-41-x86_64/09784573-kernel/kernel-6.17.7-200.nobara.fc41.x86_64.rpm \
+  https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-41-x86_64/09784573-kernel/kernel-core-6.17.7-200.nobara.fc41.x86_64.rpm \
+  https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-41-x86_64/09784573-kernel/kernel-devel-6.17.7-200.nobara.fc41.x86_64.rpm \
+  https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-41-x86_64/09784573-kernel/kernel-devel-matched-6.17.7-200.nobara.fc41.x86_64.rpm \
+  https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-41-x86_64/09784573-kernel/kernel-headers-6.17.7-200.nobara.fc41.x86_64.rpm \
+  https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-41-x86_64/09784573-kernel/kernel-modules-6.17.7-200.nobara.fc41.x86_64.rpm
 # Rebuild NVIDIA drivers.
 RUN cp -r /etc/pam.d /etc/pam.d.bak; sed -i -r 's/^(session\s+required\s+pam_limits.so)/#\1/' /etc/pam.d/*; \
   mkdir -p /run/akmods; \
