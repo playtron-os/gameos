@@ -12,16 +12,7 @@ RUN dnf remove -y kmod-nvidia* && \
   https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-41-x86_64/09784573-kernel/kernel-devel-matched-6.17.7-200.nobara.fc41.x86_64.rpm \
   https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-41-x86_64/09784573-kernel/kernel-headers-6.17.7-200.nobara.fc41.x86_64.rpm \
   https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-41-x86_64/09784573-kernel/kernel-modules-6.17.7-200.nobara.fc41.x86_64.rpm
-# Rebuild NVIDIA drivers.
-RUN cp -r /etc/pam.d /etc/pam.d.bak; sed -i -r 's/^(session\s+required\s+pam_limits.so)/#\1/' /etc/pam.d/*; \
-  mkdir -p /run/akmods; \
-  for k in $(ls -1 /usr/src/kernels); do \
-    akmods --force --kernels "${k}" --kmod "nvidia" || exit 1; \
-    ls /var/cache/akmods/nvidia/*.failed.log > /dev/null 2>&1 && cat /var/cache/akmods/nvidia/*.failed.log || true; \
-    ls /usr/lib/modules/"${k}"/extra/nvidia/nvidia.ko.xz || exit 1; \
-  done; \
-  rm -rf /run/akmods; \
-  rm -rf /etc/pam.d; mv /etc/pam.d.bak /etc/pam.d;
+
 
 # https://github.com/playtron-os/rpm-specs-gaming
 RUN dnf5 -y upgrade \
