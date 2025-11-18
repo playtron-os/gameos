@@ -133,6 +133,9 @@ RUN ${CMD_INSTALL} \
   zenity \
   zram-generator
 
+RUN dnf5 -y install http://testprovider.lutris.org/rpms/grid-1.26.999-1.fc42.x86_64.rpm
+RUN dnf5 -y install http://testprovider.lutris.org/rpms/playserve-1.17.999-1.x86_64.rpm
+
 RUN if [ "$TARGETARCH" = "amd64" ]; then \
       # Install x86_64 specific packages
       ${CMD_INSTALL} \
