@@ -55,7 +55,6 @@ set -e -x
 # Put the user in the following groups:
 #  - wheel: for elevated privileges
 #  - tss:   for PACT
-grep -E '^tss:' /usr/lib/group | tee -a /etc/group
 useradd -G wheel,tss playtron
 echo "playtron:playtron" | chpasswd
 
