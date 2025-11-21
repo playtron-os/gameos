@@ -17,11 +17,14 @@ function system-info {
 
 	# CPU
 	cat /proc/cpuinfo > /tmp/cpuinfo.txt
-	CPU_VENDOR=$(grep 'vendor_id' /tmp/cpuinfo.txt | head -n1 | cut -d':' -f2 | sed 's/^ //')
-	CPU_NAME=$(grep 'model name' /tmp/cpuinfo.txt | head -n1 | cut -d':' -f2 | sed 's/^ //')
-	CPU_PHYSICAL=$(grep 'cpu cores' /tmp/cpuinfo.txt | head -n1 | cut -d':' -f2 | tr -d ' ')
-	CPU_SPEED="$(lscpu | grep 'CPU max MHz' | head -n 1 | cut -d':' -f2 | tr -d ' ' | cut -d'.' -f1)"
-	CPU_ARCH="$(lscpu | grep 'Architecture:' | head -n 1 | cut -d':' -f2 | tr -d ' ')"
+	lscpu > /tmp/lscpu.txt
+	CPU_ARCH="$(grep 'Architecture:' /tmp/lscpu.txt | head -n 1 | cut -d':' -f2 | tr -d ' ')"
+	THREAD_COUNT=$(grep -c ^processor /tmp/cpuinfo.txt)
+	THREADS_PER_CORE=$(cat /tmp/lscpu.txt | grep '^Thread(s) per core' | head -n 1 | cut -d ':' -f2 | sed 's/[[:space:]]//g')
+	CPU_PHYSICAL=$(( $THREAD_COUNT / $THREADS_PER_CORE ))
+	CPU_NAME=$(grep 'Model name' /tmp/lscpu.txt | head -n1 | cut -d':' -f2 | sed 's/^[[:space:]]*//')
+	CPU_VENDOR=$(grep 'Vendor ID' /tmp/lscpu.txt | head -n1 | cut -d':' -f2 | sed 's/^[[:space:]]*//')
+	CPU_SPEED="$(grep 'CPU max MHz' /tmp/lscpu.txt | head -n 1 | cut -d':' -f2 | tr -d ' ' | cut -d'.' -f1)"
 
 	# Memory
 	TOTAL_RAM=$(grep MemTotal /proc/meminfo | tr -s ' ' | cut -d' ' -f2)
