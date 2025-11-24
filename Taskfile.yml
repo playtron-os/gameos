@@ -19,7 +19,6 @@ tasks:
       - grep "  - local" playtron-os.yaml || sed -i s'/repos:/repos:\n  - local'/g playtron-os.yaml
       - echo -e "[local]\nname=local\nbaseurl=file:///tmp/repo\nenabled=1\nrepo_gpgcheck=0\ngpgcheck=0" > local.repo
 
-
   container-image:auth:
     desc: Authenticate with the container registry.
     preconditions:
@@ -111,7 +110,6 @@ tasks:
       - mv /var/lib/libvirt/images/playtron-os.img "/var/lib/libvirt/images/playtron-os.img_$(date -Iseconds)"
       - virsh undefine --nvram playtron-os
 
-
   disk-image:bootc:
     desc: Build the OS image from a container hosted in a registry using bootc image builder (AMD64).
     preconditions:
@@ -174,26 +172,41 @@ tasks:
       - cp output/image/disk.raw output/image/${TARGET}.raw
       - ./arm/customize ${TARGET}
 
-  repo:update:
-    desc: "Update the package repository"
+  repo:update:x86_64:
+    aliases:
+      - repo:update
+    desc: "Update the x86_64 package repository"
+    preconditions:
+      - sh: test -n "$AWS_ACCESS_KEY_ID"
+        msg: "A value for AWS_ACCESS_KEY_ID must be provided"
+      - sh: test -n "$AWS_SECRET_ACCESS_KEY"
+        msg: "A value for AWS_SECRET_ACCESS_KEY must be provided"
     cmds:
-      - rm -rf /tmp/repo
+      - umount /tmp/repo || true
       - mkdir -p /tmp/repo
-      - aws s3 cp s3://playtron-dev2-global-os-public/repos/playtron-app/x86_64/ /tmp/repo/ --recursive
-      - read -p "Copy new packages into /tmp/repo and press ENTER to continue"
-      - createrepo /tmp/repo
-      - aws s3 sync /tmp/repo/ s3://playtron-dev2-global-os-public/repos/playtron-app/x86_64/
+      - s3fs playtron-dev2-global-os-public /tmp/repo
+      - test -d /tmp/repo/repos/playtron-app/x86_64
+      - defer: umount /tmp/repo
+      - read -p "Copy new packages into '/tmp/repo/repos/playtron-app/x86_64' and press ENTER to continue"
+      - createrepo --cachedir /tmp/repo/repos/playtron-app/x86_64/cache --update /tmp/repo/repos/playtron-app/x86_64
 
-  repo:update:arm:
+  repo:update:aarch64:
+    aliases:
+      - repo:update:arm
     desc: "Update the ARM package repository"
+    preconditions:
+      - sh: test -n "$AWS_ACCESS_KEY_ID"
+        msg: "A value for AWS_ACCESS_KEY_ID must be provided"
+      - sh: test -n "$AWS_SECRET_ACCESS_KEY"
+        msg: "A value for AWS_SECRET_ACCESS_KEY must be provided"
     cmds:
-      - rm -rf /tmp/repo
+      - umount /tmp/repo || true
       - mkdir -p /tmp/repo
-      - aws s3 cp s3://playtron-dev2-global-os-public/repos/playtron-app/aarch64/ /tmp/repo/ --recursive
-      - read -p "Copy new packages into /tmp/repo and press ENTER to continue"
-      - createrepo /tmp/repo
-      - aws s3 sync /tmp/repo/ s3://playtron-dev2-global-os-public/repos/playtron-app/aarch64/
-
+      - s3fs playtron-dev2-global-os-public /tmp/repo
+      - test -d /tmp/repo/repos/playtron-app/aarch64
+      - defer: umount /tmp/repo
+      - read -p "Copy new packages into '/tmp/repo/repos/playtron-app/aarch64' and press ENTER to continue"
+      - createrepo --cachedir /tmp/repo/repos/playtron-app/aarch64/cache --update /tmp/repo/repos/playtron-app/aarch64
 
   public:auth:
     desc: Authenticate with the GitHub container registry.
