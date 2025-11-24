@@ -1,0 +1,15 @@
+FROM ghcr.io/playtron-os/playtron-os:1.1.9.1
+
+# Install Intel Claw 1 and 2 controller hack.
+COPY rootfs/usr/lib/systemd/system/intel-msi-claw.service    /usr/lib/systemd/system/
+COPY rootfs/usr/bin/intel-msi-claw    /usr/bin/
+## 'git' is also used to as part of the 'make install' step.
+RUN dnf5 -y install git
+RUN systemctl enable intel-msi-claw.service && \
+  git clone https://github.com/NeroReflex/hid-msi-claw-dkms.git /usr/src/hid-msi-claw && \
+  /bin/bash -c "cd /usr/src/hid-msi-claw && export TARGET=$(ls -1 /lib/modules | head -n 1) && make all && make install" && \
+  echo "hid_msi_claw" >> /usr/lib/modules-load.d/controllers.conf
+
+# Disable forced OS updates.
+RUN echo "VERSION_ID_ORIGINAL=$(grep VERSION_ID /usr/lib/os-release-playtron | cut -d= -f2)" >> /usr/lib/os-release-playtron && \
+  sed -i -E "s/VERSION_ID=.+/VERSION_ID=1.999.999.999/g" /usr/lib/os-release-playtron

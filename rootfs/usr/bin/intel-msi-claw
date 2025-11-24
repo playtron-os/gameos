@@ -1,0 +1,9 @@
+#!/bin/bash
+
+while true; do
+    if modinfo hid_msi_claw &> /dev/null; then
+        echo xinput > $(find /sys -name "gamepad_mode_current" 2> /dev/null | head -n 1)
+        exit 0
+    fi
+    sleep 1s
+done

@@ -1,0 +1,10 @@
+[Unit]
+Description=Enable xinput mode for the MSI Claw handheld controllers
+After=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/intel-msi-claw
+
+[Install]
+WantedBy=multi-user.target
