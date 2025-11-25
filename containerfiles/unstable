@@ -24,11 +24,7 @@ RUN ${CMD_INSTALL} \
   kernel-srpm-macros
 
 # Update kernel according to our repos
-RUN  dnf remove  -y kernel kernel-core kernel-devel kernel-devel-matched kernel-headers kernel-modules kernel-modules-core \
-  && dnf install -y kernel kernel-core kernel-devel kernel-devel-matched kernel-headers kernel-modules
-
-# Prevent further kernel upgrades
-RUN dnf versionlock add kernel kernel-core kernel-devel kernel-devel-matched kernel-headers kernel-modules
+RUN /usr/libexec/playtron-build/kernel-install.sh
 
 # Remove qemu packages
 RUN dnf remove -y qemu-user-static-*
