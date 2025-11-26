@@ -106,7 +106,7 @@ tasks:
         msg: "A value for IMAGE must be provided"
     cmds:
       - cat playtron-os_kickstart.cfg.template | envsubst '${REGISTRY} ${REGISTRY_TOKEN} ${PROJECT} ${IMAGE} ${TAG}' > playtron-os_kickstart.cfg
-      - sudo setenforce 0
+      - if command -v setenforce &> /dev/null; then sudo setenforce 0; fi
       - ./virt-install.sh
       - mv /var/lib/libvirt/images/playtron-os.img "/var/lib/libvirt/images/playtron-os.img_$(date -Iseconds)"
       - virsh undefine --nvram playtron-os
