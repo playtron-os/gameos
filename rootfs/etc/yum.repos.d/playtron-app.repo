@@ -2,7 +2,7 @@
 name=Playtron Labs and App repository
 baseurl=https://playtron-dev2-global-os-public.s3.us-west-2.amazonaws.com/repos/playtron-app/$basearch/
 type=rpm-md
-skip_if_unavailable=True
+skip_if_unavailable=False
 gpgkey=https://playtron-dev2-global-os-public.s3.us-west-2.amazonaws.com/gpg-public-keys/RPM-GPG-KEY-playtronos
 gpgcheck=0
 repo_gpgcheck=0
