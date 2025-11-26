@@ -2,7 +2,7 @@
 name=Copr repo for gaming owned by playtron
 baseurl=https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-$releasever-$basearch/
 type=rpm-md
-skip_if_unavailable=True
+skip_if_unavailable=False
 gpgcheck=1
 gpgkey=https://download.copr.fedorainfracloud.org/results/playtron/gaming/pubkey.gpg
 repo_gpgcheck=0
