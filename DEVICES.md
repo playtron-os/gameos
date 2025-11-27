@@ -8,6 +8,7 @@
     - [AYANEO 2S](#ayaneo-2s)
     - [ASUS ROG Ally](#asus-rog-ally)
     - [ASUS ROG Ally X](#asus-rog-ally-x)
+    - [ASUS ROG Xbox Ally X](#asus-rog-xbox-ally-x)
     - [GPD Win 4 2023](#gpd-win-4-2023)
     - [GPD Win 4 2025](#gpd-win-4-2025)
     - [Lenovo Legion Go](#lenovo-legion-go)
@@ -114,6 +115,26 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 | Brightness Control | Yes |
 | Controller | Yes |
 | Gyro | Yes |
+| Headphones | Yes |
+| microSD | Yes |
+| Screen Orientation | Yes |
+| Speakers | Yes |
+| Sleep | Yes |
+| Touch Pad | None |
+| Touch Screen | Yes |
+| Volume Control | Yes |
+| Wi-Fi | Yes |
+
+### ASUS ROG Xbox Ally X
+
+| Hardware | Status |
+| -------- | ------ |
+| AutoTDP | Yes |
+| Battery Status | Yes |
+| Bluetooth | Yes |
+| Brightness Control | Yes |
+| Controller | Yes |
+| Gyro | No |
 | Headphones | Yes |
 | microSD | Yes |
 | Screen Orientation | Yes |
