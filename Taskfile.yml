@@ -6,6 +6,8 @@ version: "3"
 env:
   IMAGE: playtronos
   PUBLIC_IMAGE: playtron-os
+  # Default to 'podman build --no-cache' unless this environment variable is defined.
+  CACHE: '{{ if not .CACHE }}--no-cache{{ end }}'
 
 tasks:
   rpm-repo:
@@ -39,7 +41,7 @@ tasks:
     cmds:
       - mkdir -p rootfs/usr/lib
       - cat os-release.template | envsubst '${TAG}' > rootfs/usr/lib/os-release-playtron
-      - podman build --no-cache --tag ${IMAGE}:${TAG} --file containerfiles/unstable .
+      - podman build {{.CACHE}} --pull=always --tag ${IMAGE}:${TAG} --file containerfiles/unstable .
 
   container-image:build:stable:
     desc: Build the OCI container image using a previously built image.
@@ -49,7 +51,7 @@ tasks:
     cmds:
       - mkdir -p rootfs/usr/lib
       - cat os-release.template | envsubst '${TAG}' > rootfs/usr/lib/os-release-playtron
-      - podman build --no-cache --tag ${IMAGE}:${TAG} --file containerfiles/stable .
+      - podman build {{.CACHE}} --tag ${IMAGE}:${TAG} --file containerfiles/stable .
 
   container-image:push:
     desc: Push the OCI container image to the container registry.
