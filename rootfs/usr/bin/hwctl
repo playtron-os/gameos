@@ -38,7 +38,7 @@ function system-info {
 	glxinfo > /tmp/glxinfo.txt
 	GPU_NAME=$(grep 'OpenGL renderer string:' /tmp/glxinfo.txt | cut -d':' -f2 | sed 's/^ //' | sed 's/ (/\n/' | head -1)
 	GPU_VENDOR=$(grep 'OpenGL vendor string:' /tmp/glxinfo.txt | cut -d':' -f2 | tr -d ' ')
-	VRAM=$(grep "Dedicated video memory:" /tmp/glxinfo.txt | cut -d':' -f2 | sed 's/^ *//' | tr -d ' MB')
+	VRAM=$(grep -P "(Dedicated video memory:|Video memory:)" /tmp/glxinfo.txt | head -n 1 | cut -d':' -f2 | sed 's/^ *//' | tr -d ' MB')
 
 	# Operating system
 	source /etc/os-release
