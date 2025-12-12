@@ -2,6 +2,9 @@ FROM quay.io/fedora/fedora-bootc:42
 
 ARG TARGETARCH
 
+# Copy CPU archiecture-specific scripts.
+COPY rootfs/usr/libexec/playtron-build-${TARGETARCH}/* /usr/libexec/playtron-build/
+
 # Force dnf5
 RUN rm -f /usr/bin/dnf && ln -s /usr/bin/dnf5 /usr/bin/dnf
 
