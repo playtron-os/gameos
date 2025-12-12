@@ -27,8 +27,8 @@ function system-info {
 	CPU_NAME=$(grep 'Model name' $LSCPU_FILE | head -n1 | cut -d':' -f2 | sed 's/^[[:space:]]*//')
 	CPU_VENDOR=$(grep 'Vendor ID' $LSCPU_FILE | head -n1 | cut -d':' -f2 | sed 's/^[[:space:]]*//')
 	CPU_SPEED="$(grep 'CPU max MHz' $LSCPU_FILE | head -n 1 | cut -d':' -f2 | tr -d ' ' | cut -d'.' -f1)"
-	rm $CPUINFO_FILE
-	rm $LSCPU_FILE
+	rm -f $CPUINFO_FILE
+	rm -f $LSCPU_FILE
 
 	# Memory
 	TOTAL_RAM=$(grep MemTotal /proc/meminfo | tr -s ' ' | cut -d' ' -f2)
@@ -44,7 +44,7 @@ function system-info {
 	GPU_NAME=$(grep 'OpenGL renderer string:' $GLXINFO_FILE | cut -d':' -f2 | sed 's/^ //' | sed 's/ (/\n/' | head -1)
 	GPU_VENDOR=$(grep 'OpenGL vendor string:' $GLXINFO_FILE | cut -d':' -f2 | tr -d ' ')
 	VRAM=$(grep -P "(Dedicated video memory:|Video memory:)" $GLXINFO_FILE | head -n 1 | cut -d':' -f2 | sed 's/^ *//' | tr -d ' MB')
-	rm $GLXINFO_FILE
+	rm -f $GLXINFO_FILE
 
 	# Operating system
 	source /etc/os-release
@@ -61,7 +61,7 @@ function system-info {
 	PLAYSERVE_VERSION=$(grep "^playserve-" $package_file | cut -c11- | sed 's/.[a-z].*//')
 	GRID_VERSION=$(grep "^grid-" $package_file | cut -c6- | sed 's/.[a-z].*//')
 	GAME_LAB_VERSION=$(grep "^game-lab-" $package_file | cut -c10- | sed 's/.[a-z].*//')
-	rm $package_file
+	rm -f $package_file
 
 	# Storage devices
 	PRIMARY_DISK_TOTAL=$(df -h --output='size' --block-size M /home | tail -n1 | tr -d ' M')
