@@ -162,6 +162,7 @@ fi
 # Install Nvidia
  RUN ${CMD_INSTALL} \
   akmod-nvidia \
+  gcc-c++ \
   nvidia-driver \
   nvidia-driver-NvFBCOpenGL
 
