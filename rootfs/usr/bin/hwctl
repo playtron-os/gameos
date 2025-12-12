@@ -16,15 +16,19 @@ function system-info {
 	fi
 
 	# CPU
-	cat /proc/cpuinfo > /tmp/cpuinfo.txt
-	lscpu > /tmp/lscpu.txt
-	CPU_ARCH="$(grep 'Architecture:' /tmp/lscpu.txt | head -n 1 | cut -d':' -f2 | tr -d ' ')"
-	THREAD_COUNT=$(grep -c ^processor /tmp/cpuinfo.txt)
-	THREADS_PER_CORE=$(cat /tmp/lscpu.txt | grep '^Thread(s) per core' | head -n 1 | cut -d ':' -f2 | sed 's/[[:space:]]//g')
+	CPUINFO_FILE=$(mktemp)
+	LSCPU_FILE=$(mktemp)
+	cat /proc/cpuinfo > $CPUINFO_FILE
+	lscpu > $LSCPU_FILE
+	CPU_ARCH="$(grep 'Architecture:' $LSCPU_FILE | head -n 1 | cut -d':' -f2 | tr -d ' ')"
+	THREAD_COUNT=$(grep -c ^processor $CPUINFO_FILE)
+	THREADS_PER_CORE=$(grep '^Thread(s) per core' $LSCPU_FILE | head -n 1 | cut -d ':' -f2 | sed 's/[[:space:]]//g')
 	CPU_PHYSICAL=$(( $THREAD_COUNT / $THREADS_PER_CORE ))
-	CPU_NAME=$(grep 'Model name' /tmp/lscpu.txt | head -n1 | cut -d':' -f2 | sed 's/^[[:space:]]*//')
-	CPU_VENDOR=$(grep 'Vendor ID' /tmp/lscpu.txt | head -n1 | cut -d':' -f2 | sed 's/^[[:space:]]*//')
-	CPU_SPEED="$(grep 'CPU max MHz' /tmp/lscpu.txt | head -n 1 | cut -d':' -f2 | tr -d ' ' | cut -d'.' -f1)"
+	CPU_NAME=$(grep 'Model name' $LSCPU_FILE | head -n1 | cut -d':' -f2 | sed 's/^[[:space:]]*//')
+	CPU_VENDOR=$(grep 'Vendor ID' $LSCPU_FILE | head -n1 | cut -d':' -f2 | sed 's/^[[:space:]]*//')
+	CPU_SPEED="$(grep 'CPU max MHz' $LSCPU_FILE | head -n 1 | cut -d':' -f2 | tr -d ' ' | cut -d'.' -f1)"
+	rm -f $CPUINFO_FILE
+	rm -f $LSCPU_FILE
 
 	# Memory
 	TOTAL_RAM=$(grep MemTotal /proc/meminfo | tr -s ' ' | cut -d' ' -f2)
@@ -35,10 +39,12 @@ function system-info {
 	AVAIL_RAM=$((AVAIL_RAM / 1024))
 
 	# GPU
-	glxinfo > /tmp/glxinfo.txt
-	GPU_NAME=$(grep 'OpenGL renderer string:' /tmp/glxinfo.txt | cut -d':' -f2 | sed 's/^ //' | sed 's/ (/\n/' | head -1)
-	GPU_VENDOR=$(grep 'OpenGL vendor string:' /tmp/glxinfo.txt | cut -d':' -f2 | tr -d ' ')
-	VRAM=$(grep -P "(Dedicated video memory:|Video memory:)" /tmp/glxinfo.txt | head -n 1 | cut -d':' -f2 | sed 's/^ *//' | tr -d ' MB')
+	GLXINFO_FILE=$(mktemp)
+	glxinfo > $GLXINFO_FILE
+	GPU_NAME=$(grep 'OpenGL renderer string:' $GLXINFO_FILE | cut -d':' -f2 | sed 's/^ //' | sed 's/ (/\n/' | head -1)
+	GPU_VENDOR=$(grep 'OpenGL vendor string:' $GLXINFO_FILE | cut -d':' -f2 | tr -d ' ')
+	VRAM=$(grep -P "(Dedicated video memory:|Video memory:)" $GLXINFO_FILE | head -n 1 | cut -d':' -f2 | sed 's/^ *//' | tr -d ' MB')
+	rm -f $GLXINFO_FILE
 
 	# Operating system
 	source /etc/os-release
@@ -55,7 +61,7 @@ function system-info {
 	PLAYSERVE_VERSION=$(grep "^playserve-" $package_file | cut -c11- | sed 's/.[a-z].*//')
 	GRID_VERSION=$(grep "^grid-" $package_file | cut -c6- | sed 's/.[a-z].*//')
 	GAME_LAB_VERSION=$(grep "^game-lab-" $package_file | cut -c10- | sed 's/.[a-z].*//')
-	rm $package_file
+	rm -f $package_file
 
 	# Storage devices
 	PRIMARY_DISK_TOTAL=$(df -h --output='size' --block-size M /home | tail -n1 | tr -d ' M')
