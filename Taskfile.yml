@@ -178,23 +178,25 @@ tasks:
 
   repo:update:
     desc: "Update the package repository"
+    env:
+      REPO_DIR: /tmp/repo-x86_64
     cmds:
-      - rm -rf /tmp/repo
-      - mkdir -p /tmp/repo
-      - aws s3 cp s3://playtron-dev2-global-os-public/repos/playtron-app/x86_64/ /tmp/repo/ --recursive
-      - read -p "Copy new packages into /tmp/repo and press ENTER to continue"
-      - createrepo /tmp/repo
-      - aws s3 sync /tmp/repo/ s3://playtron-dev2-global-os-public/repos/playtron-app/x86_64/
+      - mkdir -p "${REPO_DIR}"
+      - aws s3 sync s3://playtron-dev2-global-os-public/repos/playtron-app/x86_64/ "${REPO_DIR}"
+      - read -p "Copy new packages into ${REPO_DIR} and press ENTER to continue"
+      - createrepo "${REPO_DIR}"
+      - aws s3 sync "${REPO_DIR}" s3://playtron-dev2-global-os-public/repos/playtron-app/x86_64/
 
   repo:update:arm:
     desc: "Update the ARM package repository"
+    env:
+      REPO_DIR: /tmp/repo-aarch64
     cmds:
-      - rm -rf /tmp/repo
-      - mkdir -p /tmp/repo
-      - aws s3 cp s3://playtron-dev2-global-os-public/repos/playtron-app/aarch64/ /tmp/repo/ --recursive
-      - read -p "Copy new packages into /tmp/repo and press ENTER to continue"
-      - createrepo /tmp/repo
-      - aws s3 sync /tmp/repo/ s3://playtron-dev2-global-os-public/repos/playtron-app/aarch64/
+      - mkdir -p "${REPO_DIR}"
+      - aws s3 sync s3://playtron-dev2-global-os-public/repos/playtron-app/aarch64/ "${REPO_DIR}"
+      - read -p "Copy new packages into ${REPO_DIR} and press ENTER to continue"
+      - createrepo "${REPO_DIR}"
+      - aws s3 sync "${REPO_DIR}" s3://playtron-dev2-global-os-public/repos/playtron-app/aarch64/
 
 
   public:auth:
