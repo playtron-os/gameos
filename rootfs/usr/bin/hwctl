@@ -478,6 +478,22 @@ function audio-input {
 	audio_common @DEFAULT_AUDIO_SOURCE@ $@
 }
 
+function display-get-brightness {
+	cur=$(brightnessctl --class=backlight get)
+	max=$(brightnessctl --class=backlight max)
+	if [[ -n "$cur" && -n "$max" ]]; then
+		echo $(( (100 * cur + (max / 2)) / max ))
+	fi
+}
+
+function display-ensure-on {
+	# Always ensure the display is at least set to 1% brightness.
+	# Otherwise, 0% is completely off for some displays.
+	if [[ "$(display-get-brightness)" -eq 0 ]]; then
+		brightnessctl --class=backlight set 1% > /dev/null
+	fi
+}
+
 function display {
 	case $1 in
 		"has-brightness-control")
@@ -488,18 +504,18 @@ function display {
 			;;
 		"lower-brightness")
 			brightnessctl --class=backlight set 5%- > /dev/null
+			display-ensure-on
 			;;
 		"get-brightness")
-			cur=$(brightnessctl --class=backlight get)
-			max=$(brightnessctl --class=backlight max)
-			if [[ -n "$cur" && -n "$max" ]]; then
-				echo $(( (100 * cur + (max / 2)) / max ))
-			fi
+			display-get-brightness
 			;;
 		"set-brightness")
 			value=$(validate_value $2)
 			case $? in
 				0)
+					if [[ value -eq 0 ]]; then
+						value=1
+					fi
 					# set brightness to a specific % value
 					brightnessctl --class=backlight set ${value}% > /dev/null
 					;;
@@ -510,6 +526,7 @@ function display {
 				2)
 					# lower brightness a relative % amount
 					brightnessctl --class=backlight set ${value}%- > /dev/null
+					display-ensure-on
 					;;
 				*)
 					# validation error
