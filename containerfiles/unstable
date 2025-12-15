@@ -239,8 +239,8 @@ COPY rootfs/usr/bin/resize-root-file-system.sh						/usr/bin/
 # Default kernel arguments
 COPY rootfs/usr/lib/bootc/kargs.d/50-playtron.${TARGETARCH}.toml				/usr/lib/bootc/kargs.d/50-playtron.toml
 
-# Configuration additions to hide grub at boot
-COPY rootfs/usr/lib/bootupd/grub2-static/grub-static-post.${TARGETARCH}.cfg			/usr/lib/bootupd/grub2-static/grub-static-post.cfg
+# Configuration additions to hide grub at boot and use a dtb for ARM devices
+COPY rootfs/usr/lib/bootupd/grub2-static/configs.d/70-playtron.${TARGETARCH}.cfg			/usr/lib/bootupd/grub2-static/configs.d/70-playtron.cfg
 
 # A script run during FTUE that listens for a key combo to switch to the dev session
 COPY rootfs/usr/libexec/playtron/dev-session-trigger					/usr/libexec/playtron/
