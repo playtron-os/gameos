@@ -61,7 +61,7 @@ RUN ${CMD_INSTALL} \
   google-noto-sans-mono-cjk-vf-fonts \
   gstreamer1-plugins-good \
   htop \
-  inputplumber \
+  inputplumber-0.68.0-1 \
   intel-audio-firmware \
   iotop \
   iwlegacy-firmware \
