@@ -216,6 +216,23 @@ tasks:
       - createrepo "${REPO_DIR}"
       - aws s3 sync "${REPO_DIR}" s3://playtron-dev2-global-os-public/repos/playtron-app/aarch64/
 
+  repo:archive:
+    desc: "Archive exact RPM versions used in the container image"
+    preconditions:
+      - sh: test -n "{{.REGISTRY}}"
+        msg: "A value for REGISTRY must be provided"
+      - sh: grep "{{.REGISTRY}}" "${XDG_RUNTIME_DIR}/containers/auth.json"
+        msg: "Please use `container-image:auth` to authenticate with the registry"
+      - sh: test -n "{{.PROJECT}}"
+        msg: "A value for PROJECT must be provided"
+      - sh: test -n "{{.IMAGE}}"
+        msg: "A value for IMAGE must be provided"
+      - sh: test -n "{{.TAG}}"
+        msg: "A value for TAG must be provided"
+    cmds:
+      - podman pull {{.REGISTRY}}/{{.PROJECT}}/{{.IMAGE}}:{{.TAG}}
+      - podman run -it -v $(pwd):/output {{.REGISTRY}}/{{.PROJECT}}/{{.IMAGE}}:{{.TAG}} /output/scripts/archive-rpms.sh 2> /dev/stdout | tee ./repo-archive-{{.TAG}}.log
+
   public:auth:
     desc: Authenticate with the GitHub container registry.
     preconditions:
