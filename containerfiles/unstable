@@ -180,6 +180,9 @@ RUN cp -r /etc/pam.d /etc/pam.d.bak; sed -i -r 's/^(session\s+required\s+pam_lim
   rm -rf /run/akmods; \
   rm -rf /etc/pam.d; mv /etc/pam.d.bak /etc/pam.d;
 
+# Build and install the DKMS for the "hid-msi-claw" module.
+RUN /usr/libexec/playtron-build/hid-msi-claw-install.sh
+
 # Rely on pipewire to manage ALSA state
 RUN rm -f /etc/alsa/state-daemon.conf /etc/alsa/alsactl.conf
 RUN systemctl mask alsa-restore
