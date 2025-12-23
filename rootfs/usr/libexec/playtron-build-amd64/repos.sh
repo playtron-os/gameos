@@ -2,4 +2,4 @@
 
 set -e -x
 
-echo "Stub"
+echo "No-operation for x86."

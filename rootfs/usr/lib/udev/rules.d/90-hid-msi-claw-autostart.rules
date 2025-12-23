@@ -1,0 +1,1 @@
+ENV{USE_HID_MSI_CLAW}=="1", TAG+="uaccess", RUN+="/usr/bin/sh -c '/usr/bin/echo xinput > $(find /sys/devices/ -name gamepad_mode_current | head -n 1)'"
