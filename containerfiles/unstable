@@ -56,6 +56,7 @@ RUN ${CMD_INSTALL} \
   foot \
   fwupd \
   gamescope-session-playtron \
+  git \
   glibc-langpack-en \
   glibc-locale-source \
   google-noto-sans-mono-cjk-vf-fonts \
@@ -179,6 +180,12 @@ RUN cp -r /etc/pam.d /etc/pam.d.bak; sed -i -r 's/^(session\s+required\s+pam_lim
   done; \
   rm -rf /run/akmods; \
   rm -rf /etc/pam.d; mv /etc/pam.d.bak /etc/pam.d;
+
+# Configure "ld" for use when compiling modules.
+RUN ln -s -f /usr/bin/ld.bfd /etc/alternatives/ld
+
+# Build and install the DKMS for the "hid-msi-claw" module.
+RUN /usr/libexec/playtron-build/hid-msi-claw-install.sh
 
 # Rely on pipewire to manage ALSA state
 RUN rm -f /etc/alsa/state-daemon.conf /etc/alsa/alsactl.conf
@@ -308,6 +315,9 @@ COPY rootfs/usr/lib/udev/rules.d/90-powerstation-autostart.rules			/usr/lib/udev
 
 # Use the Kyber I/O scheduler for NVMe drives
 COPY rootfs/usr/lib/udev/rules.d/50-block-scheduler.rules				/usr/lib/udev/rules.d/
+
+# Change MSI Claw 1 and 2 controllers to gamepad/xinput mode.
+COPY rootfs/usr/lib/udev/rules.d/90-hid-msi-claw-autostart.rules			/usr/lib/udev/rules.d/
 
 # InputPlumber configuration
 COPY rootfs/usr/share/inputplumber/capability_maps/kbd-meta.yaml			/usr/share/inputplumber/capability_maps/
