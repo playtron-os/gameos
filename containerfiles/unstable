@@ -187,6 +187,9 @@ RUN ln -s -f /usr/bin/ld.bfd /etc/alternatives/ld
 # Build and install the DKMS for the "hid-msi-claw" module.
 RUN /usr/libexec/playtron-build/hid-msi-claw-install.sh
 
+# Build and install the ayaneo platform module
+RUN /usr/libexec/playtron-build/platform-ayaneo-install.sh
+
 # Rely on pipewire to manage ALSA state
 RUN rm -f /etc/alsa/state-daemon.conf /etc/alsa/alsactl.conf
 RUN systemctl mask alsa-restore
