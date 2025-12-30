@@ -7,7 +7,7 @@ env:
   IMAGE: playtronos
   PUBLIC_IMAGE: playtron-os
   # Default to 'podman build --no-cache' unless this environment variable is defined.
-  CACHE: '{{ if not .CACHE }}--no-cache{{ end }}'
+  CACHE: "{{ if not .CACHE }}--no-cache{{ end }}"
 
 tasks:
   rpm-repo:
@@ -20,7 +20,6 @@ tasks:
       - createrepo /tmp/repo
       - grep "  - local" playtron-os.yaml || sed -i s'/repos:/repos:\n  - local'/g playtron-os.yaml
       - echo -e "[local]\nname=local\nbaseurl=file:///tmp/repo\nenabled=1\nrepo_gpgcheck=0\ngpgcheck=0" > local.repo
-
 
   container-image:auth:
     desc: Authenticate with the container registry.
@@ -67,6 +66,26 @@ tasks:
     cmds:
       - podman push ${IMAGE}:${TAG} ${REGISTRY}/${PROJECT}/${IMAGE}:${TAG}
 
+  container-image:deploy:
+    desc: Deploy a locally built container image to a device over SSH
+    vars:
+      SSH_USER: playtron
+      REGISTRY: localhost
+    preconditions:
+      - sh: test -n "{{.SSH_USER}}"
+        msg: "A value for SSH_USER must be provided"
+      - sh: test -n "{{.SSH_HOST}}"
+        msg: "A value for SSH_HOST must be provided"
+      - sh: test -n "{{.IMAGE}}"
+        msg: "A value for IMAGE must be provided"
+      - sh: test -n "{{.TAG}}"
+        msg: "A value for TAG must be provided"
+      - sh: test -n "{{.REGISTRY}}"
+        msg: "A value for REGISTRY must be provided"
+    cmds:
+      - podman save --format oci-archive {{.REGISTRY}}/{{.IMAGE}}:{{.TAG}} | pv --name "Copying" | ssh {{.SSH_USER}}@{{.SSH_HOST}} 'cat > /var/tmp/{{.IMAGE}}-{{.TAG}}.oci'
+      - ssh -t {{.SSH_USER}}@{{.SSH_HOST}} 'sudo LANG="en_US.UTF-8" LC_ALL="en_US.UTF-8" bootc switch --transport oci-archive /var/tmp/{{.IMAGE}}-{{.TAG}}.oci'
+
   container-image:release:
     desc: Release the OCI container image by tagging it as `latest` in the container registry.
     preconditions:
@@ -112,7 +131,6 @@ tasks:
       - ./virt-install.sh
       - mv /var/lib/libvirt/images/playtron-os.img "/var/lib/libvirt/images/playtron-os.img_$(date -Iseconds)"
       - virsh undefine --nvram playtron-os
-
 
   disk-image:bootc:
     desc: Build the OS image from a container hosted in a registry using bootc image builder (AMD64).
@@ -197,7 +215,6 @@ tasks:
       - read -p "Copy new packages into ${REPO_DIR} and press ENTER to continue"
       - createrepo "${REPO_DIR}"
       - aws s3 sync "${REPO_DIR}" s3://playtron-dev2-global-os-public/repos/playtron-app/aarch64/
-
 
   public:auth:
     desc: Authenticate with the GitHub container registry.
