@@ -1,0 +1,1 @@
+ACTION=="add|change", SUBSYSTEM=="hid", DRIVER=="hid-msi-claw", ATTR{gamepad_mode_current}="xinput"
