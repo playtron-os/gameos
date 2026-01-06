@@ -166,21 +166,3 @@ Create and use a container for development purposes.
 $ distrobox create --init --additional-packages systemd --image fedora:41 --pull --name fedora41
 $ distrobox enter fedora41
 ```
-
-Install a full desktop environment and other additional packages.
-
-```
-$ nano Containerfile
-FROM ghcr.io/playtron-os/playtron-os:latest
-RUN dnf5 group install -y kde-desktop && echo -e '[Autologin]\nSession=plasma' > /etc/sddm.conf.d/60-playtron-session-override.conf
-RUN dnf5 install -y firefox
-RUN dnf5 clean all && bootc container lint
-$ sudo podman build --tag desktop:latest .
-$ sudo bootc switch --transport containers-storage localhost/desktop:latest
-```
-
-The Software Update feature in Settings will no longer work with a custom container from the last example. All future updates must be done with locally built containers. Otherwise, switch back to an unmodified installation of Playtron GameOS.
-
-```
-$ sudo bootc switch ghcr.io/playtron-os/playtron-os:latest
-```
