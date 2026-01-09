@@ -67,7 +67,7 @@ old_root_uuid=$(get_uuid ${TARGET_DISK}*${ROOT_PART})
 # regenerate filesystem UUIDs
 fatlabel --volume-id --reset ${TARGET_DISK}*${EFI_PART}
 tune2fs -U random ${TARGET_DISK}*${BOOT_PART}
-btrfstune -f -u ${TARGET_DISK}*${ROOT_PART}
+tune2fs -U random ${TARGET_DISK}*${ROOT_PART}
 
 # get new filesystem UUIDs
 new_efi_uuid=$(get_uuid ${TARGET_DISK}*${EFI_PART})
