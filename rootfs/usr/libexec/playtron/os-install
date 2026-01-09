@@ -11,6 +11,8 @@ set -e
 
 function disable_install_mode {
 	rm -rf etc/environment.d
+	rm -f etc/systemd/system/var-log.mount
+	rm -f etc/systemd/system/var-lib.mount
 	rm -f etc/systemd/system/resize-root-file-system.service
 	rm -f etc/udev/rules.d/99-media-automount.rules
 	rm -f etc/modprobe.d/playtron-installer.conf
