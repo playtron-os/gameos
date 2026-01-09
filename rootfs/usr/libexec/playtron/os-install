@@ -106,7 +106,7 @@ umount ${TARGET_DISK}*${BOOT_PART}
 # update root filesystem
 mkdir -p /tmp/playtron-install-target-root
 mount  ${TARGET_DISK}*${ROOT_PART} /tmp/playtron-install-target-root
-pushd /tmp/playtron-install-target-root/root/ostree/deploy/default/deploy/*.0
+pushd /tmp/playtron-install-target-root/ostree/deploy/default/deploy/*.0
 
 disable_install_mode
 
