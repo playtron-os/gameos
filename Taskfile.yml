@@ -293,7 +293,7 @@ tasks:
         msg: "A value for TAG must be provided"
     cmds:
       - podman pull ${REGISTRY}/${PROJECT}/${IMAGE}:${TAG}
-      - podman run -it ${REGISTRY}/${PROJECT}/${IMAGE}:${TAG} rpm -qa | sort -u > playtron-os-${TAG}.pkg-list.versioned.txt
+      - podman run -it ${REGISTRY}/${PROJECT}/${IMAGE}:${TAG} rpm -qa | sort -u > playtron-os-${TAG}.versioned.pkg-list.txt
 
   package-list:local:versioned:
     desc: Generate a list of packages that are installed in a local container with version numbers
@@ -303,7 +303,7 @@ tasks:
       - sh: test -n "$TAG"
         msg: "A value for TAG must be provided"
     cmds:
-      - podman run -it ${IMAGE}:${TAG} rpm -qa | sort -u > playtron-os-${TAG}.pkg-list.versioned.txt
+      - podman run -it ${IMAGE}:${TAG} rpm -qa | sort -u > playtron-os-${TAG}.versioned.pkg-list.txt
 
   test:
     desc: Run all tests
