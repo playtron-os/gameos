@@ -30,7 +30,7 @@ TARGET_DISK=$2
 
 umount ${TARGET_DISK}* || true
 
-pv ${SOURCE_DISK} --output ${TARGET_DISK} --size ${RAW_DISK_SIZE} --stop-at-size --numeric 2>&1
+pv ${SOURCE_DISK} --rate-limit 400M --output ${TARGET_DISK} --size ${RAW_DISK_SIZE} --stop-at-size --numeric 2>&1
 
 if [ "$?" != "0" ]; then
     exit 1
