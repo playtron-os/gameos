@@ -11,5 +11,6 @@ git remote add origin https://github.com/NeroReflex/hid-msi-claw-dkms.git
 git fetch origin "${GIT_COMMIT}"
 git checkout "${GIT_COMMIT}"
 TARGET=$(basename "$(find /lib/modules -mindepth 1 -maxdepth 1 | tail -n 1)")
+export TARGET
 make modules
 make install
