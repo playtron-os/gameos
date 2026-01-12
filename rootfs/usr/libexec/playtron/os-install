@@ -10,8 +10,8 @@ set -e
 
 
 function disable_install_mode {
+	truncate -s 0 etc/machine-id
 	rm -rf etc/environment.d
-	rm -f etc/machine-id
 	rm -f etc/systemd/system/var-log.mount
 	rm -f etc/systemd/system/var-lib.mount
 	rm -f etc/systemd/system/resize-root-file-system.service
