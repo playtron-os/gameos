@@ -26,6 +26,9 @@ RUN ${CMD_INSTALL} \
 # Update kernel according to our repos
 RUN /usr/libexec/playtron-build/kernel-install.sh
 
+# Update mesa according to our repos
+RUN /usr/libexec/playtron-build/mesa-install.sh
+
 # Remove qemu packages
 RUN dnf remove -y qemu-user-static-*
 
