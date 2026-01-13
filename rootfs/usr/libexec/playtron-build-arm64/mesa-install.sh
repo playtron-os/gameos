@@ -2,4 +2,10 @@
 
 set -e -x
 
-echo "No-operation for Arm."
+dnf install -y \
+  mesa-dri-drivers \
+  mesa-filesystem \
+  mesa-libEGL \
+  mesa-libgbm \
+  mesa-libGL \
+  mesa-vulkan-drivers
