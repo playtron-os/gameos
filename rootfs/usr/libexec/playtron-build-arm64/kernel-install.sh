@@ -10,6 +10,10 @@ dnf remove -y \
   kernel-headers \
   kernel-modules \
   kernel-modules-core
+
+# Ensure we don't leave behind an old kernel directory
+rm -rf /usr/lib/modules/*
+
 dnf install -y \
   https://kojipkgs.fedoraproject.org//packages/kernel/6.16.3/200.fc42/aarch64/kernel-6.16.3-200.fc42.aarch64.rpm \
   https://kojipkgs.fedoraproject.org//packages/kernel/6.16.3/200.fc42/aarch64/kernel-core-6.16.3-200.fc42.aarch64.rpm \

@@ -6,6 +6,6 @@ skip_if_unavailable=False
 gpgcheck=1
 gpgkey=https://download.copr.fedorainfracloud.org/results/gloriouseggroll/nobara-$releasever/pubkey.gpg
 repo_gpgcheck=0
-enabled=1
+enabled=0
 enabled_metadata=1
 includepkgs=kernel*.x86_64

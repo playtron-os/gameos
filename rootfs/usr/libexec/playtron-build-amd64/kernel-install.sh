@@ -10,6 +10,10 @@ dnf remove -y \
   kernel-headers \
   kernel-modules \
   kernel-modules-core
+
+# Ensure we don't leave behind an old kernel directory
+rm -rf /usr/lib/modules/*
+
 dnf install -y \
   kernel \
   kernel-core \
