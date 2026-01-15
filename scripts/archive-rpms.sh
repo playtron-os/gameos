@@ -2,7 +2,12 @@
 
 set -e -x
 
-WORKING_DIR="/output/repo-archive"
+if [ -z "${1}" ]; then
+    echo "ERROR: missing required tag argument"
+    exit 1
+fi
+
+WORKING_DIR="/output/repo-archive-${1}"
 rm -r -f "${WORKING_DIR}"
 mkdir "${WORKING_DIR}"
 cd "${WORKING_DIR}"
