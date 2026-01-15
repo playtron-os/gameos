@@ -191,7 +191,8 @@ RUN ln -s -f /usr/bin/ld.bfd /etc/alternatives/ld
 RUN /usr/libexec/playtron-build/hid-msi-claw-install.sh
 
 # Build and install the ayaneo platform module
-RUN /usr/libexec/playtron-build/platform-ayaneo-install.sh
+# NOTE: Disabled temporarily. Causes slow or failed boot and power off failures on non-Aya Neo devices.
+#RUN /usr/libexec/playtron-build/platform-ayaneo-install.sh
 
 # Rely on pipewire to manage ALSA state
 RUN rm -f /etc/alsa/state-daemon.conf /etc/alsa/alsactl.conf
