@@ -10,7 +10,10 @@ set -e
 
 
 function disable_install_mode {
+	truncate -s 0 etc/machine-id
 	rm -rf etc/environment.d
+	rm -f etc/systemd/system/var-log.mount
+	rm -f etc/systemd/system/var-lib.mount
 	rm -f etc/systemd/system/resize-root-file-system.service
 	rm -f etc/udev/rules.d/99-media-automount.rules
 	rm -f etc/modprobe.d/playtron-installer.conf
@@ -27,7 +30,7 @@ TARGET_DISK=$2
 
 umount ${TARGET_DISK}* || true
 
-pv ${SOURCE_DISK} --output ${TARGET_DISK} --size ${RAW_DISK_SIZE} --stop-at-size --numeric 2>&1
+pv ${SOURCE_DISK} --rate-limit ${CLONE_RATE_LIMIT:-300M} --output ${TARGET_DISK} --size ${RAW_DISK_SIZE} --stop-at-size --numeric 2>&1
 
 if [ "$?" != "0" ]; then
     exit 1
@@ -46,18 +49,27 @@ if [ "$(uname -m)" == "x86_64" ]; then
 	ROOT_PART=4
 fi
 
+# regenerate partition UUIDs
+rand_uuid=$(uuidgen)
+sfdisk --part-uuid ${TARGET_DISK} ${EFI_PART} ${rand_uuid}
 
-# get current UUIDs
+rand_uuid=$(uuidgen)
+sfdisk --part-uuid ${TARGET_DISK} ${BOOT_PART} ${rand_uuid}
+
+rand_uuid=$(uuidgen)
+sfdisk --part-uuid ${TARGET_DISK} ${ROOT_PART} ${rand_uuid}
+
+# get current filesystem UUIDs
 old_efi_uuid=$(get_uuid ${TARGET_DISK}*${EFI_PART})
 old_boot_uuid=$(get_uuid ${TARGET_DISK}*${BOOT_PART})
 old_root_uuid=$(get_uuid ${TARGET_DISK}*${ROOT_PART})
 
-# regenerate UUIDs
+# regenerate filesystem UUIDs
 fatlabel --volume-id --reset ${TARGET_DISK}*${EFI_PART}
 tune2fs -U random ${TARGET_DISK}*${BOOT_PART}
-btrfstune -f -u ${TARGET_DISK}*${ROOT_PART}
+tune2fs -U random ${TARGET_DISK}*${ROOT_PART}
 
-# get new UUIDs
+# get new filesystem UUIDs
 new_efi_uuid=$(get_uuid ${TARGET_DISK}*${EFI_PART})
 new_boot_uuid=$(get_uuid ${TARGET_DISK}*${BOOT_PART})
 new_root_uuid=$(get_uuid ${TARGET_DISK}*${ROOT_PART})
@@ -94,7 +106,7 @@ umount ${TARGET_DISK}*${BOOT_PART}
 # update root filesystem
 mkdir -p /tmp/playtron-install-target-root
 mount  ${TARGET_DISK}*${ROOT_PART} /tmp/playtron-install-target-root
-pushd /tmp/playtron-install-target-root/root/ostree/deploy/default/deploy/*.0
+pushd /tmp/playtron-install-target-root/ostree/deploy/default/deploy/*.0
 
 disable_install_mode
 
@@ -109,4 +121,4 @@ sync
 umount ${TARGET_DISK}*${ROOT_PART}
 
 efibootmgr --delete-bootnum --label "${OS_NAME}" || true
-efibootmgr --create --disk ${TARGET_DISK} --part ${EFI_PART} --loader \\EFI\\fedora\\shim.efi --label "${OS_NAME}"
+efibootmgr --create --index 0 --disk ${TARGET_DISK} --part ${EFI_PART} --loader \\EFI\\fedora\\shim.efi --label "${OS_NAME}"
