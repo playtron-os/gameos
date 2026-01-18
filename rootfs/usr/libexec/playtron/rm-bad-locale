@@ -6,7 +6,7 @@ BAD_LOCALE_INDEX=$(mktemp)
 trap 'rm -f "${BAD_LOCALE_INDEX}"' EXIT
 
 for path in boot etc opt usr; do
-    find "/${path}" -type f -exec file --mime {} \; 2> /dev/null | grep -v -P "charset=(binary|us-ascii|utf-8|utf-16le)" >> "${BAD_LOCALE_INDEX}"
+    find "/${path}" -type f -exec file --mime {} + 2> /dev/null | grep -v -P "charset=(binary|us-ascii|utf-8|utf-16le)" >> "${BAD_LOCALE_INDEX}"
 done
 
 if grep -q "charset" "${BAD_LOCALE_INDEX}"; then
