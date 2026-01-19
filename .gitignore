@@ -1,5 +1,7 @@
 # This directory is created when running the command "go-task disk-image:bootc".
 output
+# These direcotries and files are created by "go-task repo:archive".
+repo-archive*
 # This file is created when running the command "go-task container-image:build".
 rootfs/usr/lib/os-release-playtron
 # This file is created from "kickstart/playtron-os_kickstart.cfg.template".
