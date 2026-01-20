@@ -27,4 +27,4 @@ else
  fi
 
 growpart ${root_device} ${root_partition_number}
-resize2fs ${root_device}${root_partition_number}
+resize2fs ${root_partition}
