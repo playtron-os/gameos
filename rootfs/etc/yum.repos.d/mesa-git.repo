@@ -1,0 +1,35 @@
+[mesa-git]
+name=Copr repo for mesa owned by che
+baseurl=https://copr-be.cloud.fedoraproject.org/results/che/mesa/fedora-$releasever-$basearch/
+skip_if_unavailable=True
+gpgcheck=1
+gpgkey=https://copr-be.cloud.fedoraproject.org/results/che/mesa/pubkey.gpg
+enabled=0
+enabled_metadata=1
+
+[mesa-git-x86]
+name=Copr repo for mesa i386 owned by che
+baseurl=https://copr-be.cloud.fedoraproject.org/results/che/mesa/fedora-$releasever-i386/
+skip_if_unavailable=True
+gpgcheck=1
+gpgkey=https://copr-be.cloud.fedoraproject.org/results/che/mesa/pubkey.gpg
+enabled=0
+enabled_metadata=1
+
+[mesa-llvm-git]
+name=Copr repo for llvm owned by che
+baseurl=https://copr-be.cloud.fedoraproject.org/results/che/llvm/fedora-$releasever-$basearch/
+skip_if_unavailable=True
+gpgcheck=1
+gpgkey=https://copr-be.cloud.fedoraproject.org/results/che/llvm/pubkey.gpg
+enabled=0
+enabled_metadata=1
+
+[mesa-llvm-git-x86]
+name=Copr repo for llvm i386 owned by che
+baseurl=https://copr-be.cloud.fedoraproject.org/results/che/llvm/fedora-$releasever-i386/
+skip_if_unavailable=True
+gpgcheck=1
+gpgkey=https://copr-be.cloud.fedoraproject.org/results/che/llvm/pubkey.gpg
+enabled=0
+enabled_metadata=1
