@@ -1,3 +1,4 @@
+# Mainline
 [kernel-vanilla:mainline-wo-mergew]
 name=Copr repo for mainline-wo-mergew owned by @kernel-vanilla
 baseurl=https://download.copr.fedorainfracloud.org/results/@kernel-vanilla/mainline-wo-mergew/fedora-$releasever-$basearch/
@@ -9,13 +10,14 @@ repo_gpgcheck=0
 enabled=0
 enabled_metadata=1
 
-[kernel-vanilla:stable]
-name=Copr copr.fedorainfracloud.org/@kernel-vanilla/mainline-wo-mergew runtime dependency #2 - @kernel-vanilla/stable
-baseurl=https://download.copr.fedorainfracloud.org/results/@kernel-vanilla/stable/fedora-$releasever-$basearch/
+# Stable
+[kernel-vanilla:fedora]
+name=Copr repo for fedora owned by @kernel-vanilla
+baseurl=https://download.copr.fedorainfracloud.org/results/@kernel-vanilla/fedora/fedora-$releasever-$basearch/
 type=rpm-md
 skip_if_unavailable=True
 gpgcheck=1
-gpgkey=https://download.copr.fedorainfracloud.org/results/@kernel-vanilla/stable/pubkey.gpg
+gpgkey=https://download.copr.fedorainfracloud.org/results/@kernel-vanilla/fedora/pubkey.gpg
 repo_gpgcheck=0
 enabled=0
 enabled_metadata=1
