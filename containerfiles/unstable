@@ -250,6 +250,9 @@ COPY rootfs/usr/bin/playtron-weston							/usr/bin/
 # Assumes the file system is Btrfs
 COPY rootfs/usr/bin/resize-root-file-system.sh						/usr/bin/
 
+# Disable Bluetooth and Wi-Fi on sleep and re-active when powered back on
+COPY rootfs/usr/lib/systemd/system/sleep-rfkill.service					/usr/lib/systemd/system/
+
 # Default kernel arguments
 COPY rootfs/usr/lib/bootc/kargs.d/50-playtron.${TARGETARCH}.toml				/usr/lib/bootc/kargs.d/50-playtron.toml
 
@@ -319,6 +322,10 @@ COPY rootfs/usr/lib/udev/rules.d/50-suiplay0x1.rules					/usr/lib/udev/rules.d/
 # Powerstation autostart
 COPY rootfs/usr/lib/udev/hwdb.d/60-powerstation-autostart.hwdb				/usr/lib/udev/hwdb.d/
 COPY rootfs/usr/lib/udev/rules.d/90-powerstation-autostart.rules			/usr/lib/udev/rules.d/
+
+# Rfkill autostart
+COPY rootfs/usr/lib/udev/hwdb.d/60-rfkill-autostart.hwdb				/usr/lib/udev/hwdb.d/
+COPY rootfs/usr/lib/udev/rules.d/90-rfkill-autostart.rules			/usr/lib/udev/rules.d/
 
 # Use the Kyber I/O scheduler for NVMe drives
 COPY rootfs/usr/lib/udev/rules.d/50-block-scheduler.rules				/usr/lib/udev/rules.d/
