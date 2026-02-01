@@ -42,6 +42,16 @@ tasks:
       - cat os-release.template | envsubst '${TAG}' > rootfs/usr/lib/os-release-playtron
       - podman build {{.CACHE}} --pull=always --tag ${IMAGE}:${TAG} --file containerfiles/unstable .
 
+  container-image:build:unstable:arm:
+    desc: Build the OCI container image for ARM64 (requires QEMU or ARM host).
+    preconditions:
+      - sh: test -n "$TAG"
+        msg: "A value for TAG must be provided"
+    cmds:
+      - mkdir -p rootfs/usr/lib
+      - cat os-release.template | envsubst '${TAG}' > rootfs/usr/lib/os-release-playtron
+      - podman build {{.CACHE}} --network=host --pull=always --platform linux/arm64 --tag ${IMAGE}:${TAG} --file containerfiles/unstable .
+
   container-image:build:stable:
     desc: Build the OCI container image using a previously built image.
     preconditions:
@@ -174,10 +184,17 @@ tasks:
 
   disk-image:bootc:local:arm:
     desc: Build the OS image from a local container using bootc image builder (ARM).
+    preconditions:
+      - sh: test "$EUID" == 0
+        msg: "This task must be run as root"
+      - sh: test -n "$IMAGE"
+        msg: "A value for IMAGE must be provided"
+    env:
+      BOOTC_IMAGE: quay.io/centos-bootc/bootc-image-builder:latest
     cmds:
-      - task: disk-image:bootc:local
-        env:
-          BOOTC_IMAGE: quay.io/centos-bootc/bootc-image-builder:latest
+      - rm -rf output
+      - mkdir output
+      - podman run --rm -it --privileged --pull=newer --security-opt label=type:unconfined_t -v ./config.toml:/config.toml:ro -v ./output:/output -v /var/lib/containers/storage:/var/lib/containers/storage ${BOOTC_IMAGE} --type raw --rootfs ext4 --target-arch aarch64 localhost/${IMAGE}:${TAG}
 
   disk-image:x13s:
     desc: Customize the generic ARM disk image to boot on the X13S
@@ -193,6 +210,88 @@ tasks:
     cmds:
       - cp output/image/disk.raw output/image/${TARGET}.raw
       - ./arm/customize ${TARGET}
+
+  # Pi 5 build tasks
+  download:pi5:
+    desc: "Download and extract Pi 5 kernel, modules, and firmware"
+    dir: arm/pi5
+    vars:
+      # Full kernel version string (appears in package name)
+      KERNEL_VERSION: "6.12.62+rpt-rpi-2712"
+      # Package version string
+      KERNEL_PKG_VERSION: "6.12.62-1+rpt1"
+      CACHE_DIR: "build-cache"
+    preconditions:
+      - sh: command -v wget
+        msg: "Could not find `wget`. Please install it."
+      - sh: command -v ar
+        msg: "Could not find `ar`. Please install binutils."
+      - sh: command -v dpkg-deb
+        msg: "Could not find `dpkg-deb`. Please install dpkg."
+    cmds:
+      - mkdir -p {{.CACHE_DIR}}/firmware
+      # Download linux-image package (contains kernel, modules, DTBs, overlays)
+      # Package name format: linux-image-{KERNEL_VERSION}_{PKG_VERSION}_arm64.deb
+      - |
+        if [ ! -f "{{.CACHE_DIR}}/linux-image-{{.KERNEL_VERSION}}_{{.KERNEL_PKG_VERSION}}_arm64.deb" ]; then
+          wget -O "{{.CACHE_DIR}}/linux-image-{{.KERNEL_VERSION}}_{{.KERNEL_PKG_VERSION}}_arm64.deb" \
+            "http://archive.raspberrypi.com/debian/pool/main/l/linux/linux-image-{{.KERNEL_VERSION}}_{{.KERNEL_PKG_VERSION}}_arm64.deb"
+        fi
+      # Extract package (modules are included in the image package)
+      - |
+        if [ ! -d {{.CACHE_DIR}}/modules-extracted/boot ]; then
+          mkdir -p {{.CACHE_DIR}}/modules-extracted
+          dpkg-deb -x "{{.CACHE_DIR}}/linux-image-{{.KERNEL_VERSION}}_{{.KERNEL_PKG_VERSION}}_arm64.deb" {{.CACHE_DIR}}/modules-extracted
+        fi
+      # Download firmware
+      - |
+        if [ ! -f {{.CACHE_DIR}}/firmware/start4.elf ]; then
+          for f in start4.elf start4x.elf start4cd.elf start4db.elf fixup4.dat fixup4x.dat fixup4cd.dat fixup4db.dat; do
+            wget -q -O {{.CACHE_DIR}}/firmware/$f "https://github.com/raspberrypi/firmware/raw/master/boot/$f" || true
+          done
+        fi
+    status:
+      - test -d {{.CACHE_DIR}}/modules-extracted/lib/modules
+      - test -f {{.CACHE_DIR}}/modules-extracted/boot/vmlinuz-*
+
+  build-initramfs:pi5:
+    desc: "Build Pi 5 initramfs with injected kernel modules"
+    deps:
+      - download:pi5
+    dir: arm/pi5
+    preconditions:
+      - sh: test -f ../../output/image/disk.raw
+        msg: "Disk image not found. Please run `disk-image:bootc:local:arm` first."
+      - sh: test "$EUID" == 0
+        msg: "This task must be run as root"
+      - sh: command -v kpartx
+        msg: "Could not find `kpartx`. Please install the appropriate package."
+    cmds:
+      - ./build-initramfs.sh ../../output/image/disk.raw build-cache/initramfs-pi5.img
+    generates:
+      - build-cache/initramfs-pi5.img
+
+  disk-image:pi5:
+    desc: "Build Pi 5 disk image"
+    deps:
+      - build-initramfs:pi5
+    preconditions:
+      - sh: command -v kpartx
+        msg: "Could not find `kpartx`. Please install the appropriate package."
+      - sh: test -f output/image/disk.raw
+        msg: "Disk image not found. Please run `disk-image:bootc:local:arm` to generate the generic ARM disk image."
+      - sh: test "$EUID" == 0
+        msg: "This task must be run as root"
+    cmds:
+      - cp output/image/disk.raw output/image/pi5.raw
+      - ./arm/pi5/customize.sh pi5
+
+  build:pi5:
+    desc: "Full Pi 5 build pipeline (container + disk image + customize)"
+    cmds:
+      - task: container-image:build:unstable:arm
+      - task: disk-image:bootc:local:arm
+      - task: disk-image:pi5
 
   repo:update:
     desc: "Update the package repository"

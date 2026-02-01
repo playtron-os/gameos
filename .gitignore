@@ -1,3 +1,8 @@
+# Pi 5 firmware and kernel cache (downloaded during customize)
+arm/build-cache/
+arm/firmware/
+arm/kernel/
+arm/pi5/build-cache/
 # This directory is created when running the command "go-task disk-image:bootc".
 output
 # These direcotries and files are created by "go-task repo:archive".
