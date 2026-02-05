@@ -1,5 +1,5 @@
 # MSI Claw
-dmi:*:svnMicro-StarInternationalCo.,Ltd.:pnClaw7AI+A2VM:*
-dmi:*:svnMicro-StarInternationalCo.,Ltd.:pnClaw8AI+A2VM:*
-dmi:*:svnMicro-StarInternationalCo.,Ltd.:pnClawA1M:*
+dmi:*:svnMicro-StarInternationalCo.,Ltd.:pnClaw7AI+A2VM*:*
+dmi:*:svnMicro-StarInternationalCo.,Ltd.:pnClaw8AI+A2VM*:*
+dmi:*:svnMicro-StarInternationalCo.,Ltd.:pnClawA1M*:*
   USE_RFKILL=1
