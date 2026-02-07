@@ -271,10 +271,19 @@ tasks:
     generates:
       - build-cache/initramfs-pi5.img
 
+  build-gamescope:pi5:
+    desc: "Build or fetch custom gamescope for Pi 5"
+    dir: arm/pi5
+    cmds:
+      - ./build-gamescope.sh
+    generates:
+      - arm/pi5/build-cache/gamescope-pi5/gamescope
+
   disk-image:pi5:
     desc: "Build Pi 5 disk image"
     deps:
       - build-initramfs:pi5
+      - build-gamescope:pi5
     preconditions:
       - sh: command -v kpartx
         msg: "Could not find `kpartx`. Please install the appropriate package."

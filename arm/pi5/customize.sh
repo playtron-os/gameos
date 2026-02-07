@@ -293,6 +293,23 @@ else
     echo "Warning: Could not download box64-rpi5 package"
 fi
 
+# ==============================
+# Custom gamescope for Pi 5
+# (V3D/VC4 split-GPU dmabuf support from Ericky14/gamescope pi5 branch)
+# ==============================
+GAMESCOPE_BINARY="${SCRIPT_DIR}/build-cache/gamescope-pi5/gamescope"
+if [ -f "$GAMESCOPE_BINARY" ]; then
+    echo "Installing custom Pi 5 gamescope binary..."
+    cp "$GAMESCOPE_BINARY" "$ROOTFS/usr/bin/gamescope"
+    chmod 755 "$ROOTFS/usr/bin/gamescope"
+    echo "Custom gamescope installed to /usr/bin/gamescope"
+else
+    echo "Warning: Custom gamescope binary not found at ${GAMESCOPE_BINARY}"
+    echo "  The stock gamescope will be used (may not work on Pi 5)."
+    echo "  To build: ./arm/pi5/build-gamescope.sh"
+    echo "  Or copy a pre-built binary to: ${GAMESCOPE_BINARY}"
+fi
+
 # Set empty root password
 [ -f "$ROOTFS/etc/shadow" ] && sed -i 's/^root:[^:]*:/root::/' "$ROOTFS/etc/shadow"
 
