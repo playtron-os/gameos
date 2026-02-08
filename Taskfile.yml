@@ -257,7 +257,7 @@ tasks:
   build-initramfs:pi5:
     desc: "Build Pi 5 initramfs with injected kernel modules"
     deps:
-      - download:pi5
+      - build-kernel:pi5
     dir: arm/pi5
     preconditions:
       - sh: test -f ../../output/image/disk.raw
@@ -271,6 +271,36 @@ tasks:
     generates:
       - build-cache/initramfs-pi5.img
 
+  build-kernel:pi5:
+    desc: "Cross-compile Pi 5 kernel with 4KB page size"
+    dir: arm/pi5
+    preconditions:
+      - sh: command -v aarch64-linux-gnu-gcc
+        msg: "Could not find aarch64 cross-compiler. Install with: sudo dnf install gcc-aarch64-linux-gnu"
+      - sh: command -v bc
+        msg: "Could not find `bc`. Please install it."
+      - sh: command -v bison
+        msg: "Could not find `bison`. Please install it."
+      - sh: command -v flex
+        msg: "Could not find `flex`. Please install it."
+    cmds:
+      - ./build-kernel.sh
+    generates:
+      - arm/pi5/build-cache/kernel-4k/.kernel-version
+
+  build-box64:pi5:
+    desc: "Cross-compile box64 v0.4.0 for Pi 5 (Cortex-A76)"
+    dir: arm/pi5
+    preconditions:
+      - sh: command -v aarch64-linux-gnu-gcc
+        msg: "Could not find aarch64 cross-compiler. Install with: sudo dnf install gcc-aarch64-linux-gnu"
+      - sh: command -v cmake
+        msg: "Could not find `cmake`. Please install it."
+    cmds:
+      - ./build-box64.sh
+    generates:
+      - arm/pi5/build-cache/box64-pi5/box64
+
   build-gamescope:pi5:
     desc: "Build or fetch custom gamescope for Pi 5"
     dir: arm/pi5
@@ -282,7 +312,9 @@ tasks:
   disk-image:pi5:
     desc: "Build Pi 5 disk image"
     deps:
+      - build-kernel:pi5
       - build-initramfs:pi5
+      - build-box64:pi5
       - build-gamescope:pi5
     preconditions:
       - sh: command -v kpartx

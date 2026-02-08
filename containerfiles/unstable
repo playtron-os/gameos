@@ -138,33 +138,34 @@ RUN ${CMD_INSTALL} \
   zram-generator
 
 RUN if [ "$TARGETARCH" = "amd64" ]; then \
-      # Install x86_64 specific packages
-      ${CMD_INSTALL} \
-        libpact \
-        libplaytron \
-        steam.i686 \
-        thermald \
-        valve-firmware; \
-    elif [ "$TARGETARCH" = "arm64" ]; then \
-      # Install arm64 specific packages
-      ${CMD_INSTALL} \
-        box64-sd888 \
-        box64-binfmts \
-        box64-data \
-        dnf-utils \
-        ibus-libs \
-        libnsl \
-        patch \
-        qcom-firmware; \
-    fi
+  # Install x86_64 specific packages
+  ${CMD_INSTALL} \
+  libpact \
+  libplaytron \
+  steam.i686 \
+  thermald \
+  valve-firmware; \
+  elif [ "$TARGETARCH" = "arm64" ]; then \
+  # Install arm64 specific packages
+  ${CMD_INSTALL} \
+  box64-sd888 \
+  box64-binfmts \
+  box64-data \
+  dnf-utils \
+  ibus-libs \
+  libnsl \
+  patch \
+  qcom-firmware \
+  seatd; \
+  fi
 
 # Force install x86 Steam on arm64
 RUN if [ "$TARGETARCH" = "arm64" ]; then \
   rpm -Uvh --nodeps --ignorearch $(repoquery --location steam.i686); \
-fi
+  fi
 
 # Install Nvidia
- RUN ${CMD_INSTALL} \
+RUN ${CMD_INSTALL} \
   akmod-nvidia \
   gcc-c++ \
   nvidia-driver \
@@ -172,14 +173,14 @@ fi
 
 RUN if [ "$TARGETARCH" = "amd64" ]; then \
   ${CMD_INSTALL} nvidia-driver-libs.i686; \
-fi
+  fi
 
 RUN cp -r /etc/pam.d /etc/pam.d.bak; sed -i -r 's/^(session\s+required\s+pam_limits.so)/#\1/' /etc/pam.d/*; \
   mkdir -p /run/akmods; \
   for k in $(ls -1 /usr/src/kernels); do \
-    akmods --force --kernels "${k}" --kmod "nvidia" || exit 1; \
-    ls /var/cache/akmods/nvidia/*.failed.log > /dev/null 2>&1 && cat /var/cache/akmods/nvidia/*.failed.log || true; \
-    ls /usr/lib/modules/"${k}"/extra/nvidia/nvidia.ko.xz || exit 1; \
+  akmods --force --kernels "${k}" --kmod "nvidia" || exit 1; \
+  ls /var/cache/akmods/nvidia/*.failed.log > /dev/null 2>&1 && cat /var/cache/akmods/nvidia/*.failed.log || true; \
+  ls /usr/lib/modules/"${k}"/extra/nvidia/nvidia.ko.xz || exit 1; \
   done; \
   rm -rf /run/akmods; \
   rm -rf /etc/pam.d; mv /etc/pam.d.bak /etc/pam.d;
@@ -415,8 +416,8 @@ RUN ln -s /run /var/run
 # Clear cache.
 RUN dnf5 clean all && \
   rm -r -f \
-    /boot/.vmlinuz*.hmac \
-    /var/cache/*
+  /boot/.vmlinuz*.hmac \
+  /var/cache/*
 
 # View final packages
 RUN rpm -qa | sort --ignore-case

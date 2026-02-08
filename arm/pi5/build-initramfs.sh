@@ -12,7 +12,18 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PI_KERNEL_VERSION="${PI_KERNEL_VERSION:-6.12.62+rpt-rpi-2712}"
+
+# If a custom 4KB-page kernel was built, use it; otherwise fall back to pre-built RPi kernel
+CUSTOM_KERNEL_DIR="$SCRIPT_DIR/build-cache/kernel-4k"
+if [ -f "$CUSTOM_KERNEL_DIR/.kernel-version" ]; then
+    PI_KERNEL_VERSION="$(cat "$CUSTOM_KERNEL_DIR/.kernel-version")"
+    PI_MODULES="$CUSTOM_KERNEL_DIR/usr/lib/modules/$PI_KERNEL_VERSION"
+    echo "Using custom 4KB-page kernel: $PI_KERNEL_VERSION"
+else
+    PI_KERNEL_VERSION="${PI_KERNEL_VERSION:-6.12.62+rpt-rpi-2712}"
+    PI_MODULES="$SCRIPT_DIR/build-cache/modules-extracted/usr/lib/modules/$PI_KERNEL_VERSION"
+    echo "Using pre-built RPi kernel: $PI_KERNEL_VERSION"
+fi
 
 DISK_IMAGE="$1"
 OUTPUT="$2"
@@ -30,9 +41,8 @@ fi
 [ -f "$DISK_IMAGE" ] || { echo "ERROR: Disk image not found: $DISK_IMAGE"; exit 1; }
 [ "$EUID" -eq 0 ] || { echo "ERROR: Must run as root"; exit 1; }
 
-# Raspberry Pi packages use /usr/lib/modules/ instead of /lib/modules/
-PI_MODULES="$SCRIPT_DIR/build-cache/modules-extracted/usr/lib/modules/$PI_KERNEL_VERSION"
-[ -d "$PI_MODULES" ] || { echo "ERROR: Pi modules not found at $PI_MODULES"; echo "Run 'task download:pi5' first"; exit 1; }
+# PI_MODULES was set above based on whether custom kernel exists
+[ -d "$PI_MODULES" ] || { echo "ERROR: Pi modules not found at $PI_MODULES"; echo "Run 'task build-kernel:pi5' or 'task download:pi5' first"; exit 1; }
 
 echo "Building Pi 5 initramfs..."
 echo "  Disk image: $DISK_IMAGE"
@@ -42,9 +52,9 @@ echo "  Kernel: $PI_KERNEL_VERSION"
 # Cleanup on exit
 cleanup() {
     [ -n "$BOOT_MOUNT" ] && mountpoint -q "$BOOT_MOUNT" 2>/dev/null && umount "$BOOT_MOUNT"
-    [ -n "$BOOT_MOUNT" ] && rmdir "$BOOT_MOUNT" 2>/dev/null
+    [ -n "$BOOT_MOUNT" ] && rmdir "$BOOT_MOUNT" 2>/dev/null || true
     [ -n "$WORK_DIR" ] && rm -rf "$WORK_DIR"
-    [ -n "$KPARTX_DONE" ] && kpartx -d "$DISK_IMAGE" 2>/dev/null
+    [ -n "$KPARTX_DONE" ] && kpartx -d "$DISK_IMAGE" 2>/dev/null || true
 }
 trap cleanup EXIT
 

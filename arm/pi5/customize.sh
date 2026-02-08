@@ -1,6 +1,7 @@
 #!/bin/bash
-# Raspberry Pi 5 disk image customization script (minimal - console boot only)
+# Raspberry Pi 5 disk image customization script
 # This script customizes a generic ARM Fedora disk image for Pi 5 boot
+# Sets up: gamescope session + SDDM autologin + Grid + SSH
 #
 # Prerequisites (handled by Taskfile):
 #   - Kernel modules downloaded and extracted via 'task download:pi5'
@@ -16,7 +17,17 @@ REPO_ROOT="$SCRIPT_DIR/../.."
 CACHE_DIR="$SCRIPT_DIR/build-cache"
 
 # Configuration
-PI_KERNEL_VERSION="${PI_KERNEL_VERSION:-6.12.62+rpt-rpi-2712}"
+# If a custom 4KB-page kernel was built, use it; otherwise fall back to pre-built RPi kernel
+CUSTOM_KERNEL_DIR="$CACHE_DIR/kernel-4k"
+if [ -f "$CUSTOM_KERNEL_DIR/.kernel-version" ]; then
+    PI_KERNEL_VERSION="$(cat "$CUSTOM_KERNEL_DIR/.kernel-version")"
+    KERNEL_EXTRACT="$CUSTOM_KERNEL_DIR"
+    echo "Using custom 4KB-page kernel: $PI_KERNEL_VERSION"
+else
+    PI_KERNEL_VERSION="${PI_KERNEL_VERSION:-6.12.62+rpt-rpi-2712}"
+    KERNEL_EXTRACT="$CACHE_DIR/modules-extracted"
+    echo "Using pre-built RPi kernel: $PI_KERNEL_VERSION"
+fi
 PI_KERNEL_PKG_VERSION="${PI_KERNEL_PKG_VERSION:-6.12.62-1+rpt1}"
 
 # Cleanup on exit
@@ -56,8 +67,8 @@ fi
 # Validate prerequisites
 echo "Checking prerequisites..."
 # Raspberry Pi packages use /usr/lib/modules/ instead of /lib/modules/
-MODULES_DIR="$CACHE_DIR/modules-extracted/usr/lib/modules/$PI_KERNEL_VERSION"
-[ -d "$MODULES_DIR" ] || { echo "ERROR: Kernel modules not found at $MODULES_DIR. Run 'task download:pi5'"; exit 1; }
+MODULES_DIR="$KERNEL_EXTRACT/usr/lib/modules/$PI_KERNEL_VERSION"
+[ -d "$MODULES_DIR" ] || { echo "ERROR: Kernel modules not found at $MODULES_DIR. Run 'task build-kernel:pi5' or 'task download:pi5'"; exit 1; }
 [ -f "$CACHE_DIR/initramfs-pi5.img" ] || { echo "ERROR: Initramfs not found. Run 'task build-initramfs:pi5'"; exit 1; }
 
 echo "Customizing disk image: $DISK_IMAGE"
@@ -108,7 +119,7 @@ if [ -n "$BOOT_DEV" ]; then
 fi
 
 # === Kernel modules location ===
-KERNEL_EXTRACT="$CACHE_DIR/modules-extracted"
+# KERNEL_EXTRACT was set above (custom 4KB kernel or pre-built RPi kernel)
 echo "Using kernel modules from: $KERNEL_EXTRACT"
 
 # === Setup EFI partition ===
@@ -265,32 +276,24 @@ ln -sf /dev/null "$ROOTFS/etc/systemd/system/akmods-keygen@akmods-keygen.service
 # systemd-binfmt races with our pi5-binfmt-setup.service - mask it since we handle binfmt ourselves
 ln -sf /dev/null "$ROOTFS/etc/systemd/system/systemd-binfmt.service"
 
-# Install box64-rpi5 (the base image has box64-sd888 which doesn't work on Pi 5's Cortex-A76)
-echo "Installing box64-rpi5..."
-BOX64_RPI5_CACHE="$CACHE_DIR/box64-rpi5"
-if [ ! -f "$BOX64_RPI5_CACHE/usr/bin/box64.rpi5" ]; then
-    mkdir -p "$BOX64_RPI5_CACHE"
-    # Download from Fedora aarch64 repo (host may be x86_64)
-    BOX64_URL="https://download.fedoraproject.org/pub/fedora/linux/releases/42/Everything/aarch64/os/Packages/b/"
-    BOX64_RPM=$(curl -sL "$BOX64_URL" | grep -oP 'box64-rpi5-[^"]+\.rpm' | head -1)
-    if [ -n "$BOX64_RPM" ]; then
-        wget -q -O "$BOX64_RPI5_CACHE/$BOX64_RPM" "${BOX64_URL}${BOX64_RPM}" || true
-    fi
-    if [ -f "$BOX64_RPI5_CACHE"/box64-rpi5*.rpm ]; then
-        (cd "$BOX64_RPI5_CACHE" && rpm2cpio box64-rpi5*.rpm | cpio -idm 2>/dev/null)
-    fi
-fi
-if [ -f "$BOX64_RPI5_CACHE/usr/bin/box64.rpi5" ]; then
-    # For ostree, we can't modify /usr, so install to /var and update alternatives
+# Install box64 for Pi 5
+# The base image ships box64-sd888 (0.4.0) which uses ARM instructions not available
+# on Cortex-A76 → SIGILL. We cross-compile box64 0.4.0 with -DRPI5ARM64=1 instead.
+echo "Installing box64 for Pi 5..."
+BOX64_PI5_BINARY="$CACHE_DIR/box64-pi5/box64"
+if [ -f "$BOX64_PI5_BINARY" ]; then
+    # For ostree/composefs, /usr is read-only. Install to /var and update alternatives.
     OSTREE_VAR="$ROOT_MOUNT/ostree/deploy/default/var"
-    cp "$BOX64_RPI5_CACHE/usr/bin/box64.rpi5" "$OSTREE_VAR/lib/box64.rpi5"
-    chmod +x "$OSTREE_VAR/lib/box64.rpi5"
-    # Update alternatives symlink to point to rpi5 version
+    cp "$BOX64_PI5_BINARY" "$OSTREE_VAR/lib/box64.pi5"
+    chmod +x "$OSTREE_VAR/lib/box64.pi5"
+    # Update alternatives symlink to point to pi5 version
     mkdir -p "$ROOTFS/etc/alternatives"
-    ln -sf /var/lib/box64.rpi5 "$ROOTFS/etc/alternatives/box64"
-    echo "box64-rpi5 installed"
+    ln -sf /var/lib/box64.pi5 "$ROOTFS/etc/alternatives/box64"
+    echo "box64 Pi5 (cross-compiled 0.4.0) installed"
 else
-    echo "Warning: Could not download box64-rpi5 package"
+    echo "ERROR: box64 Pi5 binary not found at $BOX64_PI5_BINARY"
+    echo "  Run 'task build-box64:pi5' first."
+    exit 1
 fi
 
 # ==============================
@@ -320,17 +323,160 @@ if ! grep -q "^playtron:" "$ROOTFS/etc/passwd" 2>/dev/null; then
     echo "playtron:playtron" | chroot "$ROOTFS" chpasswd 2>/dev/null || true
 fi
 
-# Console autologin to playtron user
-mkdir -p "$ROOTFS/etc/systemd/system/getty@tty1.service.d"
-cat > "$ROOTFS/etc/systemd/system/getty@tty1.service.d/autologin.conf" << 'EOF'
-[Service]
-ExecStart=
-ExecStart=-/sbin/agetty --autologin playtron --noclear %I $TERM
+# Ensure playtron is in video/render/input/seat groups
+# On ostree, usermod -aG may not work because groups live in /usr/lib/group
+# We add overrides to /etc/group directly
+# seat group (GID 973) is needed for seatd socket access
+if ! grep -q "^seat:" "$ROOTFS/etc/group" 2>/dev/null; then
+    echo "seat:x:973:playtron" >> "$ROOTFS/etc/group"
+fi
+for grp in "video:x:39" "render:x:105" "input:x:104"; do
+    grp_name="${grp%%:*}"
+    if ! grep -q "^${grp_name}:.*playtron" "$ROOTFS/etc/group" 2>/dev/null; then
+        echo "${grp}:playtron" >> "$ROOTFS/etc/group"
+    fi
+done
+echo "User groups configured"
+
+# ==============================
+# Pi5 overrides for config.toml defaults
+# (config.toml is shared with installer builds - undo installer-specific settings)
+# ==============================
+echo "Applying Pi5 config overrides..."
+
+# Boot into regular Grid (not installer mode)
+cat > "$ROOTFS/etc/environment.d/playtron-installer.conf" << 'EOF'
+GRID_INSTALL_MODE=0
 EOF
 
-# Disable SDDM/graphical target - boot to console
+# Re-enable resize-root-file-system (config.toml masks it with an empty file)
+rm -f "$ROOTFS/etc/systemd/system/resize-root-file-system.service"
+
+# Fix resize script for ext4 (Pi5 uses ext4 not btrfs)
+# The stock script calls "btrfs filesystem resize max" which fails on ext4.
+# Replace with a version that detects the filesystem type.
+cat > "$ROOTFS/bin/resize-root-file-system.sh" << 'RESIZEOF'
+#!/bin/bash
+set -x
+
+root_partition=$(mount | grep 'on / ' | awk '{print $1}')
+overlay_detected="false"
+
+if [ "${root_partition}" == "overlay" ] || [ "${root_partition}" == "composefs" ]; then
+    root_partition=$(mount | grep 'on /var ' | awk '{print $1}')
+    overlay_detected="true"
+fi
+
+root_partition_number=$(echo ${root_partition} | grep -o -P "[0-9]+$")
+
+echo ${root_partition} | grep -q nvme
+if [ $? -eq 0 ]; then
+    root_device=$(echo ${root_partition} | grep -P -o "/dev/nvme[0-9]+n[0-9]+")
+else
+    echo ${root_partition} | grep -q mmcblk
+    if [ $? -eq 0 ]; then
+        root_device=$(echo ${root_partition} | grep -P -o "/dev/mmcblk[0-9]+")
+    else
+        root_device=$(echo ${root_partition} | sed s'/[0-9]//'g)
+    fi
+fi
+
+growpart ${root_device} ${root_partition_number}
+
+# Detect filesystem type and resize accordingly
+fs_type=$(findmnt -n -o FSTYPE /var 2>/dev/null || findmnt -n -o FSTYPE / 2>/dev/null)
+case "${fs_type}" in
+    btrfs)
+        if [ "${overlay_detected}" == "false" ]; then
+            btrfs filesystem resize max /
+        else
+            btrfs filesystem resize max /var
+        fi
+        ;;
+    ext4|ext3|ext2)
+        resize2fs ${root_partition}
+        ;;
+    xfs)
+        xfs_growfs /var 2>/dev/null || xfs_growfs /
+        ;;
+    *)
+        echo "Unknown filesystem type: ${fs_type}, trying resize2fs"
+        resize2fs ${root_partition} || btrfs filesystem resize max /var
+        ;;
+esac
+RESIZEOF
+chmod +x "$ROOTFS/bin/resize-root-file-system.sh"
+
+# Re-enable media automount
+rm -f "$ROOTFS/etc/udev/rules.d/99-media-automount.rules"
+
+echo "Pi5 config overrides applied"
+
+# ==============================
+# Graphical session: SDDM + gamescope + Grid
+# ==============================
+echo "Configuring graphical session..."
+
+# Enable graphical target (SDDM)
 mkdir -p "$ROOTFS/etc/systemd/system"
-ln -sf /usr/lib/systemd/system/multi-user.target "$ROOTFS/etc/systemd/system/default.target" 2>/dev/null || true
+ln -sf /usr/lib/systemd/system/graphical.target "$ROOTFS/etc/systemd/system/default.target" 2>/dev/null || true
+
+# Enable SDDM service
+mkdir -p "$ROOTFS/etc/systemd/system/display-manager.service.d"
+ln -sf /usr/lib/systemd/system/sddm.service "$ROOTFS/etc/systemd/system/display-manager.service" 2>/dev/null || true
+
+# SDDM autologin for playtron → gamescope session
+mkdir -p "$ROOTFS/etc/sddm.conf.d"
+cat > "$ROOTFS/etc/sddm.conf.d/autologin.conf" << 'EOF'
+[Autologin]
+Relogin=true
+Session=gamescope-session-playtron.desktop
+User=playtron
+EOF
+
+# Pi5 environment: Vulkan ICD and libseat backend (seatd for proper VT/seat management)
+mkdir -p "$ROOTFS/etc/environment.d"
+cat > "$ROOTFS/etc/environment.d/pi5-gamescope.conf" << 'EOF'
+VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/broadcom_icd.aarch64.json
+LIBSEAT_BACKEND=seatd
+EOF
+
+# Gamescope session overrides for Pi5 (DRM backend, no switcherooctl)
+# ORIENTATION="" overrides the device-quirks bug (empty SYS_ID matches AYANEO AIR trailing colon)
+mkdir -p "$ROOTFS/etc/gamescope-session-plus/sessions.d"
+cat > "$ROOTFS/etc/gamescope-session-plus/sessions.d/playtron" << 'EOF'
+# Pi5 overrides for gamescope session
+BACKEND=drm
+ORIENTATION=""
+OUTPUT_CONNECTOR=HDMI-A-1
+SCREEN_WIDTH=1280
+SCREEN_HEIGHT=720
+INTERNAL_WIDTH=1280
+INTERNAL_HEIGHT=720
+CLIENTCMD="grid"
+CLIENTCMD="grid"
+EOF
+
+# Enable seatd for VT-based seat management (replaces LIBSEAT_BACKEND=noop)
+# seatd allows gamescope to properly manage DRM devices and VT switching,
+# working around the logind session scope mismatch from SDDM→systemctl --user
+mkdir -p "$ROOTFS/etc/systemd/system/multi-user.target.wants"
+ln -sf /usr/lib/systemd/system/seatd.service "$ROOTFS/etc/systemd/system/multi-user.target.wants/seatd.service" 2>/dev/null || true
+
+# Enable SSH for remote access
+ln -sf /usr/lib/systemd/system/sshd.service "$ROOTFS/etc/systemd/system/multi-user.target.wants/sshd.service" 2>/dev/null || true
+
+# Pre-generate SSH host keys (ostree/composefs may have read-only /etc/ssh at first boot)
+mkdir -p "$ROOTFS/etc/ssh"
+if [ ! -f "$ROOTFS/etc/ssh/ssh_host_rsa_key" ]; then
+    ssh-keygen -t rsa -f "$ROOTFS/etc/ssh/ssh_host_rsa_key" -N "" -q
+    ssh-keygen -t ecdsa -f "$ROOTFS/etc/ssh/ssh_host_ecdsa_key" -N "" -q
+    ssh-keygen -t ed25519 -f "$ROOTFS/etc/ssh/ssh_host_ed25519_key" -N "" -q
+    echo "SSH host keys pre-generated"
+fi
+
+echo "Graphical session configured (SDDM → gamescope → Grid)"
+echo "SSH enabled for remote access"
 
 # Cleanup temporary mounts
 sync
@@ -352,8 +498,9 @@ KPARTX_OUT=""
 DISK_IMAGE_RESOLVED="$(realpath "$DISK_IMAGE")"
 
 echo ""
-echo "Pi 5 customization complete (minimal console boot): $DISK_IMAGE_RESOLVED"
+echo "Pi 5 customization complete: $DISK_IMAGE_RESOLVED"
 echo "Write to SD card with: sudo dd if=$DISK_IMAGE_RESOLVED of=/dev/sdX bs=4M status=progress"
 echo ""
 echo "After boot:"
-echo "  - Auto-login as 'playtron' user"
+echo "  - SDDM auto-login as 'playtron' → gamescope session → Grid"
+echo "  - SSH enabled: ssh playtron@<ip> (password: playtron)"
