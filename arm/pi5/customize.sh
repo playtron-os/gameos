@@ -91,8 +91,9 @@ ROOT_MOUNT=$(mktemp -d)
 mount "/dev/mapper/$ROOT_DEV" "$ROOT_MOUNT"
 
 # Find ostree root if applicable
+# Must search under .../deploy/ (not .../backing/) to get the actual composefs rootfs
 if [ -d "$ROOT_MOUNT/ostree/deploy" ]; then
-    OSTREE_ROOT=$(find "$ROOT_MOUNT/ostree/deploy" -maxdepth 4 -name "*.0" -type d 2>/dev/null | head -1)
+    OSTREE_ROOT=$(find "$ROOT_MOUNT/ostree/deploy"/*/deploy -maxdepth 1 -name "*.0" -type d 2>/dev/null | head -1)
     [ -n "$OSTREE_ROOT" ] && ROOTFS="$OSTREE_ROOT" || ROOTFS="$ROOT_MOUNT"
 else
     ROOTFS="$ROOT_MOUNT"
@@ -303,9 +304,29 @@ fi
 GAMESCOPE_BINARY="${SCRIPT_DIR}/build-cache/gamescope-pi5/gamescope"
 if [ -f "$GAMESCOPE_BINARY" ]; then
     echo "Installing custom Pi 5 gamescope binary..."
-    cp "$GAMESCOPE_BINARY" "$ROOTFS/usr/bin/gamescope"
-    chmod 755 "$ROOTFS/usr/bin/gamescope"
-    echo "Custom gamescope installed to /usr/bin/gamescope"
+    # For composefs, /usr is read-only. Install binary to /var and bind-mount over stock.
+    cp "$GAMESCOPE_BINARY" "$OSTREE_VAR/lib/gamescope.pi5"
+    chmod 755 "$OSTREE_VAR/lib/gamescope.pi5"
+    # Create a systemd service to bind-mount our binary over /usr/bin/gamescope at boot
+    cat > "$ROOTFS/etc/systemd/system/pi5-gamescope-override.service" << 'GSEOF'
+[Unit]
+Description=Override stock gamescope with Pi5 build
+DefaultDependencies=no
+Before=display-manager.service sddm.service
+After=local-fs.target
+ConditionPathExists=/var/lib/gamescope.pi5
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/mount --bind /var/lib/gamescope.pi5 /usr/bin/gamescope
+
+[Install]
+WantedBy=multi-user.target
+GSEOF
+    mkdir -p "$ROOTFS/etc/systemd/system/multi-user.target.wants"
+    ln -sf ../pi5-gamescope-override.service "$ROOTFS/etc/systemd/system/multi-user.target.wants/pi5-gamescope-override.service"
+    echo "Custom gamescope installed (bind-mount /var/lib/gamescope.pi5 → /usr/bin/gamescope)"
 else
     echo "Warning: Custom gamescope binary not found at ${GAMESCOPE_BINARY}"
     echo "  The stock gamescope will be used (may not work on Pi 5)."
@@ -326,9 +347,16 @@ fi
 # Ensure playtron is in video/render/input/seat groups
 # On ostree, usermod -aG may not work because groups live in /usr/lib/group
 # We add overrides to /etc/group directly
-# seat group (GID 973) is needed for seatd socket access
+# seat group is needed for seatd socket access
+# Look up actual GID from the image, fall back to 974
+SEAT_GID=$(grep '^seat:' "$ROOTFS/usr/lib/group" 2>/dev/null | cut -d: -f3)
+[ -z "$SEAT_GID" ] && SEAT_GID=974
 if ! grep -q "^seat:" "$ROOTFS/etc/group" 2>/dev/null; then
-    echo "seat:x:973:playtron" >> "$ROOTFS/etc/group"
+    echo "seat:x:${SEAT_GID}:playtron" >> "$ROOTFS/etc/group"
+elif ! grep -q "^seat:.*playtron" "$ROOTFS/etc/group" 2>/dev/null; then
+    sed -i "s/^seat:x:${SEAT_GID}:.*/&,playtron/" "$ROOTFS/etc/group"
+    # Handle empty member list (line ends with colon)
+    sed -i 's/^seat:\(.*\):,playtron$/seat:\1:playtron/' "$ROOTFS/etc/group"
 fi
 for grp in "video:x:39" "render:x:105" "input:x:104"; do
     grp_name="${grp%%:*}"
@@ -345,6 +373,7 @@ echo "User groups configured"
 echo "Applying Pi5 config overrides..."
 
 # Boot into regular Grid (not installer mode)
+mkdir -p "$ROOTFS/etc/environment.d"
 cat > "$ROOTFS/etc/environment.d/playtron-installer.conf" << 'EOF'
 GRID_INSTALL_MODE=0
 EOF
@@ -355,6 +384,7 @@ rm -f "$ROOTFS/etc/systemd/system/resize-root-file-system.service"
 # Fix resize script for ext4 (Pi5 uses ext4 not btrfs)
 # The stock script calls "btrfs filesystem resize max" which fails on ext4.
 # Replace with a version that detects the filesystem type.
+mkdir -p "$ROOTFS/bin"
 cat > "$ROOTFS/bin/resize-root-file-system.sh" << 'RESIZEOF'
 #!/bin/bash
 set -x
