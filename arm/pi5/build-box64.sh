@@ -93,9 +93,10 @@ done
 [ -z "$SYSROOT" ] && { echo "ERROR: Cannot find aarch64 sysroot. Install: sudo dnf install sysroot-aarch64-fc42-glibc"; exit 1; }
 echo "Using sysroot: ${SYSROOT}"
 
-echo "Configuring box64 for Pi 5 (Cortex-A76)..."
+echo "Configuring box64 for Pi 5 (Cortex-A76) with BOX32 support..."
 cmake .. \
     -DRPI5ARM64=1 \
+    -DBOX32=1 \
     -DCMAKE_BUILD_TYPE=RelWithDebInfo \
     -DCMAKE_C_COMPILER="${CROSS_COMPILE}gcc" \
     -DCMAKE_SYSROOT="${SYSROOT}" \
