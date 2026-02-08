@@ -19,6 +19,37 @@ GAMESCOPE_BRANCH="pi5"
 echo "=== Building custom gamescope for Pi 5 ==="
 echo "Output: ${OUTPUT_DIR}"
 
+# ── Auto-install build dependencies (Fedora) ─────────────────────────────────
+BUILD_DEPS=(
+    # Build tools
+    meson ninja-build cmake gcc-c++ git glslang
+    # Vulkan
+    vulkan-loader-devel vulkan-headers
+    # Wayland
+    wayland-devel wayland-protocols-devel
+    # X11 / XCB
+    libX11-devel libxcb-devel xcb-util-wm-devel
+    libXdamage-devel libXcomposite-devel libXcursor-devel libXrender-devel
+    libXext-devel libXfixes-devel libXxf86vm-devel libXtst-devel
+    libXres-devel libXmu-devel libXi-devel
+    # Core libs
+    libdrm-devel libxkbcommon-devel pixman-devel lcms2-devel
+    libinput-devel libseat-devel systemd-devel
+    libdecor-devel libeis-devel luajit-devel
+    libcap-devel hwdata-devel
+    # Optional (enabled when available)
+    pipewire-devel sdl2-compat-devel libavif-devel
+)
+
+MISSING=()
+for pkg in "${BUILD_DEPS[@]}"; do
+    rpm -q "$pkg" &>/dev/null || MISSING+=("$pkg")
+done
+if [ ${#MISSING[@]} -gt 0 ]; then
+    echo "Installing missing build dependencies: ${MISSING[*]}"
+    sudo dnf install -y --setopt=install_weak_deps=false "${MISSING[@]}"
+fi
+
 mkdir -p "${OUTPUT_DIR}"
 
 # Check if we already have a cached build
@@ -36,16 +67,23 @@ if [ -d "${GAMESCOPE_SRC}/.git" ]; then
     git fetch origin
     git checkout "${GAMESCOPE_BRANCH}"
     git reset --hard "origin/${GAMESCOPE_BRANCH}"
+    git submodule update --init --recursive
 else
     echo "Cloning gamescope from ${GAMESCOPE_REPO} (branch: ${GAMESCOPE_BRANCH})..."
-    git clone --branch "${GAMESCOPE_BRANCH}" --depth 1 "${GAMESCOPE_REPO}" "${GAMESCOPE_SRC}"
+    git clone --recurse-submodules --branch "${GAMESCOPE_BRANCH}" --depth 1 "${GAMESCOPE_REPO}" "${GAMESCOPE_SRC}"
 fi
 
 cd "${GAMESCOPE_SRC}"
 
 echo "Building gamescope..."
-# Use meson + ninja
-if [ ! -d build ]; then
+# Use meson + ninja (reconfigure if a previous attempt left a stale build dir)
+if [ -d build ]; then
+    meson setup build --reconfigure --prefix=/usr --buildtype=release || {
+        echo "Reconfigure failed, wiping stale build dir..."
+        rm -rf build
+        meson setup build --prefix=/usr --buildtype=release
+    }
+else
     meson setup build --prefix=/usr --buildtype=release
 fi
 ninja -C build -j$(nproc)

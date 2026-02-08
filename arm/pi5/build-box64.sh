@@ -32,13 +32,21 @@ echo "=== Building box64 ${BOX64_TAG} for Pi 5 ==="
 echo "  Output: ${OUTPUT_DIR}"
 echo "  Jobs: ${NPROC}"
 
-# Check prerequisites
-for tool in ${CROSS_COMPILE}gcc cmake make; do
-    if ! command -v "$tool" &>/dev/null; then
-        echo "ERROR: $tool not found. Please install it."
-        exit 1
-    fi
+# ── Auto-install build dependencies (Fedora) ─────────────────────────────────
+BUILD_DEPS=(
+    gcc-aarch64-linux-gnu
+    cmake make git
+    sysroot-aarch64-fc42-glibc
+)
+
+MISSING=()
+for pkg in "${BUILD_DEPS[@]}"; do
+    rpm -q "$pkg" &>/dev/null || MISSING+=("$pkg")
 done
+if [ ${#MISSING[@]} -gt 0 ]; then
+    echo "Installing missing build dependencies: ${MISSING[*]}"
+    sudo dnf install -y --setopt=install_weak_deps=false "${MISSING[@]}"
+fi
 
 mkdir -p "${OUTPUT_DIR}"
 
