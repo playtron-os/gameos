@@ -114,15 +114,21 @@ $ sudo -E go-task disk-image:kickstart
 
 Playtron GameOS container images are published to the GitHub Container Registry (GHCR). These can be found [here](https://github.com/orgs/playtron-os/packages/container/package/playtron-os) at the GitHub organization level (not the GitHub repository level).
 
-The default user account is `playtron` with the password `playtron`. It can be accessed by enabling SSH in the Developer page. The IP address will also be listed there. Alternatively, open up a TTY console by pressing `CTRL`, `ALT`, and `F3` at the same time.
+Default Linux user account credentials:
 
-```
-Settings > Developer > Enable > Enable SSH Access: On
-```
+- Username: `playtron`
+- Password: `playtron`
 
-```
-$ ssh -l playtron $IP_ADDRESS
-```
+Developers can access a terminal two different ways:
+
+- Enable remote SSH access.
+    - Settings > Advanced > Remote Access: On
+    - Settings > Internet > Registered Wi-Fi networks > (select the connected Wi-Fi network and take note of the "IP Address")
+    ```
+    $ ssh -l playtron $IP_ADDRESS
+    ```
+- Or open a TTY console.
+    - Connect a keyboard and then press `CTRL`, `ALT`, and `F3` at the same time.
 
 This user has elevated privileges via the use of `sudo`.
 
