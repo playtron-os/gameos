@@ -15,6 +15,7 @@
     - [MSI Claw A1M](#msi-claw-a1m)
     - [MSI Claw 7 AI+ A2VM](#msi-claw-7-aiplus-a2vm)
     - [MSI Claw 8 AI+ A2VM](#msi-claw-8-aiplus-a2vm)
+    - [MSI Claw 8 AI+ A2VM Polar Tempest Edition](#msi-claw-8-aiplus-a2vm-polar-tempest-edition)
     - [SuiPlay0X1](#suiplay0x1)
     - [Valve Steam Deck LCD](#valve-steam-deck-lcd)
     - [Valve Steam Deck OLED](#valve-steam-deck-oled)
@@ -246,6 +247,26 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 | Wi-Fi | Yes |
 
 ### MSI Claw 8 AIPlus A2VM
+
+| Hardware | Status |
+| -------- | ------ |
+| AutoTDP | Partial |
+| Battery Status | Yes |
+| Bluetooth | Yes |
+| Brightness Control | Yes |
+| Controller | Yes |
+| Gyro | Yes |
+| Headphones | Yes |
+| microSD | Yes |
+| Screen Orientation | Yes |
+| Speakers | Yes |
+| Sleep | Yes |
+| Touch Pad | None |
+| Touch Screen | Yes |
+| Volume Control | Yes |
+| Wi-Fi | Yes |
+
+### MSI Claw 8 AIPlus A2VM Polar Tempest Edition
 
 | Hardware | Status |
 | -------- | ------ |
