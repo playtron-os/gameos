@@ -1,94 +1,17 @@
-FROM registry.playtron.one/internal/playtronos:1.0.0.13
+FROM registry.playtron.one/internal/playtronos:1.2-stable-base
 
 # Set OS version
 COPY rootfs/usr/lib/os-release-playtron /usr/lib/
 
-# Upgrade kernel.
-RUN dnf remove -y kmod-nvidia* && \
-  rpm-ostree override replace \
-  https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-41-x86_64/09410114-kernel/kernel-6.15.8-203.nobara.fc41.x86_64.rpm \
-  https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-41-x86_64/09410114-kernel/kernel-core-6.15.8-203.nobara.fc41.x86_64.rpm \
-  https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-41-x86_64/09410114-kernel/kernel-devel-6.15.8-203.nobara.fc41.x86_64.rpm \
-  https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-41-x86_64/09410114-kernel/kernel-devel-matched-6.15.8-203.nobara.fc41.x86_64.rpm \
-  https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-41-x86_64/09410114-kernel/kernel-headers-6.15.8-203.nobara.fc41.x86_64.rpm \
-  https://download.copr.fedorainfracloud.org/results/playtron/gaming/fedora-41-x86_64/09410114-kernel/kernel-modules-6.15.8-203.nobara.fc41.x86_64.rpm
-# Rebuild NVIDIA drivers.
-RUN cp -r /etc/pam.d /etc/pam.d.bak; sed -i -r 's/^(session\s+required\s+pam_limits.so)/#\1/' /etc/pam.d/*; \
-  mkdir -p /run/akmods; \
-  for k in $(ls -1 /usr/src/kernels); do \
-    akmods --force --kernels "${k}" --kmod "nvidia" || exit 1; \
-    ls /var/cache/akmods/nvidia/*.failed.log > /dev/null 2>&1 && cat /var/cache/akmods/nvidia/*.failed.log || true; \
-    ls /usr/lib/modules/"${k}"/extra/nvidia/nvidia.ko.xz || exit 1; \
-  done; \
-  rm -rf /run/akmods; \
-  rm -rf /etc/pam.d; mv /etc/pam.d.bak /etc/pam.d;
-
-# https://github.com/playtron-os/rpm-specs-gaming
+# Update packages
 RUN dnf5 -y upgrade \
-  gamescope-dbus-1.10.4-1 \
-  gamescope-session-0.1.0+319-1.fc41 \
-  gamescope-session-playtron-0.4.1-1.fc41 \
-  grid-1.24.0-1.fc40 \
-  inputplumber-0.67.0-0.fc41 \
-  legendary-0.20.41-1.playtron \
-  libpact-0.3.0-1 \
-  libplaytron-0.4.0-1 \
-  powerstation-0.7.0-1 \
-  playserve-1.15.0-1 \
-  playtron-plugin-local-1.5.0-1 \
-  reaper-0.1.0-2.fc41 \
-  tzupdate-3.1.0-1.fc41 \
-  udev-media-automount-0.1.0+72-1.fc41 \
-  SteamBus-1.26.4-1.fc41 \
-  xdg-desktop-portal-openuri-1.0.1-1.fc41
+  grid-1.33.5-1.fc41
 
 # Clear cache.
 RUN dnf5 clean all && \
   rm -r -f \
     /boot/.vmlinuz*.hmac \
     /var/cache/*
-
-# Work around for inputplumber service not being enabled
-RUN cd /etc/systemd/system/multi-user.target.wants && ln -s /usr/lib/systemd/system/inputplumber.service .
-
-# Temporary copy of files that have changed since the last unstable release
-COPY rootfs/usr/bin/playtron-factory-reset                              /usr/bin/
-COPY rootfs/usr/bin/playtronos-systemreport				/usr/bin/
-COPY rootfs/usr/lib/systemd/system-preset/50-playtron.preset		/usr/lib/systemd/system-preset/
-COPY rootfs/usr/lib/systemd/user-preset/50-playtron.preset		/usr/lib/systemd/user-preset/
-COPY rootfs/usr/share/inputplumber/capability_maps/kbd-meta.yaml	/usr/share/inputplumber/capability_maps/
-COPY rootfs/usr/share/inputplumber/devices/25-playtron-rog_ally_x.yaml	/usr/share/inputplumber/devices/
-COPY rootfs/usr/share/inputplumber/devices/60-keyboard-meta.yaml	/usr/share/inputplumber/devices/
-COPY rootfs/usr/lib/udev/hwdb.d/60-powerstation-autostart.hwdb		/usr/lib/udev/hwdb.d/
-COPY rootfs/usr/lib/udev/rules.d/90-powerstation-autostart.rules	/usr/lib/udev/rules.d/
-COPY rootfs/usr/share/plymouth/themes/spinner/watermark.png		/usr/share/plymouth/themes/spinner/
-COPY rootfs/usr/share/polkit-1/rules.d/50-one.playtron.playtronos-systemreport.rules /usr/share/polkit-1/rules.d/
-COPY rootfs/usr/lib/NetworkManager/conf.d/50-playtron.conf		/usr/lib/NetworkManager/conf.d/
-
-# Ensure services are enabled according to presets
-RUN systemctl preset-all
-RUN systemctl --user --global preset-all
-
-# Configure SELinux.
-RUN mkdir -p /usr/share/selinux/playtron-modules
-COPY rootfs/usr/share/selinux/playtron-modules/dontaudit-powerprofiles_t-passwd_file_t.te	/usr/share/selinux/playtron-modules/
-RUN cd /usr/share/selinux/playtron-modules/ && checkmodule -M -m -o dontaudit-powerprofiles_t-passwd_file_t.mod dontaudit-powerprofiles_t-passwd_file_t.te && semodule_package -o dontaudit-powerprofiles_t-passwd_file_t.pp -m dontaudit-powerprofiles_t-passwd_file_t.mod && semodule -i ./*.pp && rm -f ./*.mod ./*.pp
-COPY rootfs/usr/share/selinux/playtron-modules/systemd_timedated_t-etc_t-lnk_file.te	/usr/share/selinux/playtron-modules/
-RUN cd /usr/share/selinux/playtron-modules/ && checkmodule -M -m -o systemd_timedated_t-etc_t-lnk_file.mod systemd_timedated_t-etc_t-lnk_file.te && semodule_package -o systemd_timedated_t-etc_t-lnk_file.pp -m systemd_timedated_t-etc_t-lnk_file.mod && semodule -i ./*.pp && rm -f ./*.mod ./*.pp
-COPY rootfs/usr/lib/systemd/system/restorecon-bootc.service	/usr/lib/systemd/system/
-COPY rootfs/usr/bin/restorecon-bootc	/usr/bin/
-RUN sed -E -i 's/SELINUX=.+/SELINUX=enforcing/g' /etc/sysconfig/selinux && systemctl enable restorecon-bootc.service
-
-# Build initramfs
-RUN KERNEL=$(echo /lib/modules/*/vmlinuz | cut -d'/' -f4) \
-  && dracut --reproducible -v --omit-drivers nouveau --add 'ostree' -f --no-hostonly --kver ${KERNEL} /lib/modules/${KERNEL}/initramfs.img
-
-# Configure Nix
-COPY rootfs/usr/lib/systemd/system/nix.mount  /usr/lib/systemd/system/
-COPY rootfs/usr/libexec/playtron/nix-install /usr/libexec/playtron/nix-install
-RUN install -d -m 0755 /nix
-
-RUN dnf5 -y install snapd
 
 # View final packages.
 RUN rpm -qa | sort
