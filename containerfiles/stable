@@ -3,6 +3,9 @@ FROM registry.playtron.one/internal/playtronos:1.2-stable-base
 # Set OS version
 COPY rootfs/usr/lib/os-release-playtron /usr/lib/
 
+# Increased open file limits to (1) match the system service and (2) to fix gamescope-dbus issues
+COPY rootfs/usr/lib/systemd/user/dbus-broker.service.d/50-playtron.conf			/usr/lib/systemd/user/dbus-broker.service.d/
+
 # Update packages
 RUN dnf5 -y upgrade \
   grid-1.33.5-1.fc41
