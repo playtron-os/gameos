@@ -8,7 +8,8 @@ COPY rootfs/usr/lib/systemd/user/dbus-broker.service.d/50-playtron.conf			/usr/l
 
 # Update packages
 RUN dnf5 -y upgrade \
-  grid-1.33.5-1.fc41
+  grid-1.33.5-1.fc41 \
+  inputplumber-0.74.1-0.fc42
 
 # Clear cache.
 RUN dnf5 clean all && \
