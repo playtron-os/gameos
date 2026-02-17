@@ -308,6 +308,9 @@ COPY rootfs/usr/lib/systemd/user/pipewire-rnnoise-switch.service			/usr/lib/syst
 # Enable default user services
 COPY rootfs/usr/lib/systemd/user-preset/50-playtron.preset				/usr/lib/systemd/user-preset/
 
+# Increased open file limits to (1) match the system service and (2) to fix gamescope-dbus issues
+COPY rootfs/usr/lib/systemd/user/dbus-broker.service.d/50-playtron.conf			/usr/lib/systemd/user/dbus-broker.service.d/
+
 # Zram configuration
 COPY rootfs/usr/lib/systemd/zram-generator.conf						/usr/lib/systemd/
 
