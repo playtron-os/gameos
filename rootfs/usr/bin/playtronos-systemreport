@@ -124,6 +124,8 @@ if [[ " ${reports[*]} " =~ "hardware" ]]; then
   dmesg >"${REPORT_DIR}/dmesg.log"
   lspci -tv -nn >"${REPORT_DIR}/lspci.out"
   lsusb -t -v >"${REPORT_DIR}/lsusb.out"
+  lshw >"${REPORT_DIR}/lshw.out"
+  lsmod >"${REPORT_DIR}/lsmod.out"
   cat /proc/bus/input/devices >"${REPORT_DIR}/input-devices.out"
   hwctl system-info >"${REPORT_DIR}/system.json" 2>/dev/null
 fi
@@ -134,6 +136,7 @@ if [[ " ${reports[*]} " =~ "firmware" ]]; then
   fwupdmgr get-devices >"${REPORT_DIR}/firmware-devices.out" 2>&1
   echo "BIOS version: $(cat /sys/class/dmi/id/bios_version)" >>"${REPORT_DIR}/firmware-devices.out"
   fwupdmgr get-updates -y >"${REPORT_DIR}/firmware-updates.out" 2>&1
+  dmidecode >"${REPORT_DIR}/dmidecode.out"
 fi
 
 # Processes
