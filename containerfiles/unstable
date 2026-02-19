@@ -77,6 +77,7 @@ RUN ${CMD_INSTALL} \
   libertas-firmware \
   linuxconsoletools \
   lsb_release \
+  lshw \
   man-db \
   mangohud \
   mesa-vulkan-drivers \
