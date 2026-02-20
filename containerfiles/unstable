@@ -95,7 +95,6 @@ RUN ${CMD_INSTALL} \
   pipewire-utils \
   playserve \
   playtron-plugin-local \
-  playview \
   plugin-egs \
   plugin-gog \
   plymouth \
