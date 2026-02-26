@@ -29,7 +29,7 @@ ostreecontainer --url ${REGISTRY}/${PROJECT}/${IMAGE}:${TAG} --no-signature-veri
 # Reboot and start the installer.
 reboot
 text
-url --url="https://mirror.rackspace.com/fedora/releases/42/Everything/x86_64/os/"
+url --url="https://mirror.rackspace.com/fedora/releases/43/Everything/x86_64/os/"
 
 # U.S.A. keyboard and langauge settings.
 keyboard --vckeymap=us --xlayouts='us'
