@@ -106,6 +106,7 @@ RUN ${CMD_INSTALL} \
   python3-dbus \
   python3-gobject \
   python3-pygame \
+  python3-tkinter \
   realtek-firmware \
   rsync \
   sddm \
