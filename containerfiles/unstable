@@ -1,4 +1,4 @@
-FROM quay.io/fedora/fedora-bootc:42
+FROM quay.io/fedora/fedora-bootc:43
 
 ARG TARGETARCH
 
@@ -95,7 +95,6 @@ RUN ${CMD_INSTALL} \
   pipewire-utils \
   playserve \
   playtron-plugin-local \
-  playview \
   plugin-egs \
   plugin-gog \
   plymouth \
