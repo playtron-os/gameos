@@ -8,10 +8,10 @@ COPY rootfs/usr/lib/systemd/user/dbus-broker.service.d/50-playtron.conf			/usr/l
 
 # Update packages
 RUN dnf5 -y upgrade \
-  grid-1.33.5 \
+  grid-1.34.0 \
   inputplumber-0.75.0 \
   plugin-egs-1.2.4 \
-  playserve-1.22.1 \
+  playserve-1.23.0 \
   powerstation-0.8.1
 
 # Clear cache.
