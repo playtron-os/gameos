@@ -419,6 +419,9 @@ COPY rootfs/usr/lib/systemd/system/nix.mount  /usr/lib/systemd/system/
 COPY rootfs/usr/libexec/playtron/nix-install /usr/libexec/playtron/nix-install
 RUN install -d -m 0755 /nix
 
+# Prevent systemd from showing an end-of-life message after boot.
+RUN sed -i '/SUPPORT_END=.*/d' /usr/lib/os-release
+
 # Clear /var/run
 RUN rm -rf /var/run
 RUN ln -s /run /var/run
