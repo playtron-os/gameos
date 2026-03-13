@@ -15,6 +15,9 @@ RUN dnf5 -y upgrade \
   playserve-1.24.0 \
   powerstation-0.8.1
 
+# Prevent systemd from showing an end-of-life message after boot.
+RUN sed -i '/SUPPORT_END=.*/d' /usr/lib/os-release
+
 # Clear cache.
 RUN dnf5 clean all && \
   rm -r -f \
