@@ -6,6 +6,9 @@ COPY rootfs/usr/lib/os-release-playtron /usr/lib/
 # Increased open file limits to (1) match the system service and (2) to fix gamescope-dbus issues
 COPY rootfs/usr/lib/systemd/user/dbus-broker.service.d/50-playtron.conf			/usr/lib/systemd/user/dbus-broker.service.d/
 
+# Add powerstation support for the Claw Tempest Edition
+COPY rootfs/usr/lib/udev/hwdb.d/60-powerstation-autostart.hwdb                         /usr/lib/udev/hwdb.d/
+
 # Update packages
 RUN dnf5 -y upgrade \
   gamescope-dbus-1.13.0 \
