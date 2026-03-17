@@ -8,11 +8,12 @@ COPY rootfs/usr/lib/systemd/user/dbus-broker.service.d/50-playtron.conf			/usr/l
 
 # Update packages
 RUN dnf5 -y upgrade \
-  gamescope-dbus-1.12.0 \
-  grid-1.35.0 \
+  gamescope-dbus-1.13.0 \
+  grid-1.36.0 \
   inputplumber-0.75.2 \
   plugin-egs-1.2.4 \
-  playserve-1.24.0 \
+  plugin-gog-1.1.2 \
+  playserve-1.24.1 \
   powerstation-0.8.1
 
 # Prevent systemd from showing an end-of-life message after boot.
