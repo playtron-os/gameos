@@ -12,12 +12,13 @@ COPY rootfs/usr/lib/udev/hwdb.d/60-powerstation-autostart.hwdb                  
 # Update packages
 RUN dnf5 -y upgrade \
   gamescope-dbus-1.13.0 \
-  grid-1.36.0 \
+  grid-1.36.1 \
   inputplumber-0.75.2 \
   plugin-egs-1.2.4 \
   plugin-gog-1.1.2 \
   playserve-1.24.1 \
-  powerstation-0.8.1
+  powerstation-0.8.1 \
+  SteamBus-1.27.3
 
 # Prevent systemd from showing an end-of-life message after boot.
 RUN sed -i '/SUPPORT_END=.*/d' /usr/lib/os-release
