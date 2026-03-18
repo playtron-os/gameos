@@ -11,7 +11,7 @@ COPY rootfs/usr/lib/udev/hwdb.d/60-powerstation-autostart.hwdb                  
 
 # Update packages
 RUN dnf5 -y upgrade \
-  gamescope-dbus-1.13.0 \
+  gamescope-dbus-1.13.1 \
   grid-1.36.1 \
   inputplumber-0.75.2 \
   plugin-egs-1.2.4 \
