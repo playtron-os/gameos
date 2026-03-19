@@ -210,7 +210,7 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 
 | Hardware | Status |
 | -------- | ------ |
-| AutoTDP | Partial |
+| AutoTDP | Yes |
 | Battery Status | Yes |
 | Bluetooth | Yes |
 | Brightness Control | Yes |
@@ -230,7 +230,7 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 
 | Hardware | Status |
 | -------- | ------ |
-| AutoTDP | Partial |
+| AutoTDP | Yes |
 | Battery Status | Yes |
 | Bluetooth | Yes |
 | Brightness Control | Yes |
@@ -250,7 +250,7 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 
 | Hardware | Status |
 | -------- | ------ |
-| AutoTDP | Partial |
+| AutoTDP | Yes |
 | Battery Status | Yes |
 | Bluetooth | Yes |
 | Brightness Control | Yes |
@@ -270,7 +270,7 @@ These are PCs that have been tested with Playtron GameOS. Support is not guarant
 
 | Hardware | Status |
 | -------- | ------ |
-| AutoTDP | Partial |
+| AutoTDP | Yes |
 | Battery Status | Yes |
 | Bluetooth | Yes |
 | Brightness Control | Yes |
