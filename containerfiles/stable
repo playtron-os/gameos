@@ -7,7 +7,7 @@ COPY rootfs/usr/lib/os-release-playtron /usr/lib/
 RUN dnf5 -y upgrade \
   grid-1.36.3 \
   playserve-1.25.0 \
-  plugin-local-1.6.0 \
+  playtron-plugin-local-1.6.0 \
   SteamBus-1.27.5
 
 # Clear cache.
