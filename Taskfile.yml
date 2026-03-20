@@ -114,7 +114,13 @@ tasks:
       - podman run --rm -it ${REGISTRY}/${PROJECT}/${IMAGE}:${TAG} bash
 
   disk-image:kickstart:
-    desc: Build the OS image from a container hosted in a registry using kickstart.
+    desc: Build the OS image from a container hosted in the public registry using kickstart.
+    env:
+      TAG: latest
+      PROJECT: playtron-os
+      REGISTRY: ghcr.io
+      IMAGE: playtron-os
+      REGISTRY_TOKEN:
     dir: kickstart
     preconditions:
       - sh: test "$EUID" == 0
