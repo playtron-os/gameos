@@ -6,7 +6,7 @@ COPY rootfs/usr/lib/os-release-playtron /usr/lib/
 # Update packages
 RUN dnf5 -y upgrade \
   grid-1.36.5 \
-  playserve-1.25.3 \
+  playserve-1.25.4 \
   playtron-plugin-local-1.6.1 \
   SteamBus-1.27.5
 
