@@ -115,3 +115,14 @@ jobs:
                    "release": "${{ env.TAG }}",
                    "assetName": "playtron-gameos-sha256sum.txt"
                }' | grep -i error; then exit 1; fi
+      - name: Generate list of RPM package versions installed in the build
+        run: task package-list:local:versioned
+      - name: Upload list of RPM package versions installed in the build to pre-release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-pre-release.outputs.upload_url }}
+          asset_path: playtron-os-${{ env.TAG }}.versioned.pkg-list.txt
+          asset_name: playtron-os-${{ env.TAG }}.versioned.pkg-list.txt
+          asset_content_type: text/plain
