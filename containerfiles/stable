@@ -5,10 +5,14 @@ COPY rootfs/usr/lib/os-release-playtron /usr/lib/
 
 # Update packages
 RUN dnf5 -y upgrade \
+  gamescope-dbus-1.13.2 \
   grid-1.36.5 \
-  playserve-1.25.4 \
+  legendary-0.20.42 \
+  playserve-1.26.1 \
   playtron-plugin-local-1.6.1 \
-  SteamBus-1.27.5
+  plugin-gog-1.1.3 \
+  reaper-0.1.0-3.fc43 \
+  SteamBus-1.27.6
 
 # Clear cache.
 RUN dnf5 clean all && \
