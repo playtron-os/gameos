@@ -7,9 +7,10 @@ COPY rootfs/usr/lib/os-release-playtron /usr/lib/
 RUN dnf5 -y upgrade \
   gamescope-dbus-1.13.2 \
   grid-1.36.5 \
-  legendary-0.20.42 \
+  legendary-0.20.43 \
   playserve-1.26.1 \
   playtron-plugin-local-1.6.1 \
+  plugin-egs-1.3.0 \
   plugin-gog-1.1.3 \
   reaper-0.1.0-3.fc43 \
   SteamBus-1.27.6
