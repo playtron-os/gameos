@@ -1,4 +1,4 @@
-FROM quay.io/fedora/fedora-bootc:43
+FROM quay.io/playtron/fedora-bootc:43-20260407-multiarch
 
 ARG TARGETARCH
 
