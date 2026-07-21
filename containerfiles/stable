@@ -10,6 +10,7 @@ RUN dnf5 -y upgrade \
   grid-1.37.0 \
   inputplumber-0.76.0 \
   legendary-0.20.45 \
+  mesa* \
   playserve-1.28.0 \
   playtron-plugin-local-1.6.1 \
   plugin-egs-1.3.0 \
