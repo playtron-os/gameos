@@ -1,0 +1,15 @@
+# Source of the Playtron-built aarch64 kernel (the only kernel with Qualcomm Glymur / Snapdragon
+# X2 Elite support) and of newer box64 builds.
+#
+# Left disabled so it cannot shadow packages from Fedora or the Playtron app repo on either
+# architecture. Enable it per-transaction with `--enablerepo=agentos`.
+[agentos]
+name=AgentOS repository
+baseurl=https://playtron-dev2-global-os-public.s3.us-west-2.amazonaws.com/repos/agentos/$basearch/
+type=rpm-md
+skip_if_unavailable=True
+gpgkey=https://playtron-dev2-global-os-public.s3.us-west-2.amazonaws.com/gpg-public-keys/RPM-GPG-KEY-playtronos
+gpgcheck=0
+repo_gpgcheck=0
+enabled=0
+enabled_metadata=1

@@ -1,0 +1,104 @@
+#! /bin/bash
+
+# Copies the device tree blob out of a staged deployment into /boot/dtb, so that an OS update
+# also updates the DTB that GRUB loads via its `devicetree` command.
+#
+# The DTB that ships with the running kernel and the DTB that ships with the incoming kernel are
+# not interchangeable, so this has to run for every deployment.
+#
+# The board is identified by /boot/dtb.name, written by `arm/customize` when the disk image was
+# built. Images built before that marker existed fall back to matching the contents of the
+# current /boot/dtb against the DTBs of the running deployment, and the result is persisted.
+
+set -e
+set -x
+
+echo "=== DTB update begin"
+trap "echo '=== DTB update end'" EXIT
+
+DTB_DIR_NAME=playtron
+BOOT_DTB=/boot/dtb
+BOOT_DTB_NAME=/boot/dtb.name
+
+# Resolves the directory holding the Playtron DTBs of a deployment root.
+__dtb_dir() {
+	local deploy_root=$1
+
+	local module_search_path="${deploy_root}/usr/lib/modules"
+	local module_dir
+	module_dir="$(ls -1 "${module_search_path}")"
+	if [ "$(echo "${module_dir}" | wc -l)" -gt 1 ]; then
+		echo "ERROR: Multiple directories found in ${module_search_path}" >&2
+		return 1
+	fi
+
+	echo "${module_search_path}/${module_dir}/dtb/${DTB_DIR_NAME}"
+}
+
+# Identifies the board by comparing the current /boot/dtb against the DTBs of the running
+# deployment. Only conclusive when exactly one candidate matches.
+__detect_board() {
+	local running_dtb_dir
+	running_dtb_dir="$(__dtb_dir /)" || return 1
+
+	local matches=()
+	local candidate
+	for candidate in "${running_dtb_dir}"/*; do
+		[ -f "${candidate}" ] || continue
+		if cmp --silent "${candidate}" "${BOOT_DTB}"; then
+			matches+=("$(basename "${candidate}")")
+		fi
+	done
+
+	if [ "${#matches[@]}" -ne 1 ]; then
+		echo "Could not identify the board: ${#matches[@]} of the running deployment's DTBs match ${BOOT_DTB}" >&2
+		return 1
+	fi
+
+	echo "${matches[0]}"
+}
+
+status=$(bootc status --json)
+
+# While a deployment is in progress, `status.rollbackQueued` is `true`
+# and `status.rollback` refers to the deployment currently in progress
+rollback=$(echo "$status" | jq --raw-output '.status.rollbackQueued')
+if [ "$rollback" != "true" ]; then
+	echo "No in progress deployment found; skip DTB copy"
+	exit 0
+fi
+
+if [ -s "${BOOT_DTB_NAME}" ]; then
+	board=$(cat "${BOOT_DTB_NAME}")
+	echo "Board read from ${BOOT_DTB_NAME}: ${board}"
+elif [ -f "${BOOT_DTB}" ] && board=$(__detect_board); then
+	echo "Board detected from ${BOOT_DTB} contents: ${board}"
+	echo "${board}" > "${BOOT_DTB_NAME}"
+else
+	# Copying the wrong DTB would leave the device unbootable, so leave the existing one alone.
+	# The device keeps booting on the DTB it already has.
+	echo "ERROR: Cannot determine which DTB this board uses; leaving ${BOOT_DTB} untouched"
+	exit 1
+fi
+
+deploy_info=$(echo "$status" | jq --raw-output ".status.rollback.ostree")
+echo "deployment info: $deploy_info"
+
+checksum=$(echo "$deploy_info" | jq --raw-output ".checksum")
+serial=$(echo "$deploy_info" | jq --raw-output ".deploySerial")
+stateroot=$(echo "$deploy_info" | jq --raw-output ".stateroot")
+echo "checksum: $checksum"
+echo "serial: $serial"
+echo "stateroot: $stateroot"
+
+staged_dtb_dir=$(__dtb_dir "/sysroot/ostree/deploy/${stateroot}/deploy/${checksum}.${serial}")
+
+dtb_path="${staged_dtb_dir}/${board}"
+if [ -f "${dtb_path}" ]; then
+	echo "DTB file found: ${dtb_path}"
+	cp "${dtb_path}" "${BOOT_DTB}"
+	echo "DTB file copied to ${BOOT_DTB}"
+else
+	echo "DTB file not found: ${dtb_path}"
+	exit 1
+fi

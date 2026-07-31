@@ -1,14 +1,57 @@
 #! /bin/bash
 
+# Turns the generic Arm disk image into a bootable image for one specific board.
+
+set -e
+
 target=$1
 
 diskimage=output/image/$target.raw
-mountpoint=$(mktemp -d)
-device=$(kpartx -av $diskimage | cut -d' ' -f3 | grep p2$)
-mount /dev/mapper/$device $mountpoint
+
+bootmnt=$(mktemp -d)
+rootmnt=$(mktemp -d)
+
+cleanup() {
+	umount $bootmnt 2>/dev/null || true
+	umount $rootmnt 2>/dev/null || true
+	kpartx -d $diskimage
+}
+trap cleanup EXIT
+
+devices=$(kpartx -av $diskimage | cut -d' ' -f3)
+bootdev=$(echo "$devices" | grep p2$)
+rootdev=$(echo "$devices" | grep p3$ || true)
+
+mount /dev/mapper/$bootdev $bootmnt
 
 # copy dtb file -- bootc-image-builder does not allow file customizations on /boot
-cp arm/dtbs/$target $mountpoint/dtb
+cp arm/dtbs/$target $bootmnt/dtb
 
-umount $mountpoint
-kpartx -d $diskimage
+# record which board this image was customized for, so `dtb-update` knows which DTB to copy
+# out of the next deployment
+echo "$target" > $bootmnt/dtb.name
+
+umount $bootmnt
+
+# The installer blacklists `qcom_q6v5_pas` so that the X13s can boot the installer off a USB
+# device. On Glymur that same blacklist stops the ADSP and CDSP from starting, which takes out
+# audio, battery reporting and USB-C, so drop it for every other board. Installed systems are
+# unaffected either way -- `os-install` removes this file as part of leaving install mode.
+if [ "$target" != "x13s" ]; then
+	if [ -z "$rootdev" ]; then
+		echo "ERROR: no root partition found in $diskimage; cannot drop the qcom_q6v5_pas blacklist" >&2
+		exit 1
+	fi
+
+	mount /dev/mapper/$rootdev $rootmnt
+
+	installer_conf=$(echo $rootmnt/root/ostree/deploy/*/deploy/*.0/etc/modprobe.d/playtron-installer.conf)
+	if [ -f "$installer_conf" ]; then
+		rm -f "$installer_conf"
+		echo "Removed the qcom_q6v5_pas blacklist for $target"
+	else
+		echo "WARNING: no installer modprobe config found at $installer_conf" >&2
+	fi
+
+	umount $rootmnt
+fi

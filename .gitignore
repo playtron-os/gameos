@@ -8,3 +8,7 @@ rootfs/usr/lib/os-release-playtron
 playtron-os_kickstart.cfg
 # This file is created when running the command "go-task package-list".
 *.pkg-list.txt
+
+# Python bytecode from local syntax checks
+__pycache__/
+*.pyc

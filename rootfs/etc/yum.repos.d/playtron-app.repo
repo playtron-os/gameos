@@ -8,3 +8,9 @@ gpgcheck=0
 repo_gpgcheck=0
 enabled=1
 enabled_metadata=1
+# speech-to-text is an aarch64-only AgentOS package that bundles the Qualcomm QNN runtime and
+# exposes all 207 of its bundled sonames as system-wide Provides -- including libcrypto.so.3,
+# libatomic.so.1, libbz2.so.1 and libexpat.so.1. That lets dnf satisfy an ordinary OpenSSL
+# dependency with a 1.6 GiB AI runtime instead of openssl-libs. Excluding it halves the arm64
+# image's download. Drop this line once the package filters its bundled-library auto-provides.
+excludepkgs=speech-to-text

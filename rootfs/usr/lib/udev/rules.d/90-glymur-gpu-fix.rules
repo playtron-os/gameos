@@ -1,0 +1,1 @@
+ACTION=="add|change", SUBSYSTEM=="devfreq", KERNEL=="3d00000.gpu", ATTR{max_freq}="1700000000"

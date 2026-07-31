@@ -1,0 +1,6 @@
+# bootc-image-builder customizations for a LIVE image
+
+[[customizations.user]]
+name = "playtron"
+password = "playtron"
+groups = ["wheel"]

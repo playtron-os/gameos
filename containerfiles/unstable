@@ -139,51 +139,46 @@ RUN ${CMD_INSTALL} \
   zram-generator
 
 RUN if [ "$TARGETARCH" = "amd64" ]; then \
-      # Install x86_64 specific packages
+      # Install x86_64 specific packages.
+      # RPM Fusion re-arched Steam from i686 to x86_64 in F43; `steam.i686` no longer exists.
+      #
+      # libpact and libplaytron are amd64-only NOT because aarch64 builds are missing -- they are
+      # published -- but because libpact-0.3.0-1 and libplaytron-0.4.0-1 are mis-built: their
+      # payloads are genuine aarch64 ELF, yet their rpm headers require
+      # libc.so.6(GLIBC_2.2.5)(64bit), the x86-64 baseline symbol version that aarch64 glibc never
+      # provides.
       ${CMD_INSTALL} \
         libpact \
         libplaytron \
-        steam.i686 \
+        steam \
         thermald \
         valve-firmware; \
     elif [ "$TARGETARCH" = "arm64" ]; then \
-      # Install arm64 specific packages
-      ${CMD_INSTALL} \
-        box64-sd888 \
+      # Install arm64 specific packages.
+      # `sdoryon1` is the closest box64 flavour to Oryon: it targets the X1E80100/X1E78100 rather
+      # than a Snapdragon 888 phone SoC.
+      ${CMD_INSTALL} --enablerepo=agentos \
+        box64-sdoryon1 \
         box64-binfmts \
         box64-data \
-        dnf-utils \
         ibus-libs \
         libnsl \
         patch \
         qcom-firmware; \
     fi
 
-# Force install x86 Steam on arm64
+# Force install x86 Steam on arm64.
+# `rpmfusion-nonfree-steam.repo` pins arch=x86_64 in its metalink, so the x86_64 package stays
+# reachable from an aarch64 build. box64 runs it.
 RUN if [ "$TARGETARCH" = "arm64" ]; then \
-  rpm -Uvh --nodeps --ignorearch $(repoquery --location steam.i686); \
+  rpm -Uvh --nodeps --ignorearch $(dnf repoquery --location steam.x86_64); \
 fi
 
-# Install Nvidia
- RUN ${CMD_INSTALL} \
-  akmod-nvidia \
-  gcc-c++ \
-  nvidia-driver \
-  nvidia-driver-NvFBCOpenGL
+# Install Nvidia and build its kernel modules (no-op on Arm)
+RUN /usr/libexec/playtron-build/nvidia-install.sh
 
-RUN if [ "$TARGETARCH" = "amd64" ]; then \
-  ${CMD_INSTALL} nvidia-driver-libs.i686; \
-fi
-
-RUN cp -r /etc/pam.d /etc/pam.d.bak; sed -i -r 's/^(session\s+required\s+pam_limits.so)/#\1/' /etc/pam.d/*; \
-  mkdir -p /run/akmods; \
-  for k in $(ls -1 /usr/src/kernels); do \
-    akmods --force --kernels "${k}" --kmod "nvidia" || exit 1; \
-    ls /var/cache/akmods/nvidia/*.failed.log > /dev/null 2>&1 && cat /var/cache/akmods/nvidia/*.failed.log || true; \
-    ls /usr/lib/modules/"${k}"/extra/nvidia/nvidia.ko.xz || exit 1; \
-  done; \
-  rm -rf /run/akmods; \
-  rm -rf /etc/pam.d; mv /etc/pam.d.bak /etc/pam.d;
+# Wire up the Qualcomm Glymur ALSA UCM profile (no-op on x86)
+RUN /usr/libexec/playtron-build/audio-install.sh
 
 # Configure "ld" for use when compiling modules.
 RUN ln -s -f /usr/bin/ld.bfd /etc/alternatives/ld
@@ -260,6 +255,28 @@ COPY rootfs/usr/lib/bootc/kargs.d/50-playtron.${TARGETARCH}.toml				/usr/lib/boo
 # Configuration additions to hide grub at boot and use a dtb for ARM devices
 COPY rootfs/usr/lib/bootupd/grub2-static/configs.d/70-playtron.${TARGETARCH}.cfg			/usr/lib/bootupd/grub2-static/configs.d/70-playtron.cfg
 
+# Ship the board DTBs inside the image and refresh /boot/dtb on every deployment, so that an OS
+# update also updates the DTB GRUB loads. The amd64 drop-in is intentionally empty.
+COPY rootfs/usr/lib/systemd/system/ostree-finalize-staged.service.d/dtb-update.${TARGETARCH}.conf	/usr/lib/systemd/system/ostree-finalize-staged.service.d/dtb-update.conf
+COPY rootfs/usr/libexec/playtron/dtb-update						/usr/libexec/playtron/
+# glymur-crd-cob is a copy of the kernel's own in-tree dtb/qcom/glymur-crd.dtb. It is checked into
+# arm/dtbs/ because arm/customize needs it on the build host to stamp /boot/dtb into the disk
+# image. A kernel bump changes the in-tree DTB, so the build below fails loudly rather than
+# silently pairing a new kernel with a stale device tree -- that combination does not boot.
+# Refresh it with: task arm:dtb:refresh
+COPY arm/dtbs										/dtbs
+RUN if [ "$TARGETARCH" = "arm64" ]; then \
+      dir=$(ls /usr/lib/modules); \
+      dtbs=/usr/lib/modules/${dir}/dtb; \
+      mkdir -p ${dtbs} && mv /dtbs ${dtbs}/playtron; \
+      if ! cmp -s "${dtbs}/qcom/glymur-crd.dtb" "${dtbs}/playtron/glymur-crd-cob"; then \
+        echo "ERROR: arm/dtbs/glymur-crd-cob does not match this kernel dtb/qcom/glymur-crd.dtb; run 'task arm:dtb:refresh'" >&2; \
+        exit 1; \
+      fi; \
+    else \
+      rm -rf /dtbs; \
+    fi
+
 # A script run during FTUE that listens for a key combo to switch to the dev session
 COPY rootfs/usr/libexec/playtron/dev-session-trigger					/usr/libexec/playtron/
 
@@ -273,8 +290,10 @@ COPY rootfs/usr/libexec/playtron/stress-test-speaker					/usr/libexec/playtron/
 # Default kernel module options
 COPY rootfs/usr/lib/modprobe.d/50-playtron.conf						/usr/lib/modprobe.d/
 
-# Load controller drivers
-COPY rootfs/usr/lib/modules-load.d/controllers.conf					/usr/lib/modules-load.d/
+# Load controller drivers.
+# Split per-arch because ayaneo_platform and hid_msi_claw are x86-only out-of-tree modules that are
+# never built on Arm; listing them there makes systemd-modules-load fail on every boot.
+COPY rootfs/usr/lib/modules-load.d/controllers.${TARGETARCH}.conf			/usr/lib/modules-load.d/controllers.conf
 
 # Disable random MAC address generation to fix Wi-Fi connections with some routers
 COPY rootfs/usr/lib/NetworkManager/conf.d/50-playtron.conf				/usr/lib/NetworkManager/conf.d/
@@ -333,6 +352,18 @@ COPY rootfs/usr/lib/udev/rules.d/90-rfkill-autostart.rules			/usr/lib/udev/rules
 
 # Use the Kyber I/O scheduler for NVMe drives
 COPY rootfs/usr/lib/udev/rules.d/50-block-scheduler.rules				/usr/lib/udev/rules.d/
+
+# Qualcomm Glymur (Snapdragon X2 Elite) platform rules.
+# The ADSP and CDSP remote processors are not started by the kernel; audio, battery reporting and
+# USB-C all depend on the ADSP being up.
+COPY rootfs/usr/lib/udev/rules.d/90-glymur-adsp-start.rules				/usr/lib/udev/rules.d/
+COPY rootfs/usr/lib/udev/rules.d/90-glymur-cdsp-start.rules				/usr/lib/udev/rules.d/
+
+# Raise the Adreno devfreq ceiling to the top OPP
+COPY rootfs/usr/lib/udev/rules.d/90-glymur-gpu-fix.rules				/usr/lib/udev/rules.d/
+
+# Allow unprivileged access to the system dma-heap
+COPY rootfs/usr/lib/udev/rules.d/90-dma-heap-fastrpc.rules				/usr/lib/udev/rules.d/
 
 # Change MSI Claw 1 and 2 controllers to gamepad/xinput mode.
 COPY rootfs/usr/lib/udev/rules.d/90-hid-msi-claw-autostart.rules			/usr/lib/udev/rules.d/

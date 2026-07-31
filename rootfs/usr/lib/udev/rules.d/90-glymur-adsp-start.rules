@@ -1,0 +1,1 @@
+ACTION=="add|change", SUBSYSTEM=="remoteproc", ATTR{name}=="adsp", ATTR{state}="start"

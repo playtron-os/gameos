@@ -1,1 +1,28 @@
-kargs = ["splash", "quiet", "arm64.nopauth", "clk_ignore_unused", "pd_ignore_unused", "efi=noruntime"]
+# Useful debug flags:
+#   earlycon ignore_loglevel loglevel=8 printk.devkmsg=on console=ttyMSM0,115200n8
+#
+kargs = [
+  "splash",
+  "quiet",
+
+  # If root is on a USB SSD, which enumerates well after the initramfs starts looking for it.
+  "rootwait",
+
+  # Contiguous memory for the display controller and GPU.
+  "cma=128M",
+
+  # EFI runtime services are not usable on this firmware.
+  "efi=noruntime",
+
+  # Pointer authentication off.
+  "arm64.nopauth",
+
+  # Probe-ordering workarounds carried from bring-up. See the note at the bottom before removing.
+  "clk_ignore_unused",
+  "pd_ignore_unused",
+  "deferred_probe_timeout=120",
+  "fw_devlink=off",
+
+  # Kernel messages to the panel.
+  "console=tty0",
+]

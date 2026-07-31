@@ -33,24 +33,33 @@ tasks:
       - echo "{ \"auths\":{ \"${REGISTRY}\":{ \"auth\":\"${REGISTRY_TOKEN}\" } } }" > "${XDG_RUNTIME_DIR}/containers/auth.json"
 
   container-image:build:unstable:
-    desc: Build the OCI container image using the latest upstream.
+    desc: >-
+      Build the OCI container image using the latest upstream.
+      Set PLATFORM=arm64 to cross-build for Arm; that needs qemu-user-static installed and the
+      aarch64 binfmt handler registered on the build host.
+    vars:
+      PLATFORM: '{{.PLATFORM | default ""}}'
     preconditions:
       - sh: test -n "$TAG"
         msg: "A value for TAG must be provided"
     cmds:
       - mkdir -p rootfs/usr/lib
       - cat os-release.template | envsubst '${TAG}' > rootfs/usr/lib/os-release-playtron
-      - podman build {{.CACHE}} --pull=always --tag ${IMAGE}:${TAG} --file containerfiles/unstable .
+      - podman build {{.CACHE}} --pull=always {{if .PLATFORM}}--platform linux/{{.PLATFORM}} {{end}}--tag ${IMAGE}:${TAG} --file containerfiles/unstable .
 
   container-image:build:stable:
-    desc: Build the OCI container image using a previously built image.
+    desc: >-
+      Build the OCI container image using a previously built image.
+      Set PLATFORM=arm64 to cross-build for Arm.
+    vars:
+      PLATFORM: '{{.PLATFORM | default ""}}'
     preconditions:
       - sh: test -n "$TAG"
         msg: "A value for TAG must be provided"
     cmds:
       - mkdir -p rootfs/usr/lib
       - cat os-release.template | envsubst '${TAG}' > rootfs/usr/lib/os-release-playtron
-      - podman build {{.CACHE}} --tag ${IMAGE}:${TAG} --file containerfiles/stable .
+      - podman build {{.CACHE}} {{if .PLATFORM}}--platform linux/{{.PLATFORM}} {{end}}--tag ${IMAGE}:${TAG} --file containerfiles/stable .
 
   container-image:push:
     desc: Push the OCI container image to the container registry.
@@ -65,6 +74,55 @@ tasks:
         msg: "A value for PROJECT must be provided"
     cmds:
       - podman push ${IMAGE}:${TAG} ${REGISTRY}/${PROJECT}/${IMAGE}:${TAG}
+
+  container-image:push:arch:
+    desc: >-
+      Push a single-architecture OCI container image under an architecture-suffixed tag.
+      Use this instead of `container-image:push` for anything other than amd64, and combine the
+      results with `container-image:push:multiarch`. Pushing an arm64 image to the bare tag would
+      replace the amd64 image and ship Arm to x86 devices.
+    requires:
+      vars:
+        - name: ARCH
+          enum: [amd64, arm64]
+    preconditions:
+      - sh: test -n "$REGISTRY"
+        msg: "A value for REGISTRY must be provided"
+      - sh: grep "${REGISTRY}" "${XDG_RUNTIME_DIR}/containers/auth.json"
+        msg: "Please use `container-image:auth` to authenticate with the registry"
+      - sh: test -n "$TAG"
+        msg: "A value for TAG must be provided"
+      - sh: test -n "$PROJECT"
+        msg: "A value for PROJECT must be provided"
+    cmds:
+      - podman push ${IMAGE}:${TAG} ${REGISTRY}/${PROJECT}/${IMAGE}:${TAG}-{{.ARCH}}
+
+  container-image:push:multiarch:
+    desc: >-
+      Combine the architecture-suffixed images into a multi-arch manifest and push it to the bare
+      tag. Assumes `container-image:push:arch` has already pushed both `${TAG}-amd64` and
+      `${TAG}-arm64`.
+    preconditions:
+      - sh: test -n "$REGISTRY"
+        msg: "A value for REGISTRY must be provided"
+      - sh: grep "${REGISTRY}" "${XDG_RUNTIME_DIR}/containers/auth.json"
+        msg: "Please use `container-image:auth` to authenticate with the registry"
+      - sh: test -n "$TAG"
+        msg: "A value for TAG must be provided"
+      - sh: test -n "$PROJECT"
+        msg: "A value for PROJECT must be provided"
+      - sh: podman pull ${REGISTRY}/${PROJECT}/${IMAGE}:${TAG}-amd64
+        msg: "Failed to fetch the amd64 container"
+      - sh: podman pull ${REGISTRY}/${PROJECT}/${IMAGE}:${TAG}-arm64
+        msg: "Failed to fetch the arm64 container"
+    cmds:
+      - podman manifest rm ${IMAGE}:${TAG} || true
+      - >-
+        podman manifest create ${IMAGE}:${TAG}
+        ${REGISTRY}/${PROJECT}/${IMAGE}:${TAG}-amd64
+        ${REGISTRY}/${PROJECT}/${IMAGE}:${TAG}-arm64
+      - podman manifest inspect ${IMAGE}:${TAG}
+      - podman manifest push --all ${IMAGE}:${TAG} ${REGISTRY}/${PROJECT}/${IMAGE}:${TAG}
 
   container-image:deploy:
     desc: Deploy a locally built container image to a device over SSH
@@ -185,20 +243,65 @@ tasks:
         env:
           BOOTC_IMAGE: quay.io/centos-bootc/bootc-image-builder:latest
 
-  disk-image:x13s:
-    desc: Customize the generic ARM disk image to boot on the X13S
-    env:
-      TARGET: x13s
+  arm:dtb:refresh:
+    desc: >-
+      Refresh arm/dtbs/glymur-crd-cob from the kernel currently pinned in
+      rootfs/usr/libexec/playtron-build-arm64/kernel-install.sh. Run this after bumping the kernel;
+      the container build fails if the two disagree, because a stale DTB paired with a new kernel
+      does not boot.
+    vars:
+      AGENTOS_URL: https://playtron-dev2-global-os-public.s3.us-west-2.amazonaws.com/repos/agentos/aarch64
+      KERNEL_SCRIPT: rootfs/usr/libexec/playtron-build-arm64/kernel-install.sh
+    cmds:
+      - |
+        set -e
+        nvra=$(grep -oE '"kernel-[^"]+"' {{.KERNEL_SCRIPT}} | head -1 | tr -d '"')
+        if [ -z "$nvra" ]; then echo "Could not find the pinned kernel in {{.KERNEL_SCRIPT}}" >&2; exit 1; fi
+        echo "Pinned kernel: ${nvra}"
+        # '+' is legal in an RPM release but must be percent-encoded in the URL
+        url="{{.AGENTOS_URL}}/$(printf '%s' "${nvra}" | sed 's/+/%2B/g').aarch64.rpm"
+        tmp=$(mktemp -d)
+        trap 'rm -rf "$tmp"' EXIT
+        echo "Fetching ${url}"
+        curl -fsSL -o "$tmp/k.rpm" "$url"
+        rpm2cpio "$tmp/k.rpm" | (cd "$tmp" && cpio -idm --quiet './lib/modules/*/dtb/qcom/glymur-crd.dtb')
+        src=$(find "$tmp" -name glymur-crd.dtb | head -1)
+        if [ -z "$src" ]; then echo "No dtb/qcom/glymur-crd.dtb in ${nvra}" >&2; exit 1; fi
+        cp "$src" arm/dtbs/glymur-crd-cob
+        echo "Updated arm/dtbs/glymur-crd-cob ($(stat -c %s arm/dtbs/glymur-crd-cob) bytes, md5 $(md5sum arm/dtbs/glymur-crd-cob | cut -d' ' -f1))"
+
+  disk-image:arm:
+    desc: Customize the generic ARM disk image to boot on a particular Arm device
+    requires:
+      vars:
+        - name: TARGET
+          enum: [x13s, glymur-crd-cob, glymur-crd-sip]
     preconditions:
       - sh: command -v kpartx
         msg: "Could not find `kpartx`. Please install the appropriate package."
       - sh: test -f output/image/disk.raw
         msg: "Disk image not found. Please run `disk-image:bootc` to generate the generic ARM disk image."
+      - sh: test -f arm/dtbs/{{.TARGET}}
+        msg: "No DTB found at arm/dtbs/{{.TARGET}}"
       - sh: test "$EUID" == 0
         msg: "This task must be run as root"
     cmds:
-      - cp output/image/disk.raw output/image/${TARGET}.raw
-      - ./arm/customize ${TARGET}
+      - cp output/image/disk.raw output/image/{{.TARGET}}.raw
+      - ./arm/customize {{.TARGET}}
+
+  disk-image:x13s:
+    desc: Customize the generic ARM disk image to boot on the X13S
+    cmds:
+      - task: disk-image:arm
+        vars:
+          TARGET: x13s
+
+  disk-image:glymur-crd:
+    desc: Customize the generic ARM disk image to boot on the Glymur (Snapdragon X2 Elite) CRD
+    cmds:
+      - task: disk-image:arm
+        vars:
+          TARGET: glymur-crd-cob
 
   repo:update:
     desc: "Update the package repository"
