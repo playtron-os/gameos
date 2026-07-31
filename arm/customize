@@ -31,6 +31,27 @@ cp arm/dtbs/$target $bootmnt/dtb
 # out of the next deployment
 echo "$target" > $bootmnt/dtb.name
 
+# Point blscfg at the per-deployment DTB.
+#
+# ostree writes `fdtdir` into the BLS entry, but `grubaa64.efi` has no such command -- the string
+# does not appear in the binary at all -- so it is silently ignored and the board boots on the
+# firmware's own device tree. On Glymur that tree lacks `dr_mode` on the USB-C controllers, the
+# root disk never enumerates, and the boot dies in dracut's initqueue waiting for the root UUID.
+#
+# `devicetree` as a GRUB *environment variable* is the mechanism blscfg does honour: it prefixes
+# the value with the directory of each entry's `linux` line, i.e. that entry's own ostree
+# deployment directory. One variable covers every entry, present and future.
+#
+# The `devicetree ($root)/dtb` line in 70-playtron.arm64.cfg is not sufficient on its own; it is
+# kept as a fallback. Without the variable below, every freshly flashed image is unbootable.
+if command -v grub2-editenv >/dev/null; then
+	grub2-editenv $bootmnt/grub2/grubenv set devicetree=dtb/playtron/$target
+	echo "Set grubenv devicetree=dtb/playtron/$target"
+else
+	echo "ERROR: grub2-editenv not found; the image would not boot without the devicetree var" >&2
+	exit 1
+fi
+
 umount $bootmnt
 
 # The installer blacklists `qcom_q6v5_pas` so that the X13s can boot the installer off a USB
