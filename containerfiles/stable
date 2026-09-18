@@ -1,22 +1,12 @@
-FROM registry.playtron.one/internal/playtronos:1.3-stable-base
+FROM registry.playtron.one/internal/playtronos:1.3.2-stable-base
 
 # Set OS version
 COPY rootfs/usr/lib/os-release-playtron /usr/lib/
 
 # Update packages
 RUN dnf5 -y upgrade \
-  gamescope-dbus-1.13.2 \
-  gamescope-session-playtron-0.5.0 \
-  grid-1.37.2 \
-  inputplumber-0.76.0 \
-  legendary-0.20.45 \
-  mesa* \
-  playserve-1.30.0 \
-  playtron-plugin-local-1.6.1 \
-  plugin-egs-1.3.0 \
-  plugin-gog-1.1.3 \
-  reaper-0.1.0-3.fc43 \
-  SteamBus-1.27.6
+  grid-1.37.3 \
+  playserve-1.30.2
 
 # Clear cache.
 RUN dnf5 clean all && \
