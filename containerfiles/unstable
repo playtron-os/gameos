@@ -143,7 +143,7 @@ RUN if [ "$TARGETARCH" = "amd64" ]; then \
       ${CMD_INSTALL} \
         libpact \
         libplaytron \
-        steam.i686 \
+        steam \
         thermald \
         valve-firmware; \
     elif [ "$TARGETARCH" = "arm64" ]; then \
@@ -159,9 +159,9 @@ RUN if [ "$TARGETARCH" = "amd64" ]; then \
         qcom-firmware; \
     fi
 
-# Force install x86 Steam on arm64
+# Force install x86_64 Steam on arm64
 RUN if [ "$TARGETARCH" = "arm64" ]; then \
-  rpm -Uvh --nodeps --ignorearch $(repoquery --location steam.i686); \
+  rpm -Uvh --nodeps --ignorearch $(repoquery --location steam.x86_64); \
 fi
 
 # Install Nvidia
