@@ -8,6 +8,40 @@ path = "/etc/environment.d"
 user = "root"
 group = "root"
 
+# prevent writes to /var/log in install mode
+[[customizations.files]]
+path = "/etc/systemd/system/var-log.mount"
+data = """
+[Unit]
+DefaultDependencies=True
+
+[Mount]
+What=tmpfs
+Where=/var/log
+Type=tmpfs
+Options=noatime,size=20%
+
+[Install]
+WantedBy=local-fs.target
+"""
+
+# prevent writes to /var/lib in install mode
+[[customizations.files]]
+path = "/etc/systemd/system/var-lib.mount"
+data = """
+[Unit]
+DefaultDependencies=True
+
+[Mount]
+What=tmpfs
+Where=/var/lib
+Type=tmpfs
+Options=noatime,size=20%
+
+[Install]
+WantedBy=local-fs.target
+"""
+
 # switch Grid to install mode
 [[customizations.files]]
 path = "/etc/environment.d/playtron-installer.conf"

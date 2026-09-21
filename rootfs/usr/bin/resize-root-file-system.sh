@@ -27,9 +27,4 @@ else
  fi
 
 growpart ${root_device} ${root_partition_number}
-
-if [ "${overlay_detected}" == "false" ]; then
-    btrfs filesystem resize max /
-else
-    btrfs filesystem resize max /var
-fi
+resize2fs ${root_partition}
