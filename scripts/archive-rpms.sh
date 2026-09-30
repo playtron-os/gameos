@@ -79,10 +79,7 @@ package_names+=(
 # negativo17 NVIDIA https://negativo17.org/repos/nvidia/fedora-$releasever/$basearch/
 package_names+=(
   "akmod-nvidia"
-  "libnvidia-cfg"
   "libnvidia-fbc"
-  "libnvidia-gpucomp"
-  "libnvidia-ml"
   "nvidia-driver"
   "nvidia-driver-cuda-libs"
   "nvidia-driver-libs"
@@ -93,7 +90,7 @@ package_names+=(
 # RPM Fusion Steam https://mirrors.rpmfusion.org/metalink?repo=nonfree-fedora-steam-$releasever&arch=x86_64
 ## This allows us to get the Steam package used for both x86 and Arm builds.
 dnf -y install repoquery
-curl --location --remote-name "$(repoquery --location "$(rpm -q steam.i686)" | tail -n 1)" --output-dir "${WORKING_DIR}"
+curl --location --remote-name "$(repoquery --location "$(rpm -q steam.x86_64)" | tail -n 1)" --output-dir "${WORKING_DIR}"
 
 for package_name in "${package_names[@]}"; do
     # Includes the version in the name.
