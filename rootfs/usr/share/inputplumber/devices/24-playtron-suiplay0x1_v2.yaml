@@ -50,11 +50,20 @@ source_devices:
         - Keyboard:KeyF18
   - group: imu
     iio:
-      name: bmi323-imu
+      name: "{bmi323-imu,i2c-BMI0160:00,bmi260}"
       mount_matrix:
         x: [0, -1, 0]
         y: [-1, 0, 0]
         z: [0, 0, -1]
+  #RGB
+  - group: led
+    udev: # Legacy
+      sys_name: multicolor:chassis
+      subsystem: leds
+  - group: led
+    udev: # Updated
+      sys_name: ayaneo:rgb:joystick_rings
+      subsystem: leds
   - group: touchscreen
     udev:
       properties:
