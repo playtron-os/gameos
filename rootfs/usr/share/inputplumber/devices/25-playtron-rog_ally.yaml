@@ -33,31 +33,9 @@ source_devices:
       vendor_id: 045e
       product_id: 028e
       handler: event*
-  - group: keyboard
-    evdev:
-      name: ASUS ROG Ally Config
-      vendor_id: 0b05
-      product_id: 1abe
-      handler: event*
-  - group: keyboard
+  - group: gamepad
     unique: false
     evdev:
-      name: Asus Keyboard
-      vendor_id: 0b05
-      product_id: 1abe
-      handler: event*
-  # New driver group name from `asus_ally_hid`
-  - group: mouse
-    evdev:
-      name: ROG Ally Mouse
-      vendor_id: 0b05
-      product_id: 1abe
-      handler: event*
-  # New driver group name from `asus_ally_hid`
-  - group: keyboard
-    unique: false
-    evdev:
-      name: ROG Ally Keyboard
       vendor_id: 0b05
       product_id: 1abe
       handler: event*
@@ -72,6 +50,7 @@ source_devices:
     udev:
       sys_name: ally:rgb:joystick_rings
       subsystem: leds
+
   - group: touchscreen
     udev:
       properties:
@@ -79,6 +58,7 @@ source_devices:
           value: "1"
       sys_name: "event*"
       subsystem: input
+
   - group: keyboard
     unique: false
     passthrough: true

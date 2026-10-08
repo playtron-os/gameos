@@ -23,120 +23,205 @@ matches:
 # One or more source devices to combine into a single virtual device. The events
 # from these devices will be watched and translated according to the key map.
 source_devices:
-  ## XInput - Connected 0x6182
-  # Touchpad
-  - group: mouse # Gamepad Mode
-    hidraw:
-      vendor_id: 0x17ef
-      product_id: 0x6182
-      interface_num: 1
-  # Gamepad
-  - group: gamepad
-    hidraw:
-      vendor_id: 0x17ef
-      product_id: 0x6182
-      interface_num: 2
-  - group: gamepad
-    unique: true
+  ## evdevs
+  - group: mouse
+    blocked: true
+    unique: false
     evdev:
-      name: "{Lenovo Legion Controller for Windows,Generic X-Box pad}"
+      name: "{*Mouse}"
       vendor_id: "17ef"
-      product_id: "6182"
+      product_id: "{618[2-4],61e[b-d]}" # Don't grab 5/e, thats FPS mode Keyboard events
       handler: event*
-  # Block all evdev devices; mouse, touchpad, keyboard
+  # Block all evdev touchpads
+  # Note: Dinput mode device name increments alphanumerically. Real world examples include 1-D6, 1-15, 1-44.
+  - group: mouse
+    blocked: true
+    unique: false
+    evdev:
+      name: "{*Touchpad}"
+      vendor_id: "17ef"
+      product_id: "{618[2-4],61e[b-d]}" # 5/e don't exist
+      handler: event*
+  - group: keyboard # Blocks alt-tab and show desktop events
+    blocked: true
+    unique: false
+    evdev:
+      name: "{*Keyboard}"
+      vendor_id: "17ef"
+      product_id: "{618[2-4],61e[b-d]}" # Don't grab 5/e, thats FPS mode Keyboard events
+      handler: event*
   - group: gamepad
     blocked: true
     unique: false
     evdev:
-      name: "  Legion Controller for Windows  *"
+      name: "Legion-Controller [0-Z]-[0-Z][0-Z]"
       vendor_id: "17ef"
-      product_id: "6182"
+      product_id: "{618[2-4],61e[b-d]}" # Don't grab 5/e, thats FPS mode Keyboard events
       handler: event*
+  # Don't block evdev gamepad, used for rumble
+  - group: gamepad
+    unique: false
+    evdev:
+      name: "{Lenovo Legion Controller for Windows,Generic X-Box pad}"
+      vendor_id: "17ef"
+      product_id: "{618[2-5],61e[b-e]}"
+      handler: event*
+    events:
+      # Block input events, but use device for output events
+      exclude:
+        - "*"
 
-  ## DInput - Attached 0x6183
-  # Touchpad
-  - group: mouse
+  # HIDRAWs
+  ## Gamepad
+  ## XInput - Connected 0x6182 (Go PID)
+  - group: gamepad
+    unique: false
     hidraw:
       vendor_id: 0x17ef
-      product_id: 0x6183
-      interface_num: 1
-  # Gamepad
+      product_id: 0x6182
+      interface_num: 2
+
+  ## XInput - Connected 0x61eb (Go 2 PID)
+  - group: gamepad
+    unique: false
+    hidraw:
+      vendor_id: 0x17ef
+      product_id: 0x61eb
+      interface_num: 2
+
+  ## DInput - Attached 0x6183 (Go PID)
   - group: gamepad # Dinput report
+    unique: false
     hidraw:
       vendor_id: 0x17ef
       product_id: 0x6183
       interface_num: 0
   - group: gamepad # XInput report 40Hz
+    unique: false
     hidraw:
       vendor_id: 0x17ef
       product_id: 0x6183
       interface_num: 2
 
-  ## DInput - Detached 0x6184
-  # Touchpad
-  - group: mouse
+  ## DInput - Attached 0x61ec (Go 2 PID)
+  - group: gamepad # Dinput report
+    unique: false
     hidraw:
       vendor_id: 0x17ef
-      product_id: 0x6184
-      interface_num: 1
-  # Gamepad
-  - group: gamepad
-    hidraw:
-      vendor_id: 0x17ef
-      product_id: 0x6184
+      product_id: 0x61ec
       interface_num: 0
+  - group: gamepad # XInput report 40Hz
+    unique: false
+    hidraw:
+      vendor_id: 0x17ef
+      product_id: 0x61ec
+      interface_num: 2
+
+  ## DInput - Detached 0x6184 (Go PID)
   - group: gamepad
+    unique: false
     hidraw:
       vendor_id: 0x17ef
       product_id: 0x6184
       interface_num: 2
 
-  ## FPS Mode - 0x6185
-  # Touchpad
-  - group: mouse
-    hidraw:
-      vendor_id: 0x17ef
-      product_id: 0x6185
-      interface_num: 1
-  # Mouse
-  - group: mouse
-    hidraw:
-      vendor_id: 0x17ef
-      product_id: 0x6185
-      interface_num: 1
-  # Keyboard
-  - group: keyboard
-    hidraw:
-      vendor_id: 0x17ef
-      product_id: 0x6185
-      interface_num: 0
-  # Gamepad
+  ## DInput - Detached 0x61ed (Go 2 PID)
   - group: gamepad
+    unique: false
+    hidraw:
+      vendor_id: 0x17ef
+      product_id: 0x61ed
+      interface_num: 2
+
+  ## FPS Mode - 0x6185 (Go PID)
+  - group: gamepad
+    unique: false
     hidraw:
       vendor_id: 0x17ef
       product_id: 0x6185
       interface_num: 2
+
+  ## FPS Mode - 0x61ee (Go 2 PID)
+  - group: gamepad
+    unique: false
+    hidraw:
+      vendor_id: 0x17ef
+      product_id: 0x61ee
+      interface_num: 2
+
+  ## Touchpad
+  ## XInput - Connected 0x6182 (Go PID)
+  - group: gamepad
+    unique: false
+    hidraw:
+      vendor_id: 0x17ef
+      product_id: 0x6182
+      interface_num: 1
+
+  ## XInput - Connected 0x61eb (Go 2 PID)
+  - group: gamepad
+    unique: false
+    hidraw:
+      vendor_id: 0x17ef
+      product_id: 0x61eb
+      interface_num: 1
+
+  ## DInput - Attached 0x6183 (Go PID)
+  - group: gamepad # Dinput report
+    unique: false
+    hidraw:
+      vendor_id: 0x17ef
+      product_id: 0x6183
+      interface_num: 1
+
+  ## DInput - Attached 0x61ec (Go 2 PID)
+  - group: gamepad # Dinput report
+    unique: false
+    hidraw:
+      vendor_id: 0x17ef
+      product_id: 0x61ec
+      interface_num: 1
+
+  ## DInput - Detached 0x6184 (Go PID)
+  - group: gamepad
+    unique: false
+    hidraw:
+      vendor_id: 0x17ef
+      product_id: 0x6184
+      interface_num: 1
+
+  ## DInput - Detached 0x61ed (Go 2 PID)
+  - group: gamepad
+    unique: false
+    hidraw:
+      vendor_id: 0x17ef
+      product_id: 0x61ed
+      interface_num: 1
+
+  ## FPS Mode - 0x6185 (Go PID)
+  - group: gamepad
+    unique: false
+    hidraw:
+      vendor_id: 0x17ef
+      product_id: 0x6185
+      interface_num: 1
+
+  ## FPS Mode - 0x61ee (Go 2 PID)
+  - group: gamepad
+    unique: false
+    hidraw:
+      vendor_id: 0x17ef
+      product_id: 0x61ee
+      interface_num: 1
 
   # IMU
-  # Broken for now --causes IP to hard freeze
-  # Enabling only gyro_3d allows the tablet gyro to work without needing kernel patch
-  # TODO: Find out why this is broken and swap tablet gyro to controller gyro as default.
-  #  - group: imu
-  #    iio:
-  #      name: accel_3d
-  #      mount_matrix:
-  #        # TODO: Reverify on actual hardware
-  #        x: [0, 1, 0]
-  #        y: [-1, 0, 0]
-  #        z: [0, 0, -1]
   - group: imu
     iio:
       name: gyro_3d
       mount_matrix:
-        # TODO: Reverify on actual hardware
         x: [0, 1, 0]
-        y: [-1, 0, 0]
-        z: [0, 0, -1]
+        y: [1, 0, 0]
+        z: [0, 0, 1]
 
   # Touchscreen
   - group: touchscreen
@@ -149,15 +234,6 @@ source_devices:
     config:
       touchscreen:
         orientation: "left"
-
-  # Block all evdev devices; mouse, touchpad, gamepad, keyboard
-  - group: gamepad
-    blocked: true
-    unique: false
-    evdev:
-      vendor_id: "17ef"
-      product_id: "618[3-5]"
-      handler: event*
 
   - group: keyboard
     unique: false
